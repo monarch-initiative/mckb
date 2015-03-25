@@ -2,13 +2,6 @@
 
 
 * Required python packages:
-    * Dipper
+    * [Dipper](https://github.com/monarch-initiative/dipper)
+    * [PyMySQL](https://github.com/PyMySQL/PyMySQL)
 
-
-* Installing Dipper with pip3
-
-        pip3 install git+git://github.com/monarch-initiative/dipper.git
-
-   or clone the repository and run:
-
-        pip3 install -e /path/to/git/dipper
