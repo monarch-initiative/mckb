@@ -5,6 +5,6 @@ from setuptools import setup, find_packages
 setup(name='mckb',
       version='0.0.1',
       packages=find_packages(),
-      install_requires=['dipper', 'pymysql'],
+      install_requires=['dipper', 'pymysql', 'rdflib'],
       include_package_data=True
       )
