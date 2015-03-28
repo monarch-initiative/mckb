@@ -36,3 +36,16 @@ class MySQLSource(Source):
         self.cursor.close()
         self.connection.close()
         return
+
+    def check_if_db_is_empty(self):
+        is_db_empty = True
+        query = "SELECT count(*) FROM information_schema.tables " \
+                "WHERE table_type = 'BASE TABLE' " \
+                "AND table_schema = '{0}'".format(self.database)
+
+        self.cursor.execute(query)
+        results = self.cursor.fetchone()
+        if results[0] > 0:
+            is_db_empty = False
+
+        return is_db_empty

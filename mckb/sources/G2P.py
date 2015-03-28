@@ -20,7 +20,7 @@ class G2P(MySQLSource):
     def __init__(self, database, username, password, host=None):
         super().__init__('g2p', database, username, password, host)
         self.dataset = Dataset('g2p', 'G2P', 'http://ga4gh.org')
-        self.rawdir = 'resources/'
+        self.rawdir = 'resources'
 
     def parse(self):
         """
@@ -30,9 +30,16 @@ class G2P(MySQLSource):
         Returns:
             :return None
         """
-        file = '/'.join((self.rawdir,
-                              self.static_files['test_data']['file']))
-        self.load_data_from_dump_file(file)
+        logger.debug("Checking if database is empty")
+        is_db_empty = self.check_if_db_is_empty()
+        if is_db_empty:
+            file = '/'.join((self.rawdir,
+                                  self.static_files['test_data']['file']))
+            logger.debug("Loading data into database from file {0}".format(file))
+            self.load_data_from_dump_file(file)
+        else:
+            logger.debug("Database contains tables, "
+                         "skipping load from dump file")
         return
 
     def load_data_from_dump_file(self, file):
@@ -41,7 +48,6 @@ class G2P(MySQLSource):
         :param file:
         :return: None
         """
-        logger.debug("Loading data into database from file {0}".format(file))
         gz_file = gzip.open(file, 'rb')
         with tempfile.NamedTemporaryFile(mode='w+b') as f:
             f.write(gz_file.read())
