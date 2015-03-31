@@ -1,0 +1,167 @@
+1	5FU-based adjuvant therapy
+2	ado-trastuzumab emtansine
+3	afatinib
+4	afatinib + cetuximab
+5	AKT inhibitors
+6	ALK inhibitors
+7	ALK inhibitors + IGF1R inhibitors
+8	allosteric AKT inhibitors
+9	anthracyclines
+10	anti-EGFR mAbs
+11	anti-EGFR mAbs + anti-HER2 mAbs
+12	anti-EGFR mAbs + MEK inhibitors
+13	anti-estrogens
+14	anti-HER3 mAbs
+15	anti-tubulin agents
+16	AR antagonist
+17	ARN-509
+18	aromatase inhhibitors
+19	aspirin in adjuvant setting
+20	ATP-competitive AKT inhibitors
+21	ATRA
+22	ATRA + arsenic trioxide
+23	AURK inhibitors
+24	AURK inhibitors + BCR-ABL1 inhibitors
+25	BCL2 inhibitors
+26	BET inhibitors
+27	BET inhibitors in LKB1 wt
+28	bevacizumab
+29	bicalutamide
+30	bortezomib
+31	bosutinib
+32	BRAF + MEK inhibitors
+33	BRAF inhibitors
+34	BRAF inhibitors + CDK2/4 inhibitors
+35	BRAF inhibitors + EGFR inhibitors
+36	BRAF inhibitors + HSP90 inhibitors
+37	BRAF inhibitors + MEK inhibitors
+38	BRAF inhibitors + PI3K pathway inhibitors
+39	BRAF inhibitors +/- MEK inhibitors
+40	BRAF inhibitors in BRAF mutant tumor
+41	BRAF inhibitors in BRAF mutant tumors
+42	cabozantinib
+43	CDK2 inhibitors
+44	CDK2/4 inhibitors
+45	CDK4/6 inhibitors
+46	ceritinib
+47	cetuximab
+48	cetuximab plus sirolimus
+49	cisplatin
+50	crenolanib
+51	crizotinib
+52	dabrafenib
+53	dabrafenib + trametinib
+54	dasatinib
+55	dasatinib + erlotinib
+56	daunorubicin
+57	DNA-PK inhibitors
+58	DOT1L inhibitors
+59	dovitinib
+60	EGFR TKIs
+61	EGFR TKIs + MEK inhibitors
+62	enzalutamide
+63	EPHA3 inhibitors
+64	ERBB2 TKIs
+65	ERK inhibitors
+66	erlotinib
+67	everolimus
+68	EZH2 inhibitor
+69	FAK inhibitors
+70	FGFR inhibitors
+71	FLT3 inhibitors
+72	flutamide
+73	Gamma secretase inhibitors
+74	Gamma secretase inhibitors + CDK4 inhibitors
+75	Gamma secretase inhibitors + mTOR inhibitors
+76	gefitinib
+77	gemcitabine + MEK inhibitors
+78	HDAC inhibitors
+79	HSP90 inhibitors
+80	ibrutinib
+81	IDH inhibitors
+82	IGF1R inhibitors
+83	imatinib
+84	irinotecan plus CHK1/2 inhibitor in ATM deficient tumor
+85	irreversible EGFR TKIs
+86	JAK inhibitors
+87	lapatinib
+88	lestaurtinib
+89	liposomal doxorubicin
+90	MDM2 inhibitors
+91	MEK inhibitors
+92	MEK inhibitors + BCL-XL inhibitors
+93	MEK inhibitors + CDK4/6 inhibitors
+94	MEK inhibitors + docetaxel in KRAS mutant
+95	MEK inhibitors + IGF1R inhibitors
+96	MEK inhibitors + PI3K pathway inhibitors
+97	MEK inhibitors +/- mTOR inhibitors
+98	MEK inhibitors +/- PI3K pathway inhibitors
+99	MET inhibitors
+100	midostaurin
+101	Mitomycin C
+102	mTOR inhibitors
+103	mTOR inhibitors + BH3 mimetics
+104	mTOR inhibitors + HSP90 inhibitors
+105	neratinib
+106	neratinib + temsirolimus
+107	nilotinib
+108	PAK inhibitors
+109	panitumumab
+110	PARP inhibitors
+111	PARP inhibitors + chemotherapy
+112	pazopanib
+113	PDGFR inhibitors
+114	PDL1 inhibitors
+115	pertuzumab
+116	phenformin
+117	PI3K alpha inhibitors
+118	PI3K beta inhibitors
+119	PI3K pathway inhibitors
+120	PI3K pathway inhibitors + AR antagonists
+121	PI3K pathway inhibitors + MEK inhibitor
+122	PI3K pathway inhibitors + MEK inhibitors
+123	PKC inhibitor
+124	PKC412
+125	platinum agents
+126	ponatinib
+127	proteosome inhibitors
+128	quizartinib
+129	rapamycin
+130	regorafenib
+131	RET inhibitors
+132	ruxolitinib
+133	selumetinib
+134	sirolimus
+135	sorafenib
+136	sorafenib + azacytidine
+137	SRC inhibitors
+138	steroids
+139	sunitinib
+140	SYK inhibitors
+141	tankyrase inhibitors
+142	temozolomide
+143	trametinib
+144	trastuzumab
+145	trastuzumab + everolimus + chemotherapy
+146	trastuzumab + HSP90 inhibitors
+147	trastuzumab + PI3K pathway inhibitors
+148	TRK inhibitors
+149	vandetanib
+150	VEGFR inhibitors
+151	vemurafenib
+152	vismodegib
+153	wee1 inhibitors
+256	encorafenib + cetuximab
+257	vemurafenib + panitumumab
+258	vemurafenib + cetuximab
+259	E6201
+260	binimetinib
+261	LEE011
+262	binimetinib + LEE011
+263	cobemetinib
+264	AEB071
+265	BYL719
+266	AEB071 + BYL719
+267	alectinib
+268	TAE684
+269	AMG-337
