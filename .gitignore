@@ -1,6 +1,7 @@
 # Created by https://www.gitignore.io
 
 ### Project specific:
+conf/conf.json
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
