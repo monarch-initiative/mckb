@@ -2,6 +2,8 @@
 from mckb.sources.G2P import G2P
 import argparse
 import logging
+import getpass
+import sys
 
 
 def main():
@@ -21,6 +23,14 @@ def main():
 
     args = parser.parse_args()
 
+    # Parse test source
+    if args.password is None:
+        if sys.stdin.isatty():
+            args.password = getpass.getpass(prompt="Enter your password: ",
+                                            stream=None)
+        else:
+            args.password = input("Enter your password: ")
+    logger.debug("Converting test database to triples")
     test_source = G2P(args.database, args.user, args.password, args.host)
     test_source.parse()
     test_source.disconnect_from_database()

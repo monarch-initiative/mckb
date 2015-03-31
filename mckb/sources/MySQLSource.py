@@ -10,8 +10,8 @@ class MySQLSource(Source):
     Abstract class for interacting with remote or local MySQL databases
     """
 
-    def __init__(self, data_source, database, username, password=None, host=None):
-        super().__init__(data_source)
+    def __init__(self, source_name, database, username, password=None, host=None):
+        super().__init__(source_name)
         self.database = database
         self.username = username
         self.password = password

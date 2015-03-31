@@ -5,7 +5,6 @@ import gzip
 import logging
 import os
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,6 +44,14 @@ class G2P(MySQLSource):
     def load_data_from_dump_file(self, file):
         """
         Assumes dump file is gzipped
+        Note: Here we load the database via a system command as
+        cursor.execute(source file.sql) does not work and there is
+        no robust way to parse and send the entire sql file via
+        the execute function.
+
+        If security might be an issue, it is probably best to
+        pre-load the database before running to avoid having the
+        password displayed from the command line
         :param file:
         :return: None
         """
