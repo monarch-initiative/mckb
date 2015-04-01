@@ -35,13 +35,47 @@ class G2P(MySQLSource):
             file = '/'.join((self.rawdir,
                                   self.static_files['test_data']['file']))
             logger.debug("Loading data into database from file {0}".format(file))
-            self.load_data_from_dump_file(file)
+            self._load_data_from_dump_file(file)
         else:
             logger.debug("Database contains tables, "
                          "skipping load from dump file")
+
+        print(self._get_disease_drug_genotype_relationship())
         return
 
-    def load_data_from_dump_file(self, file):
+    def _get_disease_drug_genotype_relationship(self):
+        """
+        Query database to get disease-drug-genotype associations
+        :return: tuple of query results
+        """
+
+        sql = """
+            SELECT distinct
+              diagnoses.id as diagnoses_id,
+              diagnoses.description as diagnoses,
+              specific_diagnosis.id as specific_diagnosis_id,
+              specific_diagnosis.description as specific_diagnosis,
+              organs.id as organ_id,
+              organs.description as organ,
+              ta.id as relationship_id,
+              ta.description as relationship,
+              tc.id as drug_id,
+              tc.description as drug,
+              tg.id as genotype_id,
+              tg.comment as genotype_label
+            FROM therapy_genotype tg
+            JOIN diagnoses on tg.diagnosis = diagnoses.id
+            LEFT OUTER JOIN specific_diagnosis on tg.specific_diagnosis = specific_diagnosis.id
+            JOIN organs on tg.organ = organs.id
+            JOIN therapeutic_association as ta on tg.therapeutic_association = ta.id
+            JOIN therapeutic_context tc
+            ON tg.therapeutic_context = tc.id;
+        """
+        self.cursor.execute(sql)
+        results = self.cursor.fetchall()
+        return results
+
+    def _load_data_from_dump_file(self, file):
         """
         Assumes dump file is gzipped
         Note: Here we load the database via a system command as
