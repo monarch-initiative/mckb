@@ -65,17 +65,82 @@ class G2P(MySQLSource):
               tc.description as drug,
               tgp.pub_med_id as pubmed_id
             FROM therapy_genotype tg
-            JOIN diagnoses ON tg.diagnosis = diagnoses.id
-            LEFT OUTER JOIN specific_diagnosis
-            ON tg.specific_diagnosis = specific_diagnosis.id
-            LEFT OUTER JOIN therapy_genotype_publication as tgp
-            ON tg.id = tgp.therapy_genotype
-            LEFT OUTER JOIN organs
-            ON tg.organ = organs.id
+            JOIN diagnoses
+            ON tg.diagnosis = diagnoses.id
+
             JOIN therapeutic_association as ta
             ON tg.therapeutic_association = ta.id
+
             JOIN therapeutic_context tc
-            ON tg.therapeutic_context = tc.id;
+            ON tg.therapeutic_context = tc.id
+
+            LEFT OUTER JOIN specific_diagnosis
+            ON tg.specific_diagnosis = specific_diagnosis.id
+
+            LEFT OUTER JOIN therapy_genotype_publication as tgp
+            ON tg.id = tgp.therapy_genotype
+
+            LEFT OUTER JOIN organs
+            ON tg.organ = organs.id;
+        """
+        self.cursor.execute(sql)
+        results = self.cursor.fetchall()
+        return results
+
+    def _get_genotype_info(self):
+        """
+        STATUS: incomplete
+        Query database to therapy genotypes that have been mapped to
+        a protein variant (rather than a cdna variant)
+        :return: tuple of query results
+        """
+
+        sql = """
+            SELECT distinct
+              tg.id as therapy_genotype_id,
+              tv.id as therapy_variant_id,
+              tg.comment as genotype_label,
+              pv.genotype_amino_acid_onel as aa_var,
+              transcript.description as transcript_id,
+              transcript_priority.description as transcript_priority,
+              protein_variant_type.description as protein_variant_type,
+              functional_impact.description as functional_impact,
+              stop_gain_loss.description as stop_gain_loss,
+              gene.description as transcript_gene,
+              gf.description as gene_fusion,
+              cg.description as copy_gene,
+              pv.pub_med_ids as pubmed_ids
+
+            FROM therapy_genotype tg
+            JOIN therapy_variant tv
+            ON tg.id = tv.therapy_genotype
+
+            LEFT OUTER JOIN protein_variant pv
+            ON tv.protein_variant = pv.id
+
+            LEFT OUTER JOIN transcript
+            ON pv.transcript = transcript.id
+
+            LEFT OUTER JOIN transcript_priority
+            ON transcript.transcript_priority = transcript_priority.id
+
+            LEFT OUTER JOIN protein_variant_type
+            ON pv.protein_variant_type = protein_variant_type.id
+
+            LEFT OUTER JOIN functional_impact
+            ON pv.functional_impact = functional_impact.id
+
+            LEFT OUTER JOIN stop_gain_loss
+            ON pv.stop_gain_loss = stop_gain_loss.id
+
+            LEFT OUTER JOIN gene gf
+            ON tv.gene_fusion = gf.id
+
+            LEFT OUTER JOIN gene cg
+            ON tv.copy_gene = cg.id
+
+            LEFT OUTER JOIN gene
+            ON transcript.gene = gene.id;
         """
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
