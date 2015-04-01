@@ -51,6 +51,8 @@ class G2P(MySQLSource):
 
         sql = """
             SELECT distinct
+              tg.id as genotype_id,
+              tg.comment as genotype_label,
               diagnoses.id as diagnoses_id,
               diagnoses.description as diagnoses,
               specific_diagnosis.id as specific_diagnosis_id,
@@ -61,13 +63,17 @@ class G2P(MySQLSource):
               ta.description as relationship,
               tc.id as drug_id,
               tc.description as drug,
-              tg.id as genotype_id,
-              tg.comment as genotype_label
+              tgp.pub_med_id as pubmed_id
             FROM therapy_genotype tg
-            JOIN diagnoses on tg.diagnosis = diagnoses.id
-            LEFT OUTER JOIN specific_diagnosis on tg.specific_diagnosis = specific_diagnosis.id
-            JOIN organs on tg.organ = organs.id
-            JOIN therapeutic_association as ta on tg.therapeutic_association = ta.id
+            JOIN diagnoses ON tg.diagnosis = diagnoses.id
+            LEFT OUTER JOIN specific_diagnosis
+            ON tg.specific_diagnosis = specific_diagnosis.id
+            LEFT OUTER JOIN therapy_genotype_publication as tgp
+            ON tg.id = tgp.therapy_genotype
+            LEFT OUTER JOIN organs
+            ON tg.organ = organs.id
+            JOIN therapeutic_association as ta
+            ON tg.therapeutic_association = ta.id
             JOIN therapeutic_context tc
             ON tg.therapeutic_context = tc.id;
         """
