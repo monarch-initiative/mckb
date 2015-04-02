@@ -89,9 +89,8 @@ class G2P(MySQLSource):
 
     def _get_genotype_protein_info(self):
         """
-        STATUS: incomplete
-        Query database to therapy genotypes that have been mapped to
-        a protein variant (rather than a cdna variant)
+        Select out genotypes that have protein variant information but no
+        cdna variant information
         :return: tuple of query results
         """
 
@@ -115,6 +114,9 @@ class G2P(MySQLSource):
             JOIN protein_variant pv
             ON tv.protein_variant = pv.id
 
+            LEFT OUTER JOIN cdna_variant cdna
+            ON pv.id = cdna.protein_variant
+
             LEFT OUTER JOIN transcript
             ON pv.transcript = transcript.id
 
@@ -131,7 +133,9 @@ class G2P(MySQLSource):
             ON pv.stop_gain_loss = stop_gain_loss.id
 
             LEFT OUTER JOIN gene trg
-            ON transcript.gene = trg.id;
+            ON transcript.gene = trg.id
+
+            WHERE cdna.protein_variant IS NULL;
         """
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
@@ -139,7 +143,6 @@ class G2P(MySQLSource):
 
     def _get_genotype_cdna_info(self):
         """
-        STATUS: incomplete
         Query database to therapy genotypes that have been mapped to
         a cdna variant
         :return: tuple of query results
@@ -148,7 +151,8 @@ class G2P(MySQLSource):
         sql = """
             SELECT distinct
               tg.id as therapy_genotype_id,
-              tg.comment as genotype_label
+              tg.comment as genotype_label,
+              pv.pub_med_ids as pubmed_ids
 
             FROM therapy_genotype tg
             JOIN therapy_variant tv
@@ -164,11 +168,11 @@ class G2P(MySQLSource):
         results = self.cursor.fetchall()
         return results
 
-    def _get_fusion_copy_any_mutations(self):
+    def _get_fusion_copy_any_mutation_genotypes(self):
         """
-        STATUS: incomplete
-        Query database to therapy genotypes that have been mapped to
-        a protein variant (rather than a cdna variant)
+        Get genotypes with a gene mapping but no protein variant mapping
+        Typically, this will capture fusion genes and copy/gain loss
+        along with mutations labelled "any" (any mutation of gene X)
         :return: tuple of query results
         """
 
@@ -184,7 +188,7 @@ class G2P(MySQLSource):
             JOIN therapy_variant tv
             ON tg.id = tv.therapy_genotype
 
-            LEFT OUTER JOIN gene
+            JOIN gene
             ON tv.gene = gene.id
 
             LEFT OUTER JOIN gene gf
@@ -193,17 +197,20 @@ class G2P(MySQLSource):
             LEFT OUTER JOIN gene cg
             ON tv.copy_gene = cg.id
 
-            WHERE gene.description IS NOT NULL;
+            WHERE tv.protein_variant IS NULL;
         """
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
         return results
 
-    def _get_genotypes_with_no_protein_cdna_mapping(self):
+    def _get_genotypes_with_no_gene_protein_cdna_mapping(self):
         """
-        STATUS: incomplete
-        Query database to therapy genotypes that have been mapped to
-        a protein variant (rather than a cdna variant)
+        Get genotypes with no protein_variant mapping or gene
+        mapping.  This will capture rearrangement fusion genes,
+        missense mutations where there are multiple mutations or
+        the specific mutation is unknown, amplification copy number genes,
+        and indels
+
         :return: tuple of query results
         """
 
@@ -213,9 +220,12 @@ class G2P(MySQLSource):
               tg.comment as genotype_label,
               tv.amino_acid_start,
               tv.amino_acid_end,
+              variant_type.description,
               transcript.description as transcript_id,
               protein_variant_type.description as protein_variant_type,
-              gene.description as gene_fusion
+              gene.description as gene_fusion,
+              g.description as copy_gene,
+              cns.description as copy_number_result
 
 
             FROM therapy_genotype tg
@@ -228,8 +238,17 @@ class G2P(MySQLSource):
             LEFT OUTER JOIN protein_variant_type
             ON tv.protein_variant_type = protein_variant_type.id
 
+            LEFT OUTER JOIN variant_type
+            ON tv.variant_type_aa_coords = variant_type.id
+
             LEFT OUTER JOIN gene
             ON tv.gene_fusion = gene.id
+
+            LEFT OUTER JOIN gene g
+            ON tv.copy_gene = g.id
+
+            LEFT OUTER JOIN copy_number_result cns
+            ON tv.copy_number_result = cns.id
 
             WHERE tv.protein_variant IS NULL
             AND tv.gene IS NULL;
