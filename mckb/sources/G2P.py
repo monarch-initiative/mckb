@@ -63,6 +63,7 @@ class G2P(MySQLSource):
               ta.description as relationship,
               tc.id as drug_id,
               tc.description as drug,
+              therapy_status.description as therapy_status,
               tgp.pub_med_id as pubmed_id
             FROM therapy_genotype tg
             JOIN diagnoses
@@ -73,6 +74,9 @@ class G2P(MySQLSource):
 
             JOIN therapeutic_context tc
             ON tg.therapeutic_context = tc.id
+
+            LEFT OUTER JOIN therapy_status
+            ON tg.therapy_status = therapy_status.id
 
             LEFT OUTER JOIN specific_diagnosis
             ON tg.specific_diagnosis = specific_diagnosis.id
