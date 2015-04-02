@@ -87,7 +87,7 @@ class G2P(MySQLSource):
         results = self.cursor.fetchall()
         return results
 
-    def _get_genotype_info(self):
+    def _get_genotype_protein_info(self):
         """
         STATUS: incomplete
         Query database to therapy genotypes that have been mapped to
@@ -98,7 +98,6 @@ class G2P(MySQLSource):
         sql = """
             SELECT distinct
               tg.id as therapy_genotype_id,
-              tv.id as therapy_variant_id,
               tg.comment as genotype_label,
               pv.genotype_amino_acid_onel as aa_var,
               transcript.description as transcript_id,
@@ -106,16 +105,14 @@ class G2P(MySQLSource):
               protein_variant_type.description as protein_variant_type,
               functional_impact.description as functional_impact,
               stop_gain_loss.description as stop_gain_loss,
-              gene.description as transcript_gene,
-              gf.description as gene_fusion,
-              cg.description as copy_gene,
+              trg.description as transcript_gene,
               pv.pub_med_ids as pubmed_ids
 
             FROM therapy_genotype tg
             JOIN therapy_variant tv
             ON tg.id = tv.therapy_genotype
 
-            LEFT OUTER JOIN protein_variant pv
+            JOIN protein_variant pv
             ON tv.protein_variant = pv.id
 
             LEFT OUTER JOIN transcript
@@ -133,14 +130,94 @@ class G2P(MySQLSource):
             LEFT OUTER JOIN stop_gain_loss
             ON pv.stop_gain_loss = stop_gain_loss.id
 
+            LEFT OUTER JOIN gene trg
+            ON transcript.gene = trg.id;
+        """
+        self.cursor.execute(sql)
+        results = self.cursor.fetchall()
+        return results
+
+    def _get_genotype_cdna_info(self):
+        """
+        STATUS: incomplete
+        Query database to therapy genotypes that have been mapped to
+        a cdna variant
+        :return: tuple of query results
+        """
+
+        sql = """
+            SELECT distinct
+              tg.id as therapy_genotype_id,
+              tg.comment as genotype_label
+
+            FROM therapy_genotype tg
+            JOIN therapy_variant tv
+            ON tg.id = tv.therapy_genotype
+
+            JOIN protein_variant pv
+            ON tv.protein_variant = pv.id
+
+            JOIN cdna_variant cdna
+            ON pv.id = cdna.protein_variant;
+        """
+        self.cursor.execute(sql)
+        results = self.cursor.fetchall()
+        return results
+
+    def _get_fusion_copy_any_mutations(self):
+        """
+        STATUS: incomplete
+        Query database to therapy genotypes that have been mapped to
+        a protein variant (rather than a cdna variant)
+        :return: tuple of query results
+        """
+
+        sql = """
+            SELECT distinct
+              tg.id as therapy_genotype_id,
+              tg.comment as genotype_label,
+              gene.description as ref_gene_for_fusion_or_copy,
+              gf.description as gene_fusion,
+              cg.description as copy_gene
+
+            FROM therapy_genotype tg
+            JOIN therapy_variant tv
+            ON tg.id = tv.therapy_genotype
+
+            LEFT OUTER JOIN gene
+            ON tv.gene = gene.id
+
             LEFT OUTER JOIN gene gf
             ON tv.gene_fusion = gf.id
 
             LEFT OUTER JOIN gene cg
             ON tv.copy_gene = cg.id
 
-            LEFT OUTER JOIN gene
-            ON transcript.gene = gene.id;
+            WHERE gene.description IS NOT NULL;
+        """
+        self.cursor.execute(sql)
+        results = self.cursor.fetchall()
+        return results
+
+    def _get_genotypes_with_no_variant_mapping(self):
+        """
+        STATUS: incomplete
+        Query database to therapy genotypes that have been mapped to
+        a protein variant (rather than a cdna variant)
+        :return: tuple of query results
+        """
+
+        sql = """
+            SELECT distinct
+              tg.id as therapy_genotype_id,
+              tg.comment as genotype_label
+
+            FROM therapy_genotype tg
+            JOIN therapy_variant tv
+            ON tg.id = tv.therapy_genotype
+
+            WHERE tv.protein_variant IS NULL
+            AND tv.gene IS NULL;
         """
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
