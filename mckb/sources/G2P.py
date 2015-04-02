@@ -199,7 +199,7 @@ class G2P(MySQLSource):
         results = self.cursor.fetchall()
         return results
 
-    def _get_genotypes_with_no_variant_mapping(self):
+    def _get_genotypes_with_no_protein_cdna_mapping(self):
         """
         STATUS: incomplete
         Query database to therapy genotypes that have been mapped to
@@ -210,11 +210,26 @@ class G2P(MySQLSource):
         sql = """
             SELECT distinct
               tg.id as therapy_genotype_id,
-              tg.comment as genotype_label
+              tg.comment as genotype_label,
+              tv.amino_acid_start,
+              tv.amino_acid_end,
+              transcript.description as transcript_id,
+              protein_variant_type.description as protein_variant_type,
+              gene.description as gene_fusion
+
 
             FROM therapy_genotype tg
             JOIN therapy_variant tv
             ON tg.id = tv.therapy_genotype
+
+            LEFT OUTER JOIN transcript
+            ON tv.transcript = transcript.id
+
+            LEFT OUTER JOIN protein_variant_type
+            ON tv.protein_variant_type = protein_variant_type.id
+
+            LEFT OUTER JOIN gene
+            ON tv.gene_fusion = gene.id
 
             WHERE tv.protein_variant IS NULL
             AND tv.gene IS NULL;
