@@ -2,7 +2,7 @@ from mckb.sources.MySQLSource import MySQLSource
 from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
-from dipper.models.Assoc import Assoc
+from dipper.models.InteractionAssoc import InteractionAssoc
 from dipper import curie_map
 import tempfile
 import gzip
@@ -56,19 +56,21 @@ class G2P(MySQLSource):
         :return: None
         """
         gu = GraphUtils(curie_map.get())
-        assoc = Assoc()
         geno = Genotype(self.graph)
+
         for row in table:
             (genotype_key, genotype_label, diagnoses_key, diagnoses,
              specific_diagnosis_id, specific_diagnosis, organ, relationship,
              drug_key, drug, therapy_status, pubmed_id) = row
 
+            # Arbitrary IDs to be replaced by ontology mappings
             population_id = self.make_id('g2p{0}{1}'.format(genotype_key,
                                                             genotype_label))
-            genotype_id = self.make_id('g2p{0}'.format(genotype_key))
-            phenotype_id = self.make_id('g2p{0}'.format(diagnoses_key))
+            genotype_id = self.make_id('g2p-genotype{0}'.format(genotype_key))
+            phenotype_id = self.make_id('g2p-phenotype{0}'.format(diagnoses_key))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
-            drug_id = self.make_id('g2p{0}'.format(drug_key))
+            drug_id = self.make_id('g2p-drug{0}'.format(drug_key))
+
             # Add individuals/classes
             gu.addIndividualToGraph(self.graph, population_id,
                                     geno.genoparts['population'])
@@ -79,10 +81,35 @@ class G2P(MySQLSource):
             gu.addTriple(self.graph, population_id,
                          geno.properties['has_genotype'], genotype_id)
             gu.addTriple(self.graph, population_id,
-                         assoc.properties['has_phenotype'], phenotype_id)
+                         geno.properties['has_phenotype'], phenotype_id)
             gu.addTriple(self.graph, population_id, relationship_id, drug_id)
 
+            # Add 1 association per above triple,
+            # see https://github.com/monarch-initiative/mckb/issues/1
+            # refactor using generic associations,
+            # see https://github.com/monarch-initiative/dipper/issues/96
+            if pubmed_id is not None:
+                source_id = "PMID:{0}".format(pubmed_id)
+                evidence = 'ECO:0000033'
 
+                genotype_annot = self.make_id("{0}{1}".format(population_id, genotype_label))
+                phenotype_annot = self.make_id("{0}{1}".format(population_id, diagnoses))
+                drug_annot = self.make_id("{0}{1}".format(population_id, drug))
+
+                genotype_assoc = InteractionAssoc(genotype_annot, population_id,
+                                                  genotype_id, source_id, evidence)
+                phenotype_assoc = InteractionAssoc(phenotype_annot, population_id,
+                                                   phenotype_id, source_id, evidence)
+                drug_assoc = InteractionAssoc(drug_annot, population_id,
+                                              drug_id, source_id, evidence)
+
+                genotype_assoc.rel = geno.properties['has_genotype'];
+                phenotype_assoc.rel = geno.properties['has_phenotype'];
+                drug_assoc.rel = relationship_id
+
+                genotype_assoc.addAssociationToGraph(self.graph)
+                phenotype_assoc.addAssociationToGraph(self.graph)
+                drug_assoc.addAssociationToGraph(self.graph)
 
         return
 
