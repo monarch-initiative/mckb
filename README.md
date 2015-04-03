@@ -1,4 +1,4 @@
-# mckb
+# Monarch Cancer Knowledge Base
 
 
 * Required python packages:

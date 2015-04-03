@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from mckb.sources.G2P import G2P
+from mckb.sources.CGD import CGD
 import argparse
 import logging
 import getpass
@@ -43,10 +43,10 @@ def main():
 
     # Parse test source
     logger.debug("Converting test database to triples")
-    test_source = G2P(args.database, args.user, args.password, args.host)
-    test_source.parse()
-    test_source.write(format='turtle')
-    test_source.disconnect_from_database()
+    cgd = CGD(args.database, args.user, args.password, args.host)
+    cgd.parse()
+    cgd.write(format='turtle')
+    cgd.disconnect_from_database()
     return
 
 if __name__ == "__main__":

@@ -4,6 +4,9 @@
 conf/conf.json
 raw
 out
+tests/raw
+tests/out
+tests/conf/conf.json
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

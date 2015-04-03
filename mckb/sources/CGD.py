@@ -12,7 +12,7 @@ import os
 logger = logging.getLogger(__name__)
 
 
-class G2P(MySQLSource):
+class CGD(MySQLSource):
     """
     Test data source for cancer knowledge base
     """
@@ -21,8 +21,8 @@ class G2P(MySQLSource):
     }
 
     def __init__(self, database, username, password, host=None):
-        super().__init__('g2p', database, username, password, host)
-        self.dataset = Dataset('g2p', 'G2P', 'http://ga4gh.org')
+        super().__init__('cgd', database, username, password, host)
+        self.dataset = Dataset('cgd', 'cgd', 'http://ga4gh.org')
         self.rawdir = 'resources'
 
     def parse(self):
@@ -64,12 +64,12 @@ class G2P(MySQLSource):
              drug_key, drug, therapy_status, pubmed_id) = row
 
             # Arbitrary IDs to be replaced by ontology mappings
-            population_id = self.make_id('g2p{0}{1}'.format(genotype_key,
+            population_id = self.make_id('cgd{0}{1}'.format(genotype_key,
                                                             genotype_label))
-            genotype_id = self.make_id('g2p-genotype{0}'.format(genotype_key))
-            phenotype_id = self.make_id('g2p-phenotype{0}'.format(diagnoses_key))
+            genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+            phenotype_id = self.make_id('cgd-phenotype{0}'.format(diagnoses_key))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
-            drug_id = self.make_id('g2p-drug{0}'.format(drug_key))
+            drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
 
             # Add individuals/classes
             gu.addIndividualToGraph(self.graph, population_id,
