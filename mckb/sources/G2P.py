@@ -1,5 +1,9 @@
 from mckb.sources.MySQLSource import MySQLSource
 from dipper.models.Dataset import Dataset
+from dipper.utils.GraphUtils import GraphUtils
+from dipper.models.Genotype import Genotype
+from dipper.models.Assoc import Assoc
+from dipper import curie_map
 import tempfile
 import gzip
 import logging
@@ -40,7 +44,46 @@ class G2P(MySQLSource):
             logger.debug("Database contains tables, "
                          "skipping load from dump file")
 
-        print(self._get_disease_drug_genotype_relationship())
+        disease_drug_geno_list = self._get_disease_drug_genotype_relationship()
+        self._add_disease_drug_genotype_to_graph(disease_drug_geno_list)
+        self.load_bindings()
+        return
+
+    def _add_disease_drug_genotype_to_graph(self, table):
+        """
+        :param table: tuple, list of results from
+                             _get_disease_drug_genotype_relationship
+        :return: None
+        """
+        gu = GraphUtils(curie_map.get())
+        assoc = Assoc()
+        geno = Genotype(self.graph)
+        for row in table:
+            (genotype_key, genotype_label, diagnoses_key, diagnoses,
+             specific_diagnosis_id, specific_diagnosis, organ, relationship,
+             drug_key, drug, therapy_status, pubmed_id) = row
+
+            population_id = self.make_id('g2p{0}{1}'.format(genotype_key,
+                                                            genotype_label))
+            genotype_id = self.make_id('g2p{0}'.format(genotype_key))
+            phenotype_id = self.make_id('g2p{0}'.format(diagnoses_key))
+            relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
+            drug_id = self.make_id('g2p{0}'.format(drug_key))
+            # Add individuals/classes
+            gu.addIndividualToGraph(self.graph, population_id,
+                                    geno.genoparts['population'])
+            gu.addClassToGraph(self.graph, phenotype_id, diagnoses)
+            gu.addClassToGraph(self.graph, drug_id, drug)
+
+            # Add triples
+            gu.addTriple(self.graph, population_id,
+                         geno.properties['has_genotype'], genotype_id)
+            gu.addTriple(self.graph, population_id,
+                         assoc.properties['has_phenotype'], phenotype_id)
+            gu.addTriple(self.graph, population_id, relationship_id, drug_id)
+
+
+
         return
 
     def _get_disease_drug_genotype_relationship(self):
@@ -57,9 +100,7 @@ class G2P(MySQLSource):
               diagnoses.description as diagnoses,
               specific_diagnosis.id as specific_diagnosis_id,
               specific_diagnosis.description as specific_diagnosis,
-              organs.id as organ_id,
               organs.description as organ,
-              ta.id as relationship_id,
               ta.description as relationship,
               tc.id as drug_id,
               tc.description as drug,

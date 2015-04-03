@@ -2,6 +2,8 @@
 
 ### Project specific:
 conf/conf.json
+raw
+out
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

@@ -45,6 +45,7 @@ def main():
     logger.debug("Converting test database to triples")
     test_source = G2P(args.database, args.user, args.password, args.host)
     test_source.parse()
+    test_source.write(format='turtle')
     test_source.disconnect_from_database()
     return
 
