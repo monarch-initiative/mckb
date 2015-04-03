@@ -20,10 +20,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         if os.path.exists(os.path.join(os.path.dirname(__file__), 'conf/conf.json')):
             credentials = json.load(open(os.path.join(os.path.dirname(__file__),
                                          'conf/conf.json'), 'r'))
-            host = credentials['dbauth']['g2p']['host']
-            database = credentials['dbauth']['g2p']['database']
-            user = credentials['dbauth']['g2p']['user']
-            password = credentials['dbauth']['g2p']['password']
+            host = credentials['dbauth']['cgd']['host']
+            database = credentials['dbauth']['cgd']['database']
+            user = credentials['dbauth']['cgd']['user']
+            password = credentials['dbauth']['cgd']['password']
 
         self.cgd = CGD(database, user, password, host)
         self.cgd.graph = Graph()

@@ -1,6 +1,6 @@
 {
   "dbauth" : {
-      "g2p": {
+      "cgd": {
           "database": "mydb",
           "user": "username",
           "password": "pass",

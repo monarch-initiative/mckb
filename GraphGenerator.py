@@ -29,10 +29,10 @@ def main():
     # We need to refactor the Dipper config.py so it is reusable here
     if args.config is not None:
         credentials = json.load(open(args.config, 'r'))
-        args.host = credentials['dbauth']['g2p']['host']
-        args.database = credentials['dbauth']['g2p']['database']
-        args.user = credentials['dbauth']['g2p']['user']
-        args.password = credentials['dbauth']['g2p']['password']
+        args.host = credentials['dbauth']['cgd']['host']
+        args.database = credentials['dbauth']['cgd']['database']
+        args.user = credentials['dbauth']['cgd']['user']
+        args.password = credentials['dbauth']['cgd']['password']
 
     if args.password is None:
         if sys.stdin.isatty():
