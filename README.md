@@ -9,7 +9,7 @@
 2. Create a configuration file in the conf directory using the example_conf.json as a template
 3. Run:
 
-    ./GraphGenerator.py --config conf/conf.json
+        ./GraphGenerator.py --config conf/conf.json
 
 4. This will create a directory called out in your working directory containing the output turtle files
     
