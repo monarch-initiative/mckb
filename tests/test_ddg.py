@@ -83,9 +83,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         Testing Note: Testing associations (assoc a Annotation) will
         occur elsewhere, but could also be grouped into this
-        test if needed.  We test if a source is a named individual
-        in test_associations() as adding here returns two result sets
-        given the genotype/source as a named individual ambiguity
+        test if needed.
         """
         from dipper.utils.TestUtils import TestUtils
 
