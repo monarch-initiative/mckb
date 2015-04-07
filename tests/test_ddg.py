@@ -82,11 +82,13 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         Given the above sample input, produce the following:
         A Monarch:ID representing a population is an individual of type OBO:GENO_0000110
         A pubmed source is a named individual
-        A Monarch:ID representing a disease is an OWL Class rdfs:label "some_label"
-        A Monarch:ID representing a drug is an OWL Class rdfs:label "some_label"
-        A Monarch:ID representing a relation is an object property
-        A Monarch:ID representing a genotype is an ind OBO:GENO_0000000
-        A Monarch:ID representing a genotype rdfs:label "some_label"
+        A Monarch:DiseaseID is an OWL Class
+        A Monarch:Disease rdfs:label "some_label"
+        A Monarch:DrugID is an OWL Class
+        A Monarch:DrugID rdfs:label "some_label"
+        A Monarch:RelationID is an object property
+        A Monarch:GenotypeID is an individual OBO:GENO_0000000
+        A Monarch:GenotypeID rdfs:label "some_label"
 
         Note: Testing associations (assoc a Annotation) will
         occur elsewhere, but could also be grouped into this
@@ -156,7 +158,15 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_associations(self):
         """
         Given the above sample input, produce the following:
+        A Monarch:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
+        A Monarch:AssociationID dc:source PMID:20498393
+        A Monarch:AssociationID :hasSubject Monarch:PublicationID
+        A Monarch:AssociationID :hasPredicate Genotype (GENO:0000222)
+        A Monarch:AssociationID :hasObject Monarch:GenotypeID
 
+        A two additional associations with the same evidence and source
+        with hasSubject, hasPredicate, hasObject links documented in
+        test_population_triples
         """
         from dipper.utils.TestUtils import TestUtils
 
