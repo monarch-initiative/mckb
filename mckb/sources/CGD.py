@@ -8,6 +8,7 @@ import tempfile
 import gzip
 import logging
 import os
+import csv
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ class CGD(MySQLSource):
         super().__init__('cgd', database, username, password, host)
         self.dataset = Dataset('cgd', 'cgd', 'http://ga4gh.org')
         self.rawdir = 'resources'
+        self.gene_map = {}
 
     def parse(self):
         """
@@ -43,18 +45,26 @@ class CGD(MySQLSource):
             logger.debug("Database contains tables, "
                          "skipping load from dump file")
 
+        mapping_file = '../../resources/mappings/gene.tsv'
+        self.gene_map = self.set_gene_map(mapping_file)
+
         disease_drug_geno_list = self._get_disease_drug_genotype_relationship(cursor)
         self.add_disease_drug_genotype_to_graph(disease_drug_geno_list)
+        genotype_protein_assocs = self. _get_genotype_protein_info(cursor)
+        self.add_genotype_info_to_graph(genotype_protein_assocs)
+        genotype_cdna_assocs = self._get_genotype_cdna_info(cursor)
+        self.add_genotype_info_to_graph(genotype_cdna_assocs)
+
         self.load_bindings()
         self._disconnect_from_database(cursor, connection)
         return
 
     def add_genotype_info_to_graph(self, table):
         """
-        Takes an interable or iterables as input with one of two structures,
+        Takes an iterable or iterables as input with one of two structures,
         Structure 1: Only protein variant information
         optional indices can be null:
-        [[genotype_id, genotype_label, amino_acid_variant,
+        [[genotype_key, genotype_label, amino_acid_variant,
           amino_acid_position (optional), transcript_id, transcript_priority,
           protein_variant_type (optional), functional_impact,
           stop_gain_loss (optional), transcript_gene,
@@ -62,7 +72,7 @@ class CGD(MySQLSource):
 
         Structure 2: Protein and cDNA information
         optional indices can be null:
-        [[genotype_id, genotype_label, amino_acid_variant,
+        [[genotype_key genotype_label, amino_acid_variant,
           amino_acid_position (optional), transcript_id, transcript_priority,
           protein_variant_type (optional), functional_impact,
           stop_gain_loss (optional), transcript_gene,
@@ -80,7 +90,7 @@ class CGD(MySQLSource):
 
         for row in table:
             self._add_genotype_protein_variant_assoc_to_graph(row)
-            if row[11] is not None:
+            if len(row) > 11:
                 self._add_genotype_cdna_variant_assoc_to_graph(row)
 
         return
@@ -93,6 +103,17 @@ class CGD(MySQLSource):
                                       docstring for expected structure
         :return None
         """
+        gu = GraphUtils(curie_map.get())
+        geno = Genotype(self.graph)
+
+        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+         transcript_id, transcript_priority, protein_variant_type,
+         functional_impact, stop_gain_loss, transcript_gene,
+         protein_variant_source) = row[0:11]
+
+        genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+
+
         return
 
     def _add_genotype_cdna_variant_assoc_to_graph(self, row):
@@ -104,6 +125,20 @@ class CGD(MySQLSource):
                                       Only applicable for structure 2.
         :return None
         """
+        gu = GraphUtils(curie_map.get())
+        geno = Genotype(self.graph)
+
+        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+         transcript_id, transcript_priority, protein_variant_type,
+         functional_impact, stop_gain_loss, transcript_gene,
+         protein_variant_source, variant_gene, bp_pos, genotype_cdna,
+         cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
+         variant_base, primary_transcript_exons,
+         primary_transcript_variant_sub_types, variant_type, chromosome,
+         genome_build, build_version, build_date) = row
+
+        genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+
         return
 
     def add_disease_drug_genotype_to_graph(self, table):
@@ -483,3 +518,18 @@ class CGD(MySQLSource):
                       self.username, self.database, f.name))
         return
 
+    def set_gene_map(self, mapping_file):
+        """
+        :param mapping_file: String, path to file containing gene label-id mappings
+        :return: dict where keys are gene labels and values are entrez ids
+        """
+        gene_id_map = {}
+        if os.path.exists(os.path.join(os.path.dirname(__file__), mapping_file)):
+            with open(os.path.join(os.path.dirname(__file__), mapping_file)) as tsvfile:
+                reader = csv.reader(tsvfile, delimiter="\t")
+                for row in reader:
+                    gene_label = row[1]
+                    gene_id = row[2]
+                    gene_id_map[gene_label] = gene_id
+
+        return gene_id_map
