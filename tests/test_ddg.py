@@ -75,18 +75,17 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         """
         Given the above sample input, produce the following:
         A Monarch:ID representing a population is an individual of type OBO:GENO_0000110
-        A pubmed source is a named individual
         A Monarch:DiseaseID is an OWL Class
         A Monarch:Disease rdfs:label "some_label"
         A Monarch:DrugID is an OWL Class
         A Monarch:DrugID rdfs:label "some_label"
         A Monarch:RelationID is an object property
-        A Monarch:GenotypeID is an individual OBO:GENO_0000000
-        A Monarch:GenotypeID rdfs:label "some_label"
 
-        Note: Testing associations (assoc a Annotation) will
+        Testing Note: Testing associations (assoc a Annotation) will
         occur elsewhere, but could also be grouped into this
-        test if needed
+        test if needed.  We test if a source is a named individual
+        in test_associations() as adding here returns two result sets
+        given the genotype/source as a named individual ambiguity
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -95,25 +94,22 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         self.cgd.load_bindings()
 
         sparql_query = """
-                       SELECT ?pop ?pubmed ?phenotype ?drug ?genotype
+                       SELECT ?pop ?phenotype ?drug ?source
                        WHERE {{
                            ?pop a OBO:GENO_0000110 .
-                           ?pubmed a owl:NamedIndividual .
                            ?phenotype a owl:Class ;
                                rdfs:label "{0}" .
                            ?drug a owl:Class ;
                                rdfs:label "{1}" .
                            <{2}> a owl:ObjectProperty .
-                           ?genotype a OBO:GENO_0000000 ;
-                               rdfs:label "{3}" .
+                           ?source a owl:NamedIndividual .
                        }}
                        """.format(self.disease_label, self.drug_label,
-                                  self.relationship_uri, self.genotype_label)
+                                  self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.population_uri, self.source_uri,
-                             self.phenotype_uri, self.drug_uri,
-                             self.genotype_uri]]
+        expected_results = [[self.population_uri, self.phenotype_uri,
+                             self.drug_uri, self.source_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -158,7 +154,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         A Monarch:AssociationID :hasPredicate Genotype (GENO:0000222)
         A Monarch:AssociationID :hasObject Monarch:GenotypeID
 
-        A two additional associations with the same evidence and source
+        And two additional associations with the same evidence and source
         with hasSubject, hasPredicate, hasObject links documented in
         test_population_triples
         """

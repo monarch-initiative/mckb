@@ -9,6 +9,7 @@ import gzip
 import logging
 import os
 import csv
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -48,12 +49,13 @@ class CGD(MySQLSource):
         mapping_file = '../../resources/mappings/gene.tsv'
         self.gene_map = self.set_gene_map(mapping_file)
 
-        disease_drug_geno_list = self._get_disease_drug_genotype_relationship(cursor)
-        self.add_disease_drug_genotype_to_graph(disease_drug_geno_list)
         genotype_protein_assocs = self. _get_genotype_protein_info(cursor)
         self.add_genotype_info_to_graph(genotype_protein_assocs)
         genotype_cdna_assocs = self._get_genotype_cdna_info(cursor)
         self.add_genotype_info_to_graph(genotype_cdna_assocs)
+
+        disease_drug_geno_list = self._get_disease_drug_genotype_relationship(cursor)
+        self.add_disease_drug_genotype_to_graph(disease_drug_geno_list)
 
         self.load_bindings()
         self._disconnect_from_database(cursor, connection)
@@ -113,6 +115,20 @@ class CGD(MySQLSource):
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
 
+        geno.addGenotype(genotype_id, genotype_label,
+                         geno.genoparts['sequence_alteration'])
+
+        if protein_variant_type == 'nonsynonymous - missense' \
+                or re.search(r'missense', genotype_label):
+            geno.addGenotype(genotype_id, genotype_label,
+                             geno.genoparts['missense_variant'])
+
+        # Get gene ID from gene map
+        gene_id = self.gene_map[transcript_gene]
+        gu.addClassToGraph(self.graph, gene_id, transcript_gene)
+        geno.addAlleleOfGene(genotype_id, gene_id)
+
+
 
         return
 
@@ -138,6 +154,7 @@ class CGD(MySQLSource):
          genome_build, build_version, build_date) = row
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+
 
         return
 
@@ -175,7 +192,6 @@ class CGD(MySQLSource):
             gu.addClassToGraph(self.graph, phenotype_id, diagnoses)
             gu.addClassToGraph(self.graph, drug_id, drug)
             gu.loadObjectProperties(self.graph, {relationship:relationship_id})
-            geno.addGenotype(genotype_id, genotype_label)
 
             # Add triples
             gu.addTriple(self.graph, population_id,
