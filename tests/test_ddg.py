@@ -3,8 +3,6 @@ from rdflib import Graph
 from mckb.sources.CGD import CGD
 from rdflib.namespace import URIRef
 from dipper.utils.CurieUtil import CurieUtil
-import json
-import os.path
 import unittest
 import logging
 
@@ -25,19 +23,18 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         self.curie_map = curie_map.get()
         cu = CurieUtil(self.curie_map)
         # Fake credentials as these tests do not require a database connection
-        host = 'localhost'
         database = 'foo'
         user = 'bar'
         password = 'baz'
 
-        self.cgd = CGD(database, user, password, host)
-        test_data = ((387, 'MLH1 any mutation', 13, 'Adenocarcinoma', None,
+        self.cgd = CGD(database, user, password)
+        test_data = ((387, 'MLH1 any mutation', 13, 'Adenocarcinoma',
                      None, 'Colon', 'detrimental effect', 1,
                      '5FU-based adjuvant therapy', 'late trials', '20498393'),)
         self.cgd.add_disease_drug_genotype_to_graph(test_data)
 
         (genotype_key, genotype_label, diagnoses_key, diagnoses,
-             specific_diagnosis_id, specific_diagnosis, organ, relationship,
+             specific_diagnosis, organ, relationship,
              drug_key, drug, therapy_status, pubmed_id) = test_data[0]
 
         source_id = "PMID:{0}".format(pubmed_id)

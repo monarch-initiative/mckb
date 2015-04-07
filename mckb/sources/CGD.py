@@ -17,7 +17,7 @@ class CGD(MySQLSource):
     Test data source for cancer knowledge base
     """
     static_files = {
-        'test_data': {'file': 'g2p.sql.gz'}
+        'cgd': {'file': 'g2p.sql.gz'}
     }
 
     def __init__(self, database, username, password, host=None):
@@ -28,17 +28,15 @@ class CGD(MySQLSource):
     def parse(self):
         """
         Override Source.parse()
-        Args:
-            :param
-        Returns:
-            :return None
+        :param
+        :return None
         """
         (connection, cursor) = self._connect_to_database()
         logger.debug("Checking if database is empty")
         is_db_empty = self.check_if_db_is_empty(cursor)
         if is_db_empty:
             file = '/'.join((self.rawdir,
-                                  self.static_files['test_data']['file']))
+                                  self.static_files['cgd']['file']))
             logger.debug("Loading data into database from file {0}".format(file))
             self._load_data_from_dump_file(file)
         else:
@@ -53,6 +51,27 @@ class CGD(MySQLSource):
 
     def add_genotype_info_to_graph(self, table):
         """
+        Takes an interable or iterables as input with one of two structures,
+        Structure 1: Only protein variant information
+        optional indices can be null:
+        [[genotype_id, genotype_label, amino_acid_variant,
+          amino_acid_position (optional), transcript_id, transcript_priority,
+          protein_variant_type (optional), functional_impact,
+          stop_gain_loss (optional), transcript_gene,
+          protein_variant_source (optional)]]
+
+        Structure 2: Protein and cDNA information
+        optional indices can be null:
+        [[genotype_id, genotype_label, amino_acid_variant,
+          amino_acid_position (optional), transcript_id, transcript_priority,
+          protein_variant_type (optional), functional_impact,
+          stop_gain_loss (optional), transcript_gene,
+          protein_variant_source (optional), variant_gene, bp_pos,
+          genotype_cdna, cosmic_id (optional), db_snp_id (optional),
+          genome_pos_start, genome_pos_end, ref_base, variant_base,
+          primary_transcript_exons, primary_transcript_variant_sub_types,
+          variant_type, chromosome, genome_build, build_version, build_date]]
+
         :param table: iterable of iterables
         :return: None
         """
@@ -60,11 +79,41 @@ class CGD(MySQLSource):
         geno = Genotype(self.graph)
 
         for row in table:
-            pass
+            self._add_genotype_protein_variant_assoc_to_graph(row)
+            if row[11] is not None:
+                self._add_genotype_cdna_variant_assoc_to_graph(row)
+
+        return
+
+    def _add_genotype_protein_variant_assoc_to_graph(self, row):
+        """
+        Generates relationships between genotypes and protein variants
+        given a row of data
+        :param iterable: row of data, see add_genotype_info_to_graph()
+                                      docstring for expected structure
+        :return None
+        """
+        return
+
+    def _add_genotype_cdna_variant_assoc_to_graph(self, row):
+        """
+        Generates relationships between genotypes and cDNA variants
+        given a row of data
+        :param iterable: row of data, see add_genotype_info_to_graph()
+                                      docstring for expected structure.
+                                      Only applicable for structure 2.
+        :return None
+        """
         return
 
     def add_disease_drug_genotype_to_graph(self, table):
         """
+        Takes an iterable of iterables as input with the following structure,
+        optional indices can be Null:
+        [[genotype_key, genotype_label, diagnoses_key, diagnoses,
+          specific_diagnosis, organ, relationship,
+          drug_key, drug, therapy_status (optional), pubmed_id(optional)]]
+
         :param table: iterable of iterables, for example, a tuple of tuples
                       from _get_disease_drug_genotype_relationship
         :return: None
@@ -74,7 +123,7 @@ class CGD(MySQLSource):
 
         for row in table:
             (genotype_key, genotype_label, diagnoses_key, diagnoses,
-             specific_diagnosis_id, specific_diagnosis, organ, relationship,
+             specific_diagnosis, organ, relationship,
              drug_key, drug, therapy_status, pubmed_id) = row
 
             # Arbitrary IDs to be replaced by ontology mappings
@@ -132,6 +181,8 @@ class CGD(MySQLSource):
     def _get_disease_drug_genotype_relationship(self, cursor):
         """
         Query database to get disease-drug-genotype associations
+        :param: PyMySQL Cursor object generated
+                from self._connect_to_database()
         :return: tuple of query results
         """
 
@@ -141,7 +192,6 @@ class CGD(MySQLSource):
               tg.comment as genotype_label,
               diagnoses.id as diagnoses_id,
               diagnoses.description as diagnoses,
-              specific_diagnosis.id as specific_diagnosis_id,
               specific_diagnosis.description as specific_diagnosis,
               organs.description as organ,
               ta.description as relationship,
@@ -179,6 +229,8 @@ class CGD(MySQLSource):
         """
         Select out genotypes that have protein variant information but no
         cdna variant information
+        :param: PyMySQL Cursor object generated
+                from self._connect_to_database()
         :return: tuple of query results
         """
 
@@ -187,10 +239,6 @@ class CGD(MySQLSource):
               tg.id as therapy_genotype_id,
               tg.comment as genotype_label,
               pv.genotype_amino_acid_onel as aa_var,
-              tv.amino_acid_start,
-              tv.amino_acid_end,
-              tv.genomic_start,
-              tv.genomic_end,
               pv.amino_acid_position,
               transcript.description as transcript_id,
               transcript_priority.description as transcript_priority,
@@ -238,6 +286,8 @@ class CGD(MySQLSource):
         """
         Query database to therapy genotypes that have been mapped to
         a cdna variant
+        :param: PyMySQL Cursor object generated
+                from self._connect_to_database()
         :return: tuple of query results
         """
 
@@ -246,10 +296,6 @@ class CGD(MySQLSource):
               tg.id as therapy_genotype_id,
               tg.comment as genotype_label,
               pv.genotype_amino_acid_onel as aa_var,
-              tv.amino_acid_start,
-              tv.amino_acid_end,
-              tv.genomic_start,
-              tv.genomic_end,
               pv.amino_acid_position,
               transcript.description as transcript_id,
               transcript_priority.description as transcript_priority,
@@ -257,7 +303,7 @@ class CGD(MySQLSource):
               functional_impact.description as functional_impact,
               stop_gain_loss.description as stop_gain_loss,
               trg.description as transcript_gene,
-              pv.pub_med_ids as protein_variant_pubmed_ids
+              pv.pub_med_ids as protein_variant_pubmed_ids,
               gene.description as variant_gene,
               cdna.base_pair_position,
               cdna.genotype_cdna,
@@ -273,7 +319,7 @@ class CGD(MySQLSource):
               chromosome.description as chromosome,
               genome_build.description as genome_build,
               genome_build.build_version as build_version,
-              genome_build.build_date as build_date,
+              genome_build.build_date as build_date
 
             FROM therapy_genotype tg
             JOIN therapy_variant tv
@@ -327,6 +373,8 @@ class CGD(MySQLSource):
         Get genotypes with a gene mapping but no protein variant mapping
         Typically, this will capture fusion genes and copy/gain loss
         along with mutations labelled "any" (any mutation of gene X)
+        :param: PyMySQL Cursor object generated
+                from self._connect_to_database()
         :return: tuple of query results
         """
 
@@ -365,6 +413,8 @@ class CGD(MySQLSource):
         the specific mutation is unknown, amplification copy number genes,
         and indels
 
+        :param: PyMySQL Cursor object generated
+                from self._connect_to_database()
         :return: tuple of query results
         """
 
@@ -422,7 +472,7 @@ class CGD(MySQLSource):
         If security might be an issue, it is probably best to
         pre-load the database before running to avoid having the
         password displayed from the command line
-        :param file:
+        :param file: file path containing sql dump file
         :return: None
         """
         gz_file = gzip.open(file, 'rb')
