@@ -45,11 +45,11 @@ class CGD(MySQLSource):
                          "skipping load from dump file")
 
         disease_drug_geno_list = self._get_disease_drug_genotype_relationship()
-        self._add_disease_drug_genotype_to_graph(disease_drug_geno_list)
+        self.add_disease_drug_genotype_to_graph(disease_drug_geno_list)
         self.load_bindings()
         return
 
-    def _add_disease_drug_genotype_to_graph(self, table):
+    def add_disease_drug_genotype_to_graph(self, table):
         """
         :param table: tuple, list of results from
                              _get_disease_drug_genotype_relationship
@@ -72,10 +72,12 @@ class CGD(MySQLSource):
             drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
 
             # Add individuals/classes
-            gu.addIndividualToGraph(self.graph, population_id,
+            gu.addIndividualToGraph(self.graph, population_id, None,
                                     geno.genoparts['population'])
             gu.addClassToGraph(self.graph, phenotype_id, diagnoses)
             gu.addClassToGraph(self.graph, drug_id, drug)
+            gu.loadObjectProperties(self.graph, {relationship:relationship_id})
+            geno.addGenotype(genotype_id, genotype_label)
 
             # Add triples
             gu.addTriple(self.graph, population_id,
@@ -103,8 +105,8 @@ class CGD(MySQLSource):
                 drug_assoc = InteractionAssoc(drug_annot, population_id,
                                               drug_id, source_id, evidence)
 
-                genotype_assoc.rel = geno.properties['has_genotype'];
-                phenotype_assoc.rel = geno.properties['has_phenotype'];
+                genotype_assoc.rel = geno.properties['has_genotype']
+                phenotype_assoc.rel = geno.properties['has_phenotype']
                 drug_assoc.rel = relationship_id
 
                 genotype_assoc.addAssociationToGraph(self.graph)
