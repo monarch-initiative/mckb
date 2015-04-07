@@ -20,8 +20,6 @@ class MySQLSource(Source):
         if self.host is None:
             self.host = "localhost"
 
-        (self.connection, self.cursor) = self._connect_to_database()
-
     def _connect_to_database(self):
         logger.debug("Connecting to database %s on %s", self.database, self.host)
 
@@ -31,20 +29,20 @@ class MySQLSource(Source):
         logger.debug("Connected to %s:%s", self.host, self.database)
         return connection, cursor
 
-    def disconnect_from_database(self):
+    def _disconnect_from_database(self, cursor, connection):
         logger.debug("Disconnecting from to database %s", self.database)
-        self.cursor.close()
-        self.connection.close()
+        cursor.close()
+        connection.close()
         return
 
-    def check_if_db_is_empty(self):
+    def check_if_db_is_empty(self, cursor):
         is_db_empty = True
         query = "SELECT count(*) FROM information_schema.tables " \
                 "WHERE table_type = 'BASE TABLE' " \
                 "AND table_schema = '{0}'".format(self.database)
 
-        self.cursor.execute(query)
-        results = self.cursor.fetchone()
+        cursor.execute(query)
+        results = cursor.fetchone()
         if results[0] > 0:
             is_db_empty = False
 

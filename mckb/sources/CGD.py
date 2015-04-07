@@ -33,8 +33,9 @@ class CGD(MySQLSource):
         Returns:
             :return None
         """
+        (connection, cursor) = self._connect_to_database()
         logger.debug("Checking if database is empty")
-        is_db_empty = self.check_if_db_is_empty()
+        is_db_empty = self.check_if_db_is_empty(cursor)
         if is_db_empty:
             file = '/'.join((self.rawdir,
                                   self.static_files['test_data']['file']))
@@ -44,14 +45,15 @@ class CGD(MySQLSource):
             logger.debug("Database contains tables, "
                          "skipping load from dump file")
 
-        disease_drug_geno_list = self._get_disease_drug_genotype_relationship()
+        disease_drug_geno_list = self._get_disease_drug_genotype_relationship(cursor)
         self.add_disease_drug_genotype_to_graph(disease_drug_geno_list)
         self.load_bindings()
+        self._disconnect_from_database(cursor, connection)
         return
 
     def add_genotype_info_to_graph(self, table):
         """
-        :param table: iterable
+        :param table: iterable of iterables
         :return: None
         """
         gu = GraphUtils(curie_map.get())
@@ -63,8 +65,8 @@ class CGD(MySQLSource):
 
     def add_disease_drug_genotype_to_graph(self, table):
         """
-        :param table: iterable, for example, a list of results from
-                             _get_disease_drug_genotype_relationship
+        :param table: iterable of iterables, for example, a tuple of tuples
+                      from _get_disease_drug_genotype_relationship
         :return: None
         """
         gu = GraphUtils(curie_map.get())
@@ -127,7 +129,7 @@ class CGD(MySQLSource):
 
         return
 
-    def _get_disease_drug_genotype_relationship(self):
+    def _get_disease_drug_genotype_relationship(self, cursor):
         """
         Query database to get disease-drug-genotype associations
         :return: tuple of query results
@@ -169,11 +171,11 @@ class CGD(MySQLSource):
             LEFT OUTER JOIN organs
             ON tg.organ = organs.id;
         """
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        cursor.execute(sql)
+        results = cursor.fetchall()
         return results
 
-    def _get_genotype_protein_info(self):
+    def _get_genotype_protein_info(self, cursor):
         """
         Select out genotypes that have protein variant information but no
         cdna variant information
@@ -228,11 +230,11 @@ class CGD(MySQLSource):
 
             WHERE cdna.protein_variant IS NULL;
         """
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        cursor.execute(sql)
+        results = cursor.fetchall()
         return results
 
-    def _get_genotype_cdna_info(self):
+    def _get_genotype_cdna_info(self, cursor):
         """
         Query database to therapy genotypes that have been mapped to
         a cdna variant
@@ -316,11 +318,11 @@ class CGD(MySQLSource):
             LEFT OUTER JOIN gene
             ON genomic_variant.gene = gene.id;
         """
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        cursor.execute(sql)
+        results = cursor.fetchall()
         return results
 
-    def _get_fusion_copy_any_mutation_genotypes(self):
+    def _get_fusion_copy_any_mutation_genotypes(self, cursor):
         """
         Get genotypes with a gene mapping but no protein variant mapping
         Typically, this will capture fusion genes and copy/gain loss
@@ -351,11 +353,11 @@ class CGD(MySQLSource):
 
             WHERE tv.protein_variant IS NULL;
         """
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        cursor.execute(sql)
+        results = cursor.fetchall()
         return results
 
-    def _get_genotypes_with_no_gene_protein_cdna_mapping(self):
+    def _get_genotypes_with_no_gene_protein_cdna_mapping(self, cursor):
         """
         Get genotypes with no protein_variant mapping or gene
         mapping.  This will capture rearrangement fusion genes,
@@ -405,8 +407,8 @@ class CGD(MySQLSource):
             WHERE tv.protein_variant IS NULL
             AND tv.gene IS NULL;
         """
-        self.cursor.execute(sql)
-        results = self.cursor.fetchall()
+        cursor.execute(sql)
+        results = cursor.fetchall()
         return results
 
     def _load_data_from_dump_file(self, file):

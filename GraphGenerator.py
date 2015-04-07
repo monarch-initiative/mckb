@@ -46,7 +46,6 @@ def main():
     cgd = CGD(args.database, args.user, args.password, args.host)
     cgd.parse()
     cgd.write(format='turtle')
-    cgd.disconnect_from_database()
     return
 
 if __name__ == "__main__":

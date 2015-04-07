@@ -24,14 +24,11 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         self.graph = Graph()
         self.curie_map = curie_map.get()
         cu = CurieUtil(self.curie_map)
-        # There's probably a better way to do this
-        if os.path.exists(os.path.join(os.path.dirname(__file__), 'conf/conf.json')):
-            credentials = json.load(open(os.path.join(os.path.dirname(__file__),
-                                         'conf/conf.json'), 'r'))
-            host = credentials['dbauth']['cgd']['host']
-            database = credentials['dbauth']['cgd']['database']
-            user = credentials['dbauth']['cgd']['user']
-            password = credentials['dbauth']['cgd']['password']
+        # Fake credentials as these tests do not require a database connection
+        host = 'localhost'
+        database = 'foo'
+        user = 'bar'
+        password = 'baz'
 
         self.cgd = CGD(database, user, password, host)
         test_data = ((387, 'MLH1 any mutation', 13, 'Adenocarcinoma', None,
