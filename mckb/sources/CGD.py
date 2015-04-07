@@ -49,9 +49,21 @@ class CGD(MySQLSource):
         self.load_bindings()
         return
 
+    def add_genotype_info_to_graph(self, table):
+        """
+        :param table: iterable
+        :return: None
+        """
+        gu = GraphUtils(curie_map.get())
+        geno = Genotype(self.graph)
+
+        for row in table:
+            pass
+        return
+
     def add_disease_drug_genotype_to_graph(self, table):
         """
-        :param table: tuple, list of results from
+        :param table: iterable, for example, a list of results from
                              _get_disease_drug_genotype_relationship
         :return: None
         """
@@ -173,6 +185,11 @@ class CGD(MySQLSource):
               tg.id as therapy_genotype_id,
               tg.comment as genotype_label,
               pv.genotype_amino_acid_onel as aa_var,
+              tv.amino_acid_start,
+              tv.amino_acid_end,
+              tv.genomic_start,
+              tv.genomic_end,
+              pv.amino_acid_position,
               transcript.description as transcript_id,
               transcript_priority.description as transcript_priority,
               protein_variant_type.description as protein_variant_type,
@@ -226,12 +243,19 @@ class CGD(MySQLSource):
             SELECT distinct
               tg.id as therapy_genotype_id,
               tg.comment as genotype_label,
+              pv.genotype_amino_acid_onel as aa_var,
+              tv.amino_acid_start,
+              tv.amino_acid_end,
+              tv.genomic_start,
+              tv.genomic_end,
+              pv.amino_acid_position,
               transcript.description as transcript_id,
               transcript_priority.description as transcript_priority,
               protein_variant_type.description as protein_variant_type,
               functional_impact.description as functional_impact,
               stop_gain_loss.description as stop_gain_loss,
               trg.description as transcript_gene,
+              pv.pub_med_ids as protein_variant_pubmed_ids
               gene.description as variant_gene,
               cdna.base_pair_position,
               cdna.genotype_cdna,
@@ -248,7 +272,6 @@ class CGD(MySQLSource):
               genome_build.description as genome_build,
               genome_build.build_version as build_version,
               genome_build.build_date as build_date,
-              pv.pub_med_ids as protein_variant_pubmed_ids
 
             FROM therapy_genotype tg
             JOIN therapy_variant tv
