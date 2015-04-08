@@ -114,9 +114,17 @@ class CGD(MySQLSource):
          protein_variant_source) = row[0:11]
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+        transcript = self.make_id('cgd-transcript{0}'.format(transcript_id))
 
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
+
+        if transcript_priority == 'Primary':
+            geno.addTranscript(genotype_id, transcript, transcript_id,
+                               geno.genoparts['primary_transcript'])
+        elif transcript_priority == 'Secondary':
+            geno.addTranscript(genotype_id, transcript, transcript_id,
+                               geno.genoparts['transcript_secondary_structure_variant'])
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', genotype_label):
@@ -128,6 +136,12 @@ class CGD(MySQLSource):
         gu.addClassToGraph(self.graph, gene_id, transcript_gene)
         geno.addAlleleOfGene(genotype_id, gene_id)
 
+        if amino_acid_position is not None:
+
+            aa_position_id = self.make_id(
+                'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_position))
+            amino_acid_start = 'foo'
+            amino_acid_end = 'end'
 
 
         return
@@ -155,7 +169,6 @@ class CGD(MySQLSource):
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
 
-
         return
 
     def add_disease_drug_genotype_to_graph(self, table):
@@ -181,13 +194,15 @@ class CGD(MySQLSource):
             # Arbitrary IDs to be replaced by ontology mappings
             population_id = self.make_id('cgd{0}{1}'.format(genotype_key,
                                                             genotype_label))
+            population_label = "{0} with {1}".format(diagnoses, genotype_label)
             genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
             phenotype_id = self.make_id('cgd-phenotype{0}'.format(diagnoses_key))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
             drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
 
+
             # Add individuals/classes
-            gu.addIndividualToGraph(self.graph, population_id, None,
+            gu.addIndividualToGraph(self.graph, population_id, population_label,
                                     geno.genoparts['population'])
             gu.addClassToGraph(self.graph, phenotype_id, diagnoses)
             gu.addClassToGraph(self.graph, drug_id, drug)

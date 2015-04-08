@@ -1,5 +1,4 @@
 from dipper import curie_map
-from rdflib import Graph
 from mckb.sources.CGD import CGD
 from rdflib.namespace import URIRef
 from dipper.utils.CurieUtil import CurieUtil
@@ -19,7 +18,6 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
     def setUp(self):
 
-        self.graph = Graph()
         self.curie_map = curie_map.get()
         cu = CurieUtil(self.curie_map)
         # Fake credentials as these tests do not require a database connection
@@ -61,6 +59,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
 
         self.genotype_label = genotype_label
+        self.population_label = "{0} with {1}".format(diagnoses, genotype_label)
         self.disease_label = diagnoses
         self.drug_label = drug
 
@@ -75,6 +74,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         """
         Given the above sample input, produce the following:
         A Monarch:ID representing a population is an individual of type OBO:GENO_0000110
+        A Monarch:PopulationID rdfs:label "some_label"
         A Monarch:DiseaseID is an OWL Class
         A Monarch:Disease rdfs:label "some_label"
         A Monarch:DrugID is an OWL Class
@@ -94,16 +94,17 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         sparql_query = """
                        SELECT ?pop ?phenotype ?drug ?source
                        WHERE {{
-                           ?pop a OBO:GENO_0000110 .
-                           ?phenotype a owl:Class ;
+                           ?pop a OBO:GENO_0000110 ;
                                rdfs:label "{0}" .
-                           ?drug a owl:Class ;
+                           ?phenotype a owl:Class ;
                                rdfs:label "{1}" .
-                           <{2}> a owl:ObjectProperty .
+                           ?drug a owl:Class ;
+                               rdfs:label "{2}" .
+                           <{3}> a owl:ObjectProperty .
                            ?source a owl:NamedIndividual .
                        }}
-                       """.format(self.disease_label, self.drug_label,
-                                  self.relationship_uri)
+                       """.format(self.population_label, self.disease_label,
+                                  self.drug_label, self.relationship_uri)
 
         # Expected Results
         expected_results = [[self.population_uri, self.phenotype_uri,
