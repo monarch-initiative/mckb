@@ -8,7 +8,7 @@ import json
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 
     parser = argparse.ArgumentParser(description='Cancer Knowledge Base Graph'
@@ -42,7 +42,6 @@ def main():
             args.password = input("Enter your password: ")
 
     # Parse test source
-    logger.debug("Converting test database to triples")
     cgd = CGD(args.database, args.user, args.password, args.host)
     cgd.parse()
     cgd.write(format='turtle')

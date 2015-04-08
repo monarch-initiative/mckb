@@ -3,6 +3,7 @@ from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
 from dipper.models.InteractionAssoc import InteractionAssoc
+from dipper.models.GenomicFeature import Feature
 from dipper import curie_map
 import tempfile
 import gzip
@@ -35,15 +36,15 @@ class CGD(MySQLSource):
         :return None
         """
         (connection, cursor) = self._connect_to_database()
-        logger.debug("Checking if database is empty")
+        logger.info("Checking if database is empty")
         is_db_empty = self.check_if_db_is_empty(cursor)
         if is_db_empty:
             file = '/'.join((self.rawdir,
                                   self.static_files['cgd']['file']))
-            logger.debug("Loading data into database from file {0}".format(file))
+            logger.info("Loading data into database from file {0}".format(file))
             self._load_data_from_dump_file(file)
         else:
-            logger.debug("Database contains tables, "
+            logger.info("Database contains tables, "
                          "skipping load from dump file")
 
         mapping_file = '../../resources/mappings/gene.tsv'
@@ -107,6 +108,7 @@ class CGD(MySQLSource):
         """
         gu = GraphUtils(curie_map.get())
         geno = Genotype(self.graph)
+        isMissense = False
 
         (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
@@ -114,20 +116,21 @@ class CGD(MySQLSource):
          protein_variant_source) = row[0:11]
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
-        transcript = self.make_id('cgd-transcript{0}'.format(transcript_id))
+        transcript_curie = self.make_id('cgd-transcript{0}'.format(transcript_id))
 
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
 
         if transcript_priority == 'Primary':
-            geno.addTranscript(genotype_id, transcript, transcript_id,
+            geno.addTranscript(genotype_id, transcript_curie, transcript_id,
                                geno.genoparts['primary_transcript'])
         elif transcript_priority == 'Secondary':
-            geno.addTranscript(genotype_id, transcript, transcript_id,
+            geno.addTranscript(genotype_id, transcript_curie, transcript_id,
                                geno.genoparts['transcript_secondary_structure_variant'])
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', genotype_label):
+            isMissense = True
             geno.addGenotype(genotype_id, genotype_label,
                              geno.genoparts['missense_variant'])
 
@@ -136,13 +139,31 @@ class CGD(MySQLSource):
         gu.addClassToGraph(self.graph, gene_id, transcript_gene)
         geno.addAlleleOfGene(genotype_id, gene_id)
 
-        if amino_acid_position is not None:
+        amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
 
-            aa_position_id = self.make_id(
-                'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_position))
-            amino_acid_start = 'foo'
-            amino_acid_end = 'end'
+        aa_position_id = self.make_id(
+        'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
 
+        if isMissense:
+            match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
+        else:
+            match = None
+
+        if match is not None:
+            amino_acid_start = match.group(1)
+            position = match.group(2)
+            amino_acid_end = match.group(3)
+        else:
+            logger.debug("Could not parse amino acid information"
+                         " from {0} genotype: {1} type: {2}".format(amino_acid_variant,
+                                                                    genotype_label,
+                                                                    protein_variant_type))
+        if isMissense is True and match is not None:
+            gu.addTriple(self.graph, genotype_id, Feature.properties['location'], aa_position_id)
+            transcript_feature = Feature(aa_position_id, amino_acid_variant, Feature.types['Position'])
+            transcript_feature.addFeatureStartLocation(position, transcript_curie)
+            transcript_feature.addFeatureEndLocation(position, transcript_curie)
+            transcript_feature.addFeatureToGraph(self.graph)
 
         return
 
@@ -194,7 +215,8 @@ class CGD(MySQLSource):
             # Arbitrary IDs to be replaced by ontology mappings
             population_id = self.make_id('cgd{0}{1}'.format(genotype_key,
                                                             genotype_label))
-            population_label = "{0} with {1}".format(diagnoses, genotype_label)
+            population_label = "Patient population diagnosed with {0} with" \
+                               " genotype {1}".format(diagnoses, genotype_label)
             genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
             phenotype_id = self.make_id('cgd-phenotype{0}'.format(diagnoses_key))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")

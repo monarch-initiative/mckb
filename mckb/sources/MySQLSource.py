@@ -21,16 +21,16 @@ class MySQLSource(Source):
             self.host = "localhost"
 
     def _connect_to_database(self):
-        logger.debug("Connecting to database %s on %s", self.database, self.host)
+        logger.info("Connecting to database %s on %s", self.database, self.host)
 
         connection = pymysql.connect(host=self.host, user=self.username,
                                      passwd=self.password, db=self.database)
         cursor = connection.cursor()
-        logger.debug("Connected to %s:%s", self.host, self.database)
+        logger.info("Connected to %s:%s", self.host, self.database)
         return connection, cursor
 
     def _disconnect_from_database(self, cursor, connection):
-        logger.debug("Disconnecting from to database %s", self.database)
+        logger.info("Disconnecting from to database %s", self.database)
         cursor.close()
         connection.close()
         return
