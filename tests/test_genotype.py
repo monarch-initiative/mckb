@@ -5,7 +5,6 @@ from dipper.utils.CurieUtil import CurieUtil
 import unittest
 import logging
 import datetime
-import re
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -64,6 +63,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID has the label "CSF3R Q741X  missense mutation"
         MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
         MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
+        MONARCH:GenotypeID OBO:GENO_reference_amino_acid "Q"
+        MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "X"
         MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
 
         MONARCH:TranscriptID is an instance of OBO:GENO_primary
@@ -84,6 +85,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
          protein_variant_source) = self.test_set_1[0][0:11]
 
         gene_id = self.cgd.gene_map[transcript_gene]
+        ref_amino_acid = "Q"
+        altered_amino_acid = "X"
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
@@ -101,11 +104,14 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
                                faldo:location ?position ;
+                               OBO:GENO_reference_amino_acid "{1}" ;
+                               OBO:GENO_results_in_amino_acid_change "{2}" ;
                                OBO:SO_transcribed_to ?transcript .
                            ?transcript a OBO:GENO_primary ;
-                               rdfs:label "{1}" .
+                               rdfs:label "{3}" .
                        }}
-                       """.format(genotype_label, transcript_id)
+                       """.format(genotype_label, ref_amino_acid,
+                                  altered_amino_acid, transcript_id)
 
         # Expected Results
         expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
@@ -125,6 +131,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID has the label "ABL1 T315I missense mutation"
         MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
         MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
+        MONARCH:GenotypeID OBO:GENO_reference_amino_acid "T"
+        MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
         MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
 
         MONARCH:TranscriptID is an instance of OBO:GENO_secondary
@@ -145,6 +153,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
          protein_variant_source) = self.test_set_2[0][0:11]
 
         gene_id = self.cgd.gene_map[transcript_gene]
+        ref_amino_acid = "T"
+        altered_amino_acid = "I"
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
@@ -162,11 +172,14 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
                                faldo:location ?position ;
+                               OBO:GENO_reference_amino_acid "{1}" ;
+                               OBO:GENO_results_in_amino_acid_change "{2}" ;
                                OBO:SO_transcribed_to ?transcript .
                            ?transcript a OBO:GENO_secondary ;
-                               rdfs:label "{1}" .
+                               rdfs:label "{3}" .
                        }}
-                       """.format(genotype_label, transcript_id)
+                       """.format(genotype_label, ref_amino_acid,
+                                  altered_amino_acid, transcript_id)
 
         # Expected Results
         expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
@@ -178,8 +191,21 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_amino_acid_position_region_model(self):
         """
         Test modelling of amino acid positions
+        Using test data set 1, and the function add_genotype_info_to_graph()
+        We want to test the following triples:
 
+        MONARCH:PositionID is an instance of faldo:Position
+        MONARCH:PositionID rdfs:label "p.Q741X"
+        MONARCH:PositionID faldo:location MONARCH:RegionID
 
+        MONARCH:RegionID is an instance of faldo:Region
+        MONARCH:RegionID faldo:begin MONARCH:BothStrandPositionID
+        MONARCH:RegionID faldo:end MONARCH:BothStrandPositionID
+
+        MONARCH:BothStrandPositionID is an instance of faldo:BothStrandPosition
+        MONARCH:BothStrandPositionID is an instance of faldo:Position
+        MONARCH:BothStrandPositionID faldo:position 741
+        MONARCH:BothStrandPositionID faldo:reference MONARCH:TranscriptID
         """
         from dipper.utils.TestUtils import TestUtils
         self.cgd.add_genotype_info_to_graph(self.test_set_1)
@@ -194,10 +220,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
          functional_impact, stop_gain_loss, transcript_gene,
          protein_variant_source) = self.test_set_1[0][0:11]
 
-        # Get position
-        amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
-        match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
-        position = match.group(2)
+        position = 741
 
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
@@ -208,7 +231,6 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
-
 
         sparql_query = """
                        SELECT ?position ?region ?bsPosition ?transcript

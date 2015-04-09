@@ -109,6 +109,7 @@ class CGD(MySQLSource):
         gu = GraphUtils(curie_map.get())
         geno = Genotype(self.graph)
         isMissense = False
+        isLiteral = True
 
         (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
@@ -152,18 +153,30 @@ class CGD(MySQLSource):
         if match is not None:
             ref_amino_acid = match.group(1)
             position = match.group(2)
-            altered_amino_acid_= match.group(3)
+            altered_amino_acid = match.group(3)
         else:
             logger.debug("Could not parse amino acid information"
-                         " from {0} genotype: {1} type: {2}".format(amino_acid_variant,
-                                                                    genotype_label,
-                                                                    protein_variant_type))
+                         " from {0} genotype:"
+                         " {1} type: {2}".format(amino_acid_variant,
+                                                 genotype_label,
+                                                 protein_variant_type))
+
+        # Add amino acid change to model
         if isMissense is True and match is not None:
-            gu.addTriple(self.graph, genotype_id, Feature.properties['location'], aa_position_id)
-            transcript_feature = Feature(aa_position_id, amino_acid_variant, Feature.types['Position'])
-            transcript_feature.addFeatureStartLocation(position, transcript_curie)
-            transcript_feature.addFeatureEndLocation(position, transcript_curie)
-            transcript_feature.addFeatureToGraph(self.graph)
+            gu.addTriple(self.graph, genotype_id,
+                     geno.genoparts['reference_amino_acid'],
+                     ref_amino_acid, isLiteral)
+            gu.addTriple(self.graph, genotype_id,
+                     geno.genoparts['results_in_amino_acid_change'],
+                     altered_amino_acid, isLiteral)
+
+            # Add position/location model for rows without cdna information
+            #if len(row) < 12
+            gu.addTriple(self.graph, genotype_id,
+                         Feature.properties['location'], aa_position_id)
+            self._add_feature_with_coords(aa_position_id, amino_acid_variant,
+                                          Feature.types['Position'], position,
+                                          position, transcript_curie)
 
         return
 
@@ -190,6 +203,22 @@ class CGD(MySQLSource):
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
 
+        return
+
+    def _add_feature_with_coords(self, feature_id, feature_label, feature_type, start_pos, end_pos, reference):
+        """
+        :param feature_id: URIRef or Curie - instance of faldo:Position
+        :param feature_label: String
+        :param feature_type: Object Property
+        :param start_pos: int, starting coordinate
+        :param end_pos: int, ending coordinate
+        :param reference: URIRef or Curie - reference Node (gene, transcript, genome)
+        :return: None
+        """
+        transcript_feature = Feature(feature_id, feature_label, feature_type)
+        transcript_feature.addFeatureStartLocation(start_pos, reference)
+        transcript_feature.addFeatureEndLocation(end_pos, reference)
+        transcript_feature.addFeatureToGraph(self.graph)
         return
 
     def add_disease_drug_genotype_to_graph(self, table):
