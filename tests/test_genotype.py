@@ -256,5 +256,72 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         self.assertEqual(expected_results, sparql_output)
 
+    def test_genome_build_chromosome_model(self):
+        """
+        Test modelling of genome, builds, and chromosomes
+        Using test data set 2, and the function add_genotype_info_to_graph()
+        We want to test the following triples:
+
+
+        """
+        from dipper.utils.TestUtils import TestUtils
+        self.cgd.add_genotype_info_to_graph(self.test_set_2)
+
+        # Make testutils object and load bindings
+        test_env = TestUtils(self.cgd.graph)
+        cu = CurieUtil(self.curie_map)
+        self.cgd.load_bindings()
+
+        genome = ":9606genome"
+        genome_label = "Human genome"
+        chromosome = ":9606chr9"
+        chromosome_label = "chr9 (Human)"
+        build_curie = "UCSC:hg19"
+        build_label = "hg19"
+        chrom_on_build = ":hg19chr9"
+        chrom_build_label = "chr9 (hg19)"
+
+        genome_uri = URIRef(cu.get_uri(genome))
+        chromosome_uri = URIRef(cu.get_uri(chromosome))
+        build_uri = URIRef(cu.get_uri(build_curie))
+        chrom_on_build_uri = URIRef(cu.get_uri(chrom_on_build))
+
+
+        sparql_query = """
+                       SELECT ?genome ?chromosome ?build ?chromOnBuild
+                       WHERE {{
+                           ?genome a owl:Class ;
+                               rdfs:label "{0}" ;
+                               OBO:RO_0002162 OBO:NCBITaxon_9606 ;
+                               OBO:RO_0002351 ?chromosome ;
+                               rdfs:subClassOf OBO:SO_0001026 .
+
+                           ?chromosome a owl:Class ;
+                               rdfs:label "{1}" ;
+                               OBO:RO_0002350 ?genome ;
+                               rdfs:subClassOf OBO:SO_0000340 .
+
+                           ?build a OBO:SO_0001505 ;
+                               a ?genome ;
+                               rdfs:label "{2}" ;
+                               OBO:RO_0002351 ?chromOnBuild ;
+                               rdfs:subClassOf ?genome .
+
+                           ?chromOnBuild a ?chromosome ;
+                               rdfs:label "{3}" ;
+                               OBO:RO_0002350 ?build .
+                       }}
+                       """.format(genome_label, chromosome_label,
+                                  build_label, chrom_build_label)
+
+        # Expected Results
+        expected_results = [[genome_uri, chromosome_uri,
+                             build_uri, chrom_on_build_uri]]
+
+        # Query graph
+        sparql_output = test_env.query_graph(sparql_query)
+
+        self.assertEqual(expected_results, sparql_output)
+
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,7 @@ from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
 from dipper.models.InteractionAssoc import InteractionAssoc
-from dipper.models.GenomicFeature import Feature
+from dipper.models.GenomicFeature import Feature, makeChromID, makeChromLabel
 from dipper import curie_map
 import tempfile
 import gzip
@@ -108,8 +108,8 @@ class CGD(MySQLSource):
         """
         gu = GraphUtils(curie_map.get())
         geno = Genotype(self.graph)
-        isMissense = False
-        isLiteral = True
+        is_missense = False
+        is_literal = True
 
         (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
@@ -131,21 +131,19 @@ class CGD(MySQLSource):
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', genotype_label):
-            isMissense = True
+            is_missense = True
             geno.addGenotype(genotype_id, genotype_label,
                              geno.genoparts['missense_variant'])
 
         # Get gene ID from gene map
-        gene_id = self.gene_map[transcript_gene]
-        gu.addClassToGraph(self.graph, gene_id, transcript_gene)
-        geno.addAlleleOfGene(genotype_id, gene_id)
+        self._add_genotype_gene_relationship(genotype_id, transcript_gene)
 
         amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
 
         aa_position_id = self.make_id(
             'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
 
-        if isMissense:
+        if is_missense:
             match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
         else:
             match = None
@@ -162,16 +160,15 @@ class CGD(MySQLSource):
                                                  protein_variant_type))
 
         # Add amino acid change to model
-        if isMissense is True and match is not None:
+        if is_missense is True and match is not None:
             gu.addTriple(self.graph, genotype_id,
-                     geno.genoparts['reference_amino_acid'],
-                     ref_amino_acid, isLiteral)
+                         geno.genoparts['reference_amino_acid'],
+                         ref_amino_acid, is_literal)
             gu.addTriple(self.graph, genotype_id,
-                     geno.genoparts['results_in_amino_acid_change'],
-                     altered_amino_acid, isLiteral)
+                         geno.genoparts['results_in_amino_acid_change'],
+                         altered_amino_acid, is_literal)
 
-            # Add position/location model for rows without cdna information
-            #if len(row) < 12
+            # Add position/location model for amino acid
             gu.addTriple(self.graph, genotype_id,
                          Feature.properties['location'], aa_position_id)
             self._add_feature_with_coords(aa_position_id, amino_acid_variant,
@@ -202,6 +199,30 @@ class CGD(MySQLSource):
          genome_build, build_version, build_date) = row
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+        variant_position_id = self.make_id(
+            'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
+        variant_position_label = '{0} genomic location'.format(variant_gene)
+
+        # Add gene
+        self._add_genotype_gene_relationship(genotype_id, variant_gene)
+
+        # Add the genome build
+        genome_label = "Human"
+        build_id = "UCSC:{0}".format(genome_build)
+        taxon_id = 'NCBITaxon:9606'
+        geno.addGenome(taxon_id, genome_label)
+        geno.addReferenceGenome(build_id, genome_build, taxon_id)
+
+        # Add chromosome
+        chromosome_id = makeChromID(chromosome, genome_build)
+        geno.addChromosome(chromosome, taxon_id, genome_label,
+                           build_id, genome_build)
+
+        # Add mutation in reference to chromosome
+        self._add_feature_with_coords(variant_position_id, variant_position_label,
+                                      Feature.types['Position'], genome_pos_start,
+                                      genome_pos_end, chromosome_id)
+
 
         return
 
@@ -219,6 +240,19 @@ class CGD(MySQLSource):
         transcript_feature.addFeatureStartLocation(start_pos, reference)
         transcript_feature.addFeatureEndLocation(end_pos, reference)
         transcript_feature.addFeatureToGraph(self.graph)
+        return
+
+    def _add_genotype_gene_relationship(self, genotype_id, hgnc_symbol):
+        """
+        :param genotype_id
+        :param hgnc_symbol
+        :return: None
+        """
+        gu = GraphUtils(curie_map.get())
+        geno = Genotype(self.graph)
+        gene_id = self.gene_map[hgnc_symbol]
+        gu.addClassToGraph(self.graph, gene_id, hgnc_symbol)
+        geno.addAlleleOfGene(genotype_id, gene_id)
         return
 
     def add_disease_drug_genotype_to_graph(self, table):
