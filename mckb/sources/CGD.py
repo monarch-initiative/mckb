@@ -123,10 +123,10 @@ class CGD(MySQLSource):
 
         if transcript_priority == 'Primary':
             geno.addTranscript(genotype_id, transcript_curie, transcript_id,
-                               geno.genoparts['primary_transcript'])
+                               geno.genoparts['primary_priority'])
         elif transcript_priority == 'Secondary':
             geno.addTranscript(genotype_id, transcript_curie, transcript_id,
-                               geno.genoparts['transcript_secondary_structure_variant'])
+                               geno.genoparts['secondary_priority'])
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', genotype_label):
@@ -150,9 +150,9 @@ class CGD(MySQLSource):
             match = None
 
         if match is not None:
-            amino_acid_start = match.group(1)
+            ref_amino_acid = match.group(1)
             position = match.group(2)
-            amino_acid_end = match.group(3)
+            altered_amino_acid_= match.group(3)
         else:
             logger.debug("Could not parse amino acid information"
                          " from {0} genotype: {1} type: {2}".format(amino_acid_variant,

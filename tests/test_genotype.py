@@ -74,25 +74,28 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
+        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?transcript
+                       SELECT ?genotype ?gene ?position ?transcript
                        WHERE {{
                            ?genotype a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
+                               faldo:location ?position ;
                                OBO:SO_transcribed_to ?transcript .
-                           ?transcript a OBO:SO_0000185 ;
+                           ?transcript a OBO:GENO_primary ;
                                rdfs:label "{1}" .
                        }}
                        """.format(genotype_label, transcript_id)
 
         # Expected Results
-        expected_results = [[genotype_uri, gene_uri, transcript_uri]]
+        expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -120,25 +123,28 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
+        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?transcript
+                       SELECT ?genotype ?gene ?position ?transcript
                        WHERE {{
                            ?genotype a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
+                               faldo:location ?position ;
                                OBO:SO_transcribed_to ?transcript .
-                           ?transcript a OBO:SO_0001596 ;
+                           ?transcript a OBO:GENO_secondary ;
                                rdfs:label "{1}" .
                        }}
                        """.format(genotype_label, transcript_id)
 
         # Expected Results
-        expected_results = [[genotype_uri, gene_uri, transcript_uri]]
+        expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
