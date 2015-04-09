@@ -107,6 +107,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_results_in_amino_acid_change "{2}" ;
                                OBO:SO_transcribed_to ?transcript .
+
                            ?transcript a OBO:GENO_primary ;
                                rdfs:label "{3}" .
                        }}
@@ -175,6 +176,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_results_in_amino_acid_change "{2}" ;
                                OBO:SO_transcribed_to ?transcript .
+
                            ?transcript a OBO:GENO_secondary ;
                                rdfs:label "{3}" .
                        }}
@@ -238,9 +240,11 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                            ?position a faldo:Position ;
                                rdfs:label "{0}" ;
                                faldo:location ?region .
+
                            ?region a faldo:Region ;
                                faldo:begin ?bsPosition ;
                                faldo:end ?bsPosition .
+
                            ?bsPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
                                faldo:position {1} ;
@@ -260,9 +264,6 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         """
         Test modelling of genome, builds, and chromosomes
         Using test data set 2, and the function add_genotype_info_to_graph()
-        We want to test the following triples:
-
-
         """
         from dipper.utils.TestUtils import TestUtils
         self.cgd.add_genotype_info_to_graph(self.test_set_2)
@@ -285,7 +286,6 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         chromosome_uri = URIRef(cu.get_uri(chromosome))
         build_uri = URIRef(cu.get_uri(build_curie))
         chrom_on_build_uri = URIRef(cu.get_uri(chrom_on_build))
-
 
         sparql_query = """
                        SELECT ?genome ?chromosome ?build ?chromOnBuild
@@ -317,6 +317,74 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         # Expected Results
         expected_results = [[genome_uri, chromosome_uri,
                              build_uri, chrom_on_build_uri]]
+
+        # Query graph
+        sparql_output = test_env.query_graph(sparql_query)
+
+        self.assertEqual(expected_results, sparql_output)
+
+    def test_genomic_position_model(self):
+        """
+        Test modelling of genomic positions
+        Using test data set 2, and the function add_genotype_info_to_graph()
+        """
+        from dipper.utils.TestUtils import TestUtils
+        self.cgd.add_genotype_info_to_graph(self.test_set_2)
+
+        # Make testutils object and load bindings
+        test_env = TestUtils(self.cgd.graph)
+        cu = CurieUtil(self.curie_map)
+        self.cgd.load_bindings()
+
+        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+         transcript_id, transcript_priority, protein_variant_type,
+         functional_impact, stop_gain_loss, transcript_gene,
+         protein_variant_source, variant_gene, bp_pos, genotype_cdna,
+         cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
+         variant_base, primary_transcript_exons,
+         primary_transcript_variant_sub_types, variant_type, chromosome,
+         genome_build, build_version, build_date) = self.test_set_2[0]
+
+        chromosome = ":hg19chr9"
+        variant_position_id = self.cgd.make_id(
+            'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
+        variant_position_label = '{0} genomic location'.format(variant_gene)
+        region_id = ":_{0}Region".format(variant_position_id)
+        start_id = ":_{0}-{1}".format(chromosome, genome_pos_start)
+        end_id = ":_{0}-{1}".format(chromosome, genome_pos_end)
+
+        position_uri = URIRef(cu.get_uri(variant_position_id))
+        region_uri = URIRef(cu.get_uri(region_id))
+        start_uri = URIRef(cu.get_uri(start_id))
+        end_uri = URIRef(cu.get_uri(end_id))
+        chromosome_uri = URIRef(cu.get_uri(chromosome))
+
+        sparql_query = """
+                       SELECT ?position ?region ?startPosition ?endPosition ?chromosome
+                       WHERE {{
+                           ?position a faldo:Position ;
+                               rdfs:label "{0}" ;
+                               faldo:location ?region .
+
+                           ?region a faldo:Region ;
+                               faldo:begin ?startPosition ;
+                               faldo:end ?endPosition .
+
+                           ?startPosition a faldo:BothStrandPosition ;
+                               a faldo:Position ;
+                               faldo:position {1} ;
+                               faldo:reference ?chromosome .
+
+                           ?endPosition a faldo:BothStrandPosition ;
+                               a faldo:Position ;
+                               faldo:position {2} ;
+                               faldo:reference ?chromosome .
+                       }}
+                       """.format(variant_position_label, genome_pos_start,
+                                  genome_pos_end,)
+
+        # Expected Results
+        expected_results = [[position_uri, region_uri, start_uri, end_uri, chromosome_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
