@@ -194,18 +194,20 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
          functional_impact, stop_gain_loss, transcript_gene,
          protein_variant_source) = self.test_set_1[0][0:11]
 
-        transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
-        region_id = ":_{0}Region".format(aa_position_id)
-
-        transcript_uri = URIRef(cu.get_uri(transcript))
-        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
-        region_uri = URIRef(cu.get_uri(region_id))
-
         # Get position
         amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
         match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
         position = match.group(2)
+
+        transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+        region_id = ":_{0}Region".format(aa_position_id)
+        both_strand_id = ":_{0}-{1}".format(transcript, position)
+
+        transcript_uri = URIRef(cu.get_uri(transcript))
+        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
+        region_uri = URIRef(cu.get_uri(region_id))
+        both_strand_uri = URIRef(cu.get_uri(both_strand_id))
 
 
         sparql_query = """
@@ -217,7 +219,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                            ?region a faldo:Region ;
                                faldo:begin ?bsPosition ;
                                faldo:end ?bsPosition .
-                           ?region a faldo:BothStrandPosition ;
+                           ?bsPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
                                faldo:position {1} ;
                                faldo:reference ?transcript .
@@ -225,8 +227,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                        """.format(amino_acid_variant, position)
 
         # Expected Results
-        expected_results = [[aa_position_uri, region_uri, transcript_uri]]
-        print(region_uri)
+        expected_results = [[aa_position_uri, region_uri, both_strand_uri, transcript_uri]]
+
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
