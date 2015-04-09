@@ -142,7 +142,7 @@ class CGD(MySQLSource):
         amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
 
         aa_position_id = self.make_id(
-        'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+            'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
 
         if isMissense:
             match = re.match(amino_acid_regex, amino_acid_variant.rstrip())

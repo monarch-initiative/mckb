@@ -5,6 +5,7 @@ from dipper.utils.CurieUtil import CurieUtil
 import unittest
 import logging
 import datetime
+import re
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
@@ -169,6 +170,63 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         # Expected Results
         expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
+        # Query graph
+        sparql_output = test_env.query_graph(sparql_query)
+
+        self.assertEqual(expected_results, sparql_output)
+
+    def test_amino_acid_position_region_model(self):
+        """
+        Test modelling of amino acid positions
+
+
+        """
+        from dipper.utils.TestUtils import TestUtils
+        self.cgd.add_genotype_info_to_graph(self.test_set_1)
+
+        # Make testutils object and load bindings
+        test_env = TestUtils(self.cgd.graph)
+        cu = CurieUtil(self.curie_map)
+        self.cgd.load_bindings()
+
+        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+         transcript_id, transcript_priority, protein_variant_type,
+         functional_impact, stop_gain_loss, transcript_gene,
+         protein_variant_source) = self.test_set_1[0][0:11]
+
+        transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+        region_id = ":_{0}Region".format(aa_position_id)
+
+        transcript_uri = URIRef(cu.get_uri(transcript))
+        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
+        region_uri = URIRef(cu.get_uri(region_id))
+
+        # Get position
+        amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
+        match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
+        position = match.group(2)
+
+
+        sparql_query = """
+                       SELECT ?position ?region ?bsPosition ?transcript
+                       WHERE {{
+                           ?position a faldo:Position ;
+                               rdfs:label "{0}" ;
+                               faldo:location ?region .
+                           ?region a faldo:Region ;
+                               faldo:begin ?bsPosition ;
+                               faldo:end ?bsPosition .
+                           ?region a faldo:BothStrandPosition ;
+                               a faldo:Position ;
+                               faldo:position {1} ;
+                               faldo:reference ?transcript .
+                       }}
+                       """.format(amino_acid_variant, position)
+
+        # Expected Results
+        expected_results = [[aa_position_uri, region_uri, transcript_uri]]
+        print(region_uri)
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
