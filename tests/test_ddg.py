@@ -59,7 +59,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
 
         self.genotype_label = genotype_label
-        self.population_label = "{0} with {1}".format(diagnoses, genotype_label)
+        self.population_label = "Patient population diagnosed with {0} with" \
+                                " genotype {1}".format(diagnoses, genotype_label)
         self.disease_label = diagnoses
         self.drug_label = drug
 
@@ -73,12 +74,12 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_classes_indiv_properties(self):
         """
         Given the above sample input, produce the following:
-        A Monarch:ID representing a population is an individual of type OBO:GENO_0000110
-        A Monarch:PopulationID rdfs:label "some_label"
+        A Monarch:PopulationID is an individual of type OBO:GENO_0000110
+        A Monarch:PopulationID rdfs:label "Patient population diagnosed with Adenocarcinoma with genotype MLH1 any mutation"
         A Monarch:DiseaseID is an OWL Class
-        A Monarch:Disease rdfs:label "some_label"
+        A Monarch:Disease rdfs:label "Adenocarcinoma"
         A Monarch:DrugID is an OWL Class
-        A Monarch:DrugID rdfs:label "some_label"
+        A Monarch:DrugID rdfs:label "5FU-based adjuvant therapy"
         A Monarch:RelationID is an object property
 
         Testing Note: Testing associations (assoc a Annotation) will
@@ -119,7 +120,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         Given the above sample input, produce the following:
         A population has_phenotype (OBO:RO_0002200) a disease
         A population has_genotype(OBO:RO_0002200) a genotype
-        A population has_detrimental_effect to a drug/chemical
+        A population MONARCH:has_detrimental_effect to a drug/chemical
         """
         from dipper.utils.TestUtils import TestUtils
 

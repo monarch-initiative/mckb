@@ -55,6 +55,18 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_missense_variant_protein_model(self):
         """
         Test missense variant with only protein information
+        Using test data set 1, and the function add_genotype_info_to_graph()
+        We want to test the following triples:
+
+        MONARCH:GenotypeID is an instance of OBO:SO_0001059
+        MONARCH:GenotypeID is an instance of OBO:SO_0001583
+        MONARCH:GenotypeID has the label "CSF3R Q741X  missense mutation"
+        MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
+        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
+        MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
+
+        MONARCH:TranscriptID is an instance of OBO:GENO_primary
+        MONARCH:TranscriptID has the label "CCDS413.1"
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -103,7 +115,19 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
     def test_missense_variant_cdna_model(self):
         """
-        Test missense variant with only protein information
+        Test missense variant with cdna information
+        Using test data set 2, and the function add_genotype_info_to_graph()
+        We want to test the following triples:
+
+        MONARCH:GenotypeID is an instance of OBO:SO_0001059
+        MONARCH:GenotypeID is an instance of OBO:SO_0001583
+        MONARCH:GenotypeID has the label "ABL1 T315I missense mutation"
+        MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
+        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
+        MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
+
+        MONARCH:TranscriptID is an instance of OBO:GENO_secondary
+        MONARCH:TranscriptID has the label "CCDS35166.1"
         """
         from dipper.utils.TestUtils import TestUtils
 
