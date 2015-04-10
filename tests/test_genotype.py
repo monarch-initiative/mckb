@@ -18,7 +18,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def setUp(self):
 
         self.curie_map = curie_map.get()
-        cu = CurieUtil(self.curie_map)
+
         # Fake credentials as these tests do not require a database connection
         database = 'foo'
         user = 'bar'
@@ -187,21 +187,24 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                faldo:location ?aaPosition ;
                                faldo:location ?chrPosition ;
                                OBO:GENO_reference_amino_acid "{1}" ;
-                               OBO:GENO_results_in_amino_acid_change "{2}" ;
+                               OBO:GENO_reference_nucleotide "{2}" ;
+                               OBO:GENO_altered_nucleotide "{3}" ;
+                               OBO:GENO_results_in_amino_acid_change "{4}" ;
                                OBO:SO_transcribed_to ?transcript .
 
                            ?transcript a OBO:GENO_secondary ;
-                               rdfs:label "{3}" .
+                               rdfs:label "{5}" .
 
-                           ?aaPosition rdfs:label "{4}" .
-                           ?chrPosition rdfs:label "{5}" .
+                           ?aaPosition rdfs:label "{6}" .
+                           ?chrPosition rdfs:label "{7}" .
                        }}
-                       """.format(genotype_label, ref_amino_acid,
-                                  altered_amino_acid, transcript_id,
+                       """.format(genotype_label, ref_amino_acid, ref_base,
+                                  variant_base, altered_amino_acid, transcript_id,
                                   amino_acid_variant, variant_position_label)
 
         # Expected Results
-        expected_results = [[genotype_uri, gene_uri, aa_position_uri, chr_position_uri, transcript_uri]]
+        expected_results = [[genotype_uri, gene_uri, aa_position_uri,
+                             chr_position_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 

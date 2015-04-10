@@ -189,6 +189,7 @@ class CGD(MySQLSource):
         """
         gu = GraphUtils(curie_map.get())
         geno = Genotype(self.graph)
+        is_literal = True
 
         (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
@@ -225,6 +226,14 @@ class CGD(MySQLSource):
         self._add_feature_with_coords(variant_position_id, variant_position_label,
                                       Feature.types['Position'], genome_pos_start,
                                       genome_pos_end, chromosome_id)
+
+        # Add nucleotide mutation
+        gu.addTriple(self.graph, genotype_id,
+                     geno.genoparts['reference_nucleotide'],
+                     ref_base, is_literal)
+        gu.addTriple(self.graph, genotype_id,
+                     geno.genoparts['altered_nucleotide'],
+                     variant_base, is_literal)
 
         return
 
