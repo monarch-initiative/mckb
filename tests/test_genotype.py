@@ -135,6 +135,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID2 (location of chromosome)
         MONARCH:GenotypeID OBO:GENO_reference_amino_acid "T"
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
+        MONARCH:GenotypeID owl:sameAs dbSNP:rs121913459
+        MONARCH:GenotypeID owl:sameAs COSMIC:12560
         MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
 
         MONARCH:TranscriptID is an instance of OBO:GENO_secondary
@@ -147,7 +149,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         self.cgd.add_genotype_info_to_graph(self.test_set_2)
 
-        # Make testutils object ande  load bindings
+        # Make testutils object and load bindings
         test_env = TestUtils(self.cgd.graph)
         cu = CurieUtil(self.curie_map)
         self.cgd.load_bindings()
@@ -171,14 +173,18 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         variant_position_id = self.cgd.make_id(
             'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
+        db_snp_curie = "dbSNP:{0}".format(db_snp_id)
+        cosmic_curie = "COSMIC:12560"
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
+        db_snp_uri = URIRef(cu.get_uri(db_snp_curie))
+        cosmic_uri = URIRef(cu.get_uri(cosmic_curie))
         chr_position_uri = URIRef(cu.get_uri(variant_position_id))
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?aaPosition ?chrPosition ?transcript
+                       SELECT ?genotype ?gene ?aaPosition ?chrPosition ?dbSNP ?cosmic ?transcript
                        WHERE {{
                            ?genotype a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
@@ -190,6 +196,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                OBO:GENO_reference_nucleotide "{2}" ;
                                OBO:GENO_altered_nucleotide "{3}" ;
                                OBO:GENO_results_in_amino_acid_change "{4}" ;
+                               owl:sameAs ?dbSNP ;
+                               owl:sameAs ?cosmic ;
                                OBO:SO_transcribed_to ?transcript .
 
                            ?transcript a OBO:GENO_secondary ;
@@ -197,14 +205,19 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
                            ?aaPosition rdfs:label "{6}" .
                            ?chrPosition rdfs:label "{7}" .
+
+                           ?dbSNP rdfs:label "{8}" .
+                           ?cosmic rdfs:label "{9}" .
                        }}
                        """.format(genotype_label, ref_amino_acid, ref_base,
-                                  variant_base, altered_amino_acid, transcript_id,
-                                  amino_acid_variant, variant_position_label)
+                                  variant_base, altered_amino_acid,
+                                  transcript_id, amino_acid_variant,
+                                  variant_position_label, db_snp_id, cosmic_id)
 
         # Expected Results
         expected_results = [[genotype_uri, gene_uri, aa_position_uri,
-                             chr_position_uri, transcript_uri]]
+                             chr_position_uri, db_snp_uri,
+                             cosmic_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 

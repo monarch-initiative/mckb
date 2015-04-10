@@ -235,6 +235,20 @@ class CGD(MySQLSource):
                      geno.genoparts['altered_nucleotide'],
                      variant_base, is_literal)
 
+        # Add SNP xrefs
+        if cosmic_id is not None:
+            match = re.match(re.compile(r'COSM(\d+)'), cosmic_id)
+            if match:
+                cosmic_stripped_id = match.group(1)
+                cosmic_curie = "COSMIC:{0}".format(cosmic_stripped_id)
+                gu.addIndividualToGraph(self.graph, cosmic_curie, cosmic_id)
+                gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
+        if db_snp_id is not None:
+            db_snp_curie = "dbSNP:{0}".format(db_snp_id)
+            gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
+            gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
+
+
         return
 
     def _add_feature_with_coords(self, feature_id, feature_label, feature_type, start_pos, end_pos, reference):
