@@ -131,19 +131,23 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID is an instance of OBO:SO_0001583
         MONARCH:GenotypeID has the label "ABL1 T315I missense mutation"
         MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
-        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
+        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID1 (amino acid location)
+        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID2 (location of chromosome)
         MONARCH:GenotypeID OBO:GENO_reference_amino_acid "T"
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
         MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
 
         MONARCH:TranscriptID is an instance of OBO:GENO_secondary
         MONARCH:TranscriptID has the label "CCDS35166.1"
+
+        MONARCH:PositionID1 (amino acid location) has the label "p.T315I"
+        MONARCH:PositionID2 (chromosome location) hase the label "ABL1 genomic location"
         """
         from dipper.utils.TestUtils import TestUtils
 
         self.cgd.add_genotype_info_to_graph(self.test_set_2)
 
-        # Make testutils object and load bindings
+        # Make testutils object ande  load bindings
         test_env = TestUtils(self.cgd.graph)
         cu = CurieUtil(self.curie_map)
         self.cgd.load_bindings()
@@ -151,40 +155,53 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
-         protein_variant_source) = self.test_set_2[0][0:11]
+         protein_variant_source, variant_gene, bp_pos, genotype_cdna,
+         cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
+         variant_base, primary_transcript_exons,
+         primary_transcript_variant_sub_types, variant_type, chromosome,
+         genome_build, build_version, build_date) = self.test_set_2[0]
 
         gene_id = self.cgd.gene_map[transcript_gene]
         ref_amino_acid = "T"
         altered_amino_acid = "I"
+        variant_position_label = '{0} genomic location'.format(variant_gene)
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+        variant_position_id = self.cgd.make_id(
+            'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
+        chr_position_uri = URIRef(cu.get_uri(variant_position_id))
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?position ?transcript
+                       SELECT ?genotype ?gene ?aaPosition ?chrPosition ?transcript
                        WHERE {{
                            ?genotype a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
-                               faldo:location ?position ;
+                               faldo:location ?aaPosition ;
+                               faldo:location ?chrPosition ;
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_results_in_amino_acid_change "{2}" ;
                                OBO:SO_transcribed_to ?transcript .
 
                            ?transcript a OBO:GENO_secondary ;
                                rdfs:label "{3}" .
+
+                           ?aaPosition rdfs:label "{4}" .
+                           ?chrPosition rdfs:label "{5}" .
                        }}
                        """.format(genotype_label, ref_amino_acid,
-                                  altered_amino_acid, transcript_id)
+                                  altered_amino_acid, transcript_id,
+                                  amino_acid_variant, variant_position_label)
 
         # Expected Results
-        expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
+        expected_results = [[genotype_uri, gene_uri, aa_position_uri, chr_position_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 

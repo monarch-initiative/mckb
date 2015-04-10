@@ -57,7 +57,6 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         self.phenotype_annot_uri = URIRef(cu.get_uri(phenotype_annot))
         self.drug_annot_uri = URIRef(cu.get_uri(drug_annot))
 
-
         self.genotype_label = genotype_label
         self.population_label = "Patient population diagnosed with {0} with" \
                                 " genotype {1}".format(diagnoses, genotype_label)

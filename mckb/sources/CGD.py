@@ -36,6 +36,7 @@ class CGD(MySQLSource):
         :return None
         """
         (connection, cursor) = self._connect_to_database()
+
         logger.info("Checking if database is empty")
         is_db_empty = self.check_if_db_is_empty(cursor)
         if is_db_empty:
@@ -219,10 +220,11 @@ class CGD(MySQLSource):
                            build_id, genome_build)
 
         # Add mutation in reference to chromosome
+        gu.addTriple(self.graph, genotype_id,
+                     Feature.properties['location'], variant_position_id)
         self._add_feature_with_coords(variant_position_id, variant_position_label,
                                       Feature.types['Position'], genome_pos_start,
                                       genome_pos_end, chromosome_id)
-
 
         return
 
@@ -284,7 +286,6 @@ class CGD(MySQLSource):
             phenotype_id = self.make_id('cgd-phenotype{0}'.format(diagnoses_key))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
             drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
-
 
             # Add individuals/classes
             gu.addIndividualToGraph(self.graph, population_id, population_label,
