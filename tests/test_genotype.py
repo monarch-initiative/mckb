@@ -132,7 +132,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID has the label "ABL1 T315I missense mutation"
         MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
         MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID1 (amino acid location)
-        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID2 (location of chromosome)
+        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID2 (location on chromosome)
+        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID3 (location on gene)
         MONARCH:GenotypeID OBO:GENO_reference_amino_acid "T"
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
         MONARCH:GenotypeID owl:sameAs dbSNP:rs121913459
@@ -143,7 +144,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:TranscriptID has the label "CCDS35166.1"
 
         MONARCH:PositionID1 (amino acid location) has the label "p.T315I"
-        MONARCH:PositionID2 (chromosome location) hase the label "ABL1 genomic location"
+        MONARCH:PositionID2 (chromosome location) has the label "ABL1 genomic location"
+        MONARCH:PositionID3 (gene location) has the label "ABL1 cdna location c.944C>T"
         """
         from dipper.utils.TestUtils import TestUtils
 
