@@ -201,9 +201,16 @@ class CGD(MySQLSource):
          genome_build, build_version, build_date) = row
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
-        variant_position_id = self.make_id(
-            'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
-        variant_position_label = '{0} genomic location'.format(variant_gene)
+        # Chromosomal position ID
+        chrom_position_id = self.make_id(
+            'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
+        chrom_position_label = '{0} genomic location'.format(variant_gene)
+
+        #Gene position ID
+        gene_id = self.gene_map[variant_gene]
+        gene_position_id = self.make_id(
+            'cgd-var-pos{0}{1}{2}'.format(genotype_key, variant_gene, genotype_cdna))
+        gene_position_label = '{0} cdna location {1}'.format(variant_gene, genotype_cdna)
 
         # Add gene
         self._add_genotype_gene_relationship(genotype_id, variant_gene)
@@ -220,12 +227,19 @@ class CGD(MySQLSource):
         geno.addChromosome(chromosome, taxon_id, genome_label,
                            build_id, genome_build)
 
-        # Add mutation in reference to chromosome
+        # Add variant coordiantes in reference to chromosome
         gu.addTriple(self.graph, genotype_id,
-                     Feature.properties['location'], variant_position_id)
-        self._add_feature_with_coords(variant_position_id, variant_position_label,
+                     Feature.properties['location'], chrom_position_id)
+        self._add_feature_with_coords(chrom_position_id, chrom_position_label,
                                       Feature.types['Position'], genome_pos_start,
                                       genome_pos_end, chromosome_id)
+
+        # Add mutation coordinates in reference to gene
+        gu.addTriple(self.graph, genotype_id,
+                     Feature.properties['location'], gene_position_id)
+        self._add_feature_with_coords(gene_position_id, gene_position_label,
+                                      Feature.types['Position'], bp_pos,
+                                      bp_pos, gene_id)
 
         # Add nucleotide mutation
         gu.addTriple(self.graph, genotype_id,
@@ -247,7 +261,6 @@ class CGD(MySQLSource):
             db_snp_curie = "dbSNP:{0}".format(db_snp_id)
             gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
             gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
-
 
         return
 

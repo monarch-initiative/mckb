@@ -172,7 +172,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         variant_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
+            'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
+        gene_position_id = self.cgd.make_id(
+            'cgd-var-pos{0}{1}{2}'.format(genotype_key, variant_gene, genotype_cdna))
+        gene_position_label = '{0} cdna location {1}'.format(variant_gene, genotype_cdna)
         db_snp_curie = "dbSNP:{0}".format(db_snp_id)
         cosmic_curie = "COSMIC:12560"
         genotype_uri = URIRef(cu.get_uri(genotype_id))
@@ -182,9 +185,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         db_snp_uri = URIRef(cu.get_uri(db_snp_curie))
         cosmic_uri = URIRef(cu.get_uri(cosmic_curie))
         chr_position_uri = URIRef(cu.get_uri(variant_position_id))
+        gene_position_uri = URIRef(cu.get_uri(gene_position_id))
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?aaPosition ?chrPosition ?dbSNP ?cosmic ?transcript
+                       SELECT ?genotype ?gene ?aaPosition ?chrPosition ?genePosition ?dbSNP ?cosmic ?transcript
                        WHERE {{
                            ?genotype a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
@@ -192,6 +196,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                OBO:GENO_0000408 ?gene ;
                                faldo:location ?aaPosition ;
                                faldo:location ?chrPosition ;
+                               faldo:location ?genePosition ;
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_reference_nucleotide "{2}" ;
                                OBO:GENO_altered_nucleotide "{3}" ;
@@ -205,18 +210,20 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
                            ?aaPosition rdfs:label "{6}" .
                            ?chrPosition rdfs:label "{7}" .
+                           ?genePosition rdfs:label "{8}" .
 
-                           ?dbSNP rdfs:label "{8}" .
-                           ?cosmic rdfs:label "{9}" .
+                           ?dbSNP rdfs:label "{9}" .
+                           ?cosmic rdfs:label "{10}" .
                        }}
                        """.format(genotype_label, ref_amino_acid, ref_base,
                                   variant_base, altered_amino_acid,
                                   transcript_id, amino_acid_variant,
-                                  variant_position_label, db_snp_id, cosmic_id)
+                                  variant_position_label, gene_position_label,
+                                  db_snp_id, cosmic_id)
 
         # Expected Results
         expected_results = [[genotype_uri, gene_uri, aa_position_uri,
-                             chr_position_uri, db_snp_uri,
+                             chr_position_uri, gene_position_uri, db_snp_uri,
                              cosmic_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
@@ -356,7 +363,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         self.assertEqual(expected_results, sparql_output)
 
-    def test_genomic_position_model(self):
+    def test_chromosome_position_model(self):
         """
         Test modelling of genomic positions
         Using test data set 2, and the function add_genotype_info_to_graph()
@@ -380,7 +387,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         chromosome = ":hg19chr9"
         variant_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}'.format(genotype_key, variant_gene))
+            'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
         variant_position_label = '{0} genomic location'.format(variant_gene)
         region_id = ":_{0}Region".format(variant_position_id)
         start_id = ":_{0}-{1}".format(chromosome, genome_pos_start)
