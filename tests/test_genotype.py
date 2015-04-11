@@ -266,16 +266,15 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         position = 741
 
-        amino_acid_id = self.cgd.make_id('cgd-transcript{0}'.format(amino_acid_variant))
+        aa_seq_id = self.cgd.make_id('cgd-transcript{0}'.format(amino_acid_variant))
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         region_id = ":_{0}Region".format(aa_position_id)
-        both_strand_id = ":_{0}-{1}".format(amino_acid_id, position)
+        both_strand_id = ":_{0}-{1}".format(aa_seq_id, position)
 
-        transcript_uri = URIRef(cu.get_uri(amino_acid_id))
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
-        amino_acid_uri = URIRef(cu.get_uri(amino_acid_id))
+        aa_seq_uri = URIRef(cu.get_uri(aa_seq_id))
 
         sparql_query = """
                        SELECT ?position ?region ?bsPosition ?transcript
@@ -296,7 +295,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                        """.format(amino_acid_variant, position)
 
         # Expected Results
-        expected_results = [[aa_position_uri, region_uri, both_strand_uri, amino_acid_uri]]
+        expected_results = [[aa_position_uri, region_uri, both_strand_uri, aa_seq_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)

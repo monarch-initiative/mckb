@@ -123,8 +123,8 @@ class CGD(MySQLSource):
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
 
-        # Make fake amino acid - need to curate these
-        amino_acid_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
+        # Make fake amino acid sequence - need to curate these
+        aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
 
         # Add Transcript:
         geno.addTranscript(genotype_id, transcript_curie, transcript_id,
@@ -174,7 +174,7 @@ class CGD(MySQLSource):
                          Feature.properties['location'], aa_position_id)
             self._add_feature_with_coords(aa_position_id, amino_acid_variant,
                                           Feature.types['Position'], position,
-                                          position, amino_acid_id)
+                                          position, aa_seq_id)
 
         return
 
