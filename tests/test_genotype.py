@@ -108,7 +108,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                OBO:GENO_results_in_amino_acid_change "{2}" ;
                                OBO:SO_transcribed_to ?transcript .
 
-                           ?transcript a OBO:GENO_primary ;
+                           ?transcript a OBO:SO_0000233 ;
                                rdfs:label "{3}" .
                        }}
                        """.format(genotype_label, ref_amino_acid,
@@ -140,7 +140,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID owl:sameAs COSMIC:12560
         MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
 
-        MONARCH:TranscriptID is an instance of OBO:GENO_secondary
+        MONARCH:TranscriptID is an instance of OBO:SO_0000233
         MONARCH:TranscriptID has the label "CCDS35166.1"
 
         MONARCH:PositionID1 (amino acid location) has the label "p.T315I"
@@ -176,9 +176,9 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         variant_position_id = self.cgd.make_id(
             'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
         gene_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(genotype_key, variant_gene, genotype_cdna))
-        gene_position_label = '{0} cdna location {1}'.format(variant_gene, genotype_cdna)
-        db_snp_curie = "dbSNP:{0}".format(db_snp_id)
+            'cgd-transcript-pos{0}{1}'.format(genotype_key, transcript_id))
+        gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
+        db_snp_curie = "dbSNP:121913459"
         cosmic_curie = "COSMIC:12560"
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
@@ -207,7 +207,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                owl:sameAs ?cosmic ;
                                OBO:SO_transcribed_to ?transcript .
 
-                           ?transcript a OBO:GENO_secondary ;
+                           ?transcript a OBO:SO_0000233 ;
                                rdfs:label "{5}" .
 
                            ?aaPosition rdfs:label "{6}" .
@@ -266,15 +266,16 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         position = 741
 
-        transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        amino_acid_id = self.cgd.make_id('cgd-transcript{0}'.format(amino_acid_variant))
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         region_id = ":_{0}Region".format(aa_position_id)
-        both_strand_id = ":_{0}-{1}".format(transcript, position)
+        both_strand_id = ":_{0}-{1}".format(amino_acid_id, position)
 
-        transcript_uri = URIRef(cu.get_uri(transcript))
+        transcript_uri = URIRef(cu.get_uri(amino_acid_id))
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
+        amino_acid_uri = URIRef(cu.get_uri(amino_acid_id))
 
         sparql_query = """
                        SELECT ?position ?region ?bsPosition ?transcript
@@ -295,7 +296,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                        """.format(amino_acid_variant, position)
 
         # Expected Results
-        expected_results = [[aa_position_uri, region_uri, both_strand_uri, transcript_uri]]
+        expected_results = [[aa_position_uri, region_uri, both_strand_uri, amino_acid_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)

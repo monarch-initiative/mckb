@@ -41,12 +41,12 @@ class CGD(MySQLSource):
         is_db_empty = self.check_if_db_is_empty(cursor)
         if is_db_empty:
             file = '/'.join((self.rawdir,
-                                  self.static_files['cgd']['file']))
+                             self.static_files['cgd']['file']))
             logger.info("Loading data into database from file {0}".format(file))
             self._load_data_from_dump_file(file)
         else:
             logger.info("Database contains tables, "
-                         "skipping load from dump file")
+                        "skipping load from dump file")
 
         mapping_file = '../../resources/mappings/gene.tsv'
         self.gene_map = self.set_gene_map(mapping_file)
@@ -123,12 +123,12 @@ class CGD(MySQLSource):
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
 
-        if transcript_priority == 'Primary':
-            geno.addTranscript(genotype_id, transcript_curie, transcript_id,
-                               geno.genoparts['primary_priority'])
-        elif transcript_priority == 'Secondary':
-            geno.addTranscript(genotype_id, transcript_curie, transcript_id,
-                               geno.genoparts['secondary_priority'])
+        # Make fake amino acid - need to curate these
+        amino_acid_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
+
+        # Add Transcript:
+        geno.addTranscript(genotype_id, transcript_curie, transcript_id,
+                           geno.genoparts['transcript'])
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', genotype_label):
@@ -174,7 +174,7 @@ class CGD(MySQLSource):
                          Feature.properties['location'], aa_position_id)
             self._add_feature_with_coords(aa_position_id, amino_acid_variant,
                                           Feature.types['Position'], position,
-                                          position, transcript_curie)
+                                          position, amino_acid_id)
 
         return
 
@@ -207,13 +207,15 @@ class CGD(MySQLSource):
         chrom_position_label = '{0} genomic location'.format(variant_gene)
 
         #Gene position ID
-        gene_id = self.gene_map[variant_gene]
         gene_position_id = self.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(genotype_key, variant_gene, genotype_cdna))
-        gene_position_label = '{0} cdna location {1}'.format(variant_gene, genotype_cdna)
+            'cgd-transcript-pos{0}{1}'.format(genotype_key, transcript_id))
+        gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
 
         # Add gene
         self._add_genotype_gene_relationship(genotype_id, variant_gene)
+
+        # Transcript reference for nucleotide position
+        transcript_curie = self.make_id('cgd-transcript{0}'.format(transcript_id))
 
         # Add the genome build
         genome_label = "Human"
@@ -227,7 +229,7 @@ class CGD(MySQLSource):
         geno.addChromosome(chromosome, taxon_id, genome_label,
                            build_id, genome_build)
 
-        # Add variant coordiantes in reference to chromosome
+        # Add variant coordinates in reference to chromosome
         gu.addTriple(self.graph, genotype_id,
                      Feature.properties['location'], chrom_position_id)
         self._add_feature_with_coords(chrom_position_id, chrom_position_label,
@@ -239,7 +241,7 @@ class CGD(MySQLSource):
                      Feature.properties['location'], gene_position_id)
         self._add_feature_with_coords(gene_position_id, gene_position_label,
                                       Feature.types['Position'], bp_pos,
-                                      bp_pos, gene_id)
+                                      bp_pos, transcript_curie)
 
         # Add nucleotide mutation
         gu.addTriple(self.graph, genotype_id,
@@ -258,9 +260,12 @@ class CGD(MySQLSource):
                 gu.addIndividualToGraph(self.graph, cosmic_curie, cosmic_id)
                 gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
         if db_snp_id is not None:
-            db_snp_curie = "dbSNP:{0}".format(db_snp_id)
-            gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
-            gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
+            match = re.match(re.compile(r'rs(\d+)'), db_snp_id)
+            if match:
+                snp_stripped_id = match.group(1)
+                db_snp_curie = "dbSNP:{0}".format(snp_stripped_id)
+                gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
+                gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
 
         return
 
