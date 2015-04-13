@@ -65,10 +65,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
         MONARCH:GenotypeID OBO:GENO_reference_amino_acid "Q"
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "X"
-        MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
+        MONARCH:GenotypeID OBO:SO_transcribed_to CCDS:413.1
 
-        MONARCH:TranscriptID is an instance of OBO:GENO_primary
-        MONARCH:TranscriptID has the label "CCDS413.1"
+        CCDS:413.1 is an instance of OBO:GENO_primary
+        CCDS:413.1 has the label "CCDS413.1"
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -89,7 +89,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         altered_amino_acid = "X"
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
-        transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        transcript = "CCDS:413.1"
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
@@ -138,10 +138,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
         MONARCH:GenotypeID owl:sameAs dbSNP:rs121913459
         MONARCH:GenotypeID owl:sameAs COSMIC:12560
-        MONARCH:GenotypeID OBO:SO_transcribed_to MONARCH:TranscriptID
+        MONARCH:GenotypeID OBO:SO_transcribed_to CCDS:35166.1
 
-        MONARCH:TranscriptID is an instance of OBO:SO_0000233
-        MONARCH:TranscriptID has the label "CCDS35166.1"
+        CCDS:35166.1 is an instance of OBO:SO_0000233
+        CCDS:35166.1 has the label "CCDS35166.1"
 
         MONARCH:PositionID1 (amino acid location) has the label "p.T315I"
         MONARCH:PositionID2 (chromosome location) has the label "ABL1 genomic location"
@@ -171,7 +171,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         variant_position_label = '{0} genomic location'.format(variant_gene)
 
         genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
-        transcript = self.cgd.make_id('cgd-transcript{0}'.format(transcript_id))
+        transcript = "CCDS:35166.1"
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         variant_position_id = self.cgd.make_id(
             'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))

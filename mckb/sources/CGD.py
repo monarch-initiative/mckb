@@ -118,7 +118,7 @@ class CGD(MySQLSource):
          protein_variant_source) = row[0:11]
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
-        transcript_curie = self.make_id('cgd-transcript{0}'.format(transcript_id))
+        transcript_curie = re.sub(r'(CCDS)(\d+)', r'\1:\2', transcript_id)
 
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
@@ -215,7 +215,7 @@ class CGD(MySQLSource):
         self._add_genotype_gene_relationship(genotype_id, variant_gene)
 
         # Transcript reference for nucleotide position
-        transcript_curie = self.make_id('cgd-transcript{0}'.format(transcript_id))
+        transcript_curie = re.sub(r'(CCDS)(\d+)', r'\1:\2', transcript_id)
 
         # Add the genome build
         genome_label = "Human"
@@ -253,19 +253,13 @@ class CGD(MySQLSource):
 
         # Add SNP xrefs
         if cosmic_id is not None:
-            match = re.match(re.compile(r'COSM(\d+)'), cosmic_id)
-            if match:
-                cosmic_stripped_id = match.group(1)
-                cosmic_curie = "COSMIC:{0}".format(cosmic_stripped_id)
-                gu.addIndividualToGraph(self.graph, cosmic_curie, cosmic_id)
-                gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
+            cosmic_curie = re.sub(r'(COSM)(\d+)', r'\1IC:\2', cosmic_id)
+            gu.addIndividualToGraph(self.graph, cosmic_curie, cosmic_id)
+            gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
         if db_snp_id is not None:
-            match = re.match(re.compile(r'rs(\d+)'), db_snp_id)
-            if match:
-                snp_stripped_id = match.group(1)
-                db_snp_curie = "dbSNP:{0}".format(snp_stripped_id)
-                gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
-                gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
+            db_snp_curie = re.sub(r'rs(\d+)', r'dbSNP:\1', db_snp_id)
+            gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
+            gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
 
         return
 
