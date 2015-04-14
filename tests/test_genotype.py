@@ -45,6 +45,11 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                             'Substitution', 'chr9', 'hg19', 'hg19',
                             datetime.datetime(2009, 2, 1, 0, 0)),)
 
+        self.cgd.transcript_xrefs = {
+            'RefSeq':  {'CCDS35166.1': 'NP_005148.2'},
+            'UniProt': {'CCDS35166.1': 'P00519-1'}
+        }
+
         return
 
     def tearDown(self):
@@ -65,7 +70,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
         MONARCH:GenotypeID OBO:GENO_reference_amino_acid "Q"
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "X"
-        MONARCH:GenotypeID OBO:SO_transcribed_to CCDS:413.1
+        MONARCH:GenotypeID RO:0002205 CCDS:413.1
 
         CCDS:413.1 is an instance of OBO:GENO_primary
         CCDS:413.1 has the label "CCDS413.1"
@@ -106,7 +111,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                faldo:location ?position ;
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_results_in_amino_acid_change "{2}" ;
-                               OBO:SO_transcribed_to ?transcript .
+                               RO:0002205 ?transcript .
 
                            ?transcript a OBO:SO_0000233 ;
                                rdfs:label "{3}" .
@@ -138,7 +143,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
         MONARCH:GenotypeID owl:sameAs dbSNP:rs121913459
         MONARCH:GenotypeID owl:sameAs COSMIC:12560
-        MONARCH:GenotypeID OBO:SO_transcribed_to CCDS:35166.1
+        MONARCH:GenotypeID RO:0002205 CCDS:35166.1
 
         CCDS:35166.1 is an instance of OBO:SO_0000233
         CCDS:35166.1 has the label "CCDS35166.1"
@@ -180,6 +185,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
         db_snp_curie = "dbSNP:121913459"
         cosmic_curie = "COSMIC:12560"
+        uniprot_curie = "UniProtKB:P00519#P00519-1"
+        refseq_curie = "NCBIProtein:NP_005148.2"
         genotype_uri = URIRef(cu.get_uri(genotype_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
@@ -188,9 +195,14 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         cosmic_uri = URIRef(cu.get_uri(cosmic_curie))
         chr_position_uri = URIRef(cu.get_uri(variant_position_id))
         gene_position_uri = URIRef(cu.get_uri(gene_position_id))
+        uniprot_uri = URIRef(cu.get_uri(uniprot_curie))
+        refseq_uri = URIRef(cu.get_uri(refseq_curie))
+
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?aaPosition ?chrPosition ?genePosition ?dbSNP ?cosmic ?transcript
+                       SELECT ?genotype ?gene ?aaPosition ?chrPosition
+                              ?genePosition ?dbSNP ?cosmic ?transcript
+                              ?uniprot ?refseq
                        WHERE {{
                            ?genotype a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
@@ -205,10 +217,20 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                OBO:GENO_results_in_amino_acid_change "{4}" ;
                                owl:sameAs ?dbSNP ;
                                owl:sameAs ?cosmic ;
-                               OBO:SO_transcribed_to ?transcript .
+                               RO:0002205 ?transcript .
 
                            ?transcript a OBO:SO_0000233 ;
-                               rdfs:label "{5}" .
+                               rdfs:label "{5}" ;
+                               OBO:RO_0002513 ?uniprot ;
+                               OBO:RO_0002513 ?refseq .
+
+                           ?uniprot a OBO:SO_0000104 ;
+                               rdfs:label "P00519-1" .
+
+                           ?refseq a OBO:SO_0000104 ;
+                               rdfs:label "NP_005148.2" .
+
+                           ?refseq owl:sameAs ?uniprot .
 
                            ?aaPosition rdfs:label "{6}" .
                            ?chrPosition rdfs:label "{7}" .
@@ -225,8 +247,9 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         # Expected Results
         expected_results = [[genotype_uri, gene_uri, aa_position_uri,
-                             chr_position_uri, gene_position_uri, db_snp_uri,
-                             cosmic_uri, transcript_uri]]
+                             chr_position_uri, gene_position_uri,
+                             db_snp_uri, cosmic_uri, transcript_uri,
+                             uniprot_uri, refseq_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 

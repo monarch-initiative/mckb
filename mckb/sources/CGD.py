@@ -19,15 +19,38 @@ class CGD(MySQLSource):
     """
     Test data source for cancer knowledge base
     """
+    files = {
+        'transcript_xrefs': {
+            'file': 'CCDS2UniProtKB.current.txt',
+            'url': 'ftp://ftp.ncbi.nlm.nih.gov/pub/CCDS/current_human/CCDS2UniProtKB.current.txt'
+        }
+    }
     static_files = {
-        'cgd': {'file': 'g2p.sql.gz'}
+        'cgd': {
+            'file': '../../resources/g2p.sql.gz'
+        },
+        'ncbi_gene_mappings': {
+            'file': '../../resources/mappings/gene.tsv'
+        }
     }
 
     def __init__(self, database, username, password, host=None):
         super().__init__('cgd', database, username, password, host)
         self.dataset = Dataset('cgd', 'cgd', 'http://ga4gh.org')
-        self.rawdir = 'resources'
         self.gene_map = {}
+        self.transcript_xrefs = {'RefSeq': {}, 'UniProt': {}}
+
+    def fetch(self, is_dl_forced):
+        """
+        Override Source.fetch()
+        Fetches resources from CTD using the CTD.files dictionary
+        Args:
+            :param is_dl_forced (bool): Force download
+        Returns:
+            :return None
+        """
+        self.get_files(is_dl_forced)
+        return
 
     def parse(self):
         """
@@ -40,16 +63,20 @@ class CGD(MySQLSource):
         logger.info("Checking if database is empty")
         is_db_empty = self.check_if_db_is_empty(cursor)
         if is_db_empty:
-            file = '/'.join((self.rawdir,
-                             self.static_files['cgd']['file']))
+            file = self.static_files['cgd']['file']
             logger.info("Loading data into database from file {0}".format(file))
             self._load_data_from_dump_file(file)
         else:
             logger.info("Database contains tables, "
                         "skipping load from dump file")
 
-        mapping_file = '../../resources/mappings/gene.tsv'
-        self.gene_map = self.set_gene_map(mapping_file)
+        self.gene_map = self.set_gene_map(
+            self.static_files['ncbi_gene_mappings']['file'])
+
+        ccds_xref_file = '/'.join((self.rawdir,
+                                   self.files['transcript_xrefs']['file']))
+
+        self.set_transcript_xrefs(ccds_xref_file)
 
         genotype_protein_assocs = self. _get_genotype_protein_info(cursor)
         self.add_genotype_info_to_graph(genotype_protein_assocs)
@@ -118,7 +145,10 @@ class CGD(MySQLSource):
          protein_variant_source) = row[0:11]
 
         genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
-        transcript_curie = re.sub(r'(CCDS)(\d+)', r'\1:\2', transcript_id)
+
+        transcript_curie = self._make_transcript_curie(transcript_id)
+        uniprot_curie = self._make_uniprot_polypeptide_curie(transcript_id)
+        ncbi_protein_curie = self._make_ncbi_polypeptide_curie(transcript_id)
 
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
@@ -129,6 +159,25 @@ class CGD(MySQLSource):
         # Add Transcript:
         geno.addTranscript(genotype_id, transcript_curie, transcript_id,
                            geno.genoparts['transcript'])
+
+        # Add polypeptide
+        if ncbi_protein_curie is not None:
+            geno.addPolypeptide(ncbi_protein_curie,
+                                self.transcript_xrefs['RefSeq'][transcript_id],
+                                transcript_curie)
+            aa_seq_id = ncbi_protein_curie
+        if uniprot_curie is not None:
+            geno.addPolypeptide(uniprot_curie,
+                                self.transcript_xrefs['UniProt'][transcript_id],
+                                transcript_curie)
+            # Overrides ncbi_protein_curie,
+            # but we set them as equal individuals below
+            aa_seq_id = uniprot_curie
+
+        if ncbi_protein_curie is not None and uniprot_curie is not None:
+            gu.addSameIndividual(self.graph, ncbi_protein_curie, uniprot_curie)
+        else:
+            aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', genotype_label):
@@ -163,10 +212,10 @@ class CGD(MySQLSource):
         # Add amino acid change to model
         if is_missense is True and match is not None:
             gu.addTriple(self.graph, genotype_id,
-                         geno.genoparts['reference_amino_acid'],
+                         geno.properties['reference_amino_acid'],
                          ref_amino_acid, is_literal)
             gu.addTriple(self.graph, genotype_id,
-                         geno.genoparts['results_in_amino_acid_change'],
+                         geno.properties['results_in_amino_acid_change'],
                          altered_amino_acid, is_literal)
 
             # Add position/location model for amino acid
@@ -215,7 +264,7 @@ class CGD(MySQLSource):
         self._add_genotype_gene_relationship(genotype_id, variant_gene)
 
         # Transcript reference for nucleotide position
-        transcript_curie = re.sub(r'(CCDS)(\d+)', r'\1:\2', transcript_id)
+        transcript_curie = self._make_transcript_curie(transcript_id)
 
         # Add the genome build
         genome_label = "Human"
@@ -245,17 +294,19 @@ class CGD(MySQLSource):
 
         # Add nucleotide mutation
         gu.addTriple(self.graph, genotype_id,
-                     geno.genoparts['reference_nucleotide'],
+                     geno.properties['reference_nucleotide'],
                      ref_base, is_literal)
         gu.addTriple(self.graph, genotype_id,
-                     geno.genoparts['altered_nucleotide'],
+                     geno.properties['altered_nucleotide'],
                      variant_base, is_literal)
 
         # Add SNP xrefs
         if cosmic_id is not None:
-            cosmic_curie = re.sub(r'(COSM)(\d+)', r'\1IC:\2', cosmic_id)
-            gu.addIndividualToGraph(self.graph, cosmic_curie, cosmic_id)
-            gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
+            cosmic_id_list = cosmic_id.split(', ')
+            for c_id in cosmic_id_list:
+                cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
+                gu.addIndividualToGraph(self.graph, cosmic_curie, c_id)
+                gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
         if db_snp_id is not None:
             db_snp_curie = re.sub(r'rs(\d+)', r'dbSNP:\1', db_snp_id)
             gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
@@ -364,6 +415,52 @@ class CGD(MySQLSource):
                 drug_assoc.addAssociationToGraph(self.graph)
 
         return
+
+    def _make_transcript_curie(self, transcript_id):
+        """
+        :param transript_id:
+        :return: transcript_curie
+        """
+        if re.match(r'^CCDS', transcript_id):
+            transcript_curie = re.sub(r'(CCDS)(\d+)', r'\1:\2', transcript_id)
+        elif re.match(r'^NM', transcript_id):
+            transcript_curie = re.sub(r'(NM_)(\d+)', r'GenBank:\1\2', transcript_id)
+
+        return transcript_curie
+
+    def _make_uniprot_polypeptide_curie(self, transcript_id):
+        """
+        :param transript_id:
+        :return: uniprot_curie
+        """
+        uniprot_curie = None
+        if transcript_id in self.transcript_xrefs['UniProt']:
+            uniprot_id = self.transcript_xrefs['UniProt'][transcript_id]
+            if re.search(r'\-', uniprot_id):
+                uniprot_curie = re.sub(r'([\w\d]+)(\-\d+)', r'UniProtKB:\1#\1\2',
+                                       uniprot_id)
+            else:
+                uniprot_curie = "UniProtKB:{0}".format(uniprot_id)
+        else:
+            # raise Exception("Could not find {0} in CCDS cross reference"
+            #                " dictionary".format(transcript_id))
+            pass
+        return uniprot_curie
+
+    def _make_ncbi_polypeptide_curie(self, transcript_id):
+        """
+        :param transript_id:
+        :return: ncbi_protein_curie
+        """
+        ncbi_protein_curie = None
+        if transcript_id in self.transcript_xrefs['RefSeq']:
+            protein_id = self.transcript_xrefs['RefSeq'][transcript_id]
+            ncbi_protein_curie = "NCBIProtein:{0}".format(protein_id)
+        else:
+            # raise Exception("Could not find {0} in CCDS cross reference"
+            #                " dictionary".format(transcript_id))
+            pass
+        return ncbi_protein_curie
 
     def _get_disease_drug_genotype_relationship(self, cursor):
         """
@@ -685,3 +782,32 @@ class CGD(MySQLSource):
                     gene_id_map[gene_label] = gene_id
 
         return gene_id_map
+
+    def set_transcript_xrefs(self, mapping_file):
+        """
+        Sets transcript_xref instance variable in this structure:
+                {
+                     'RefSeq': {
+                         'CCDS1234.5': 'NP_12345',
+                         ...
+                     }
+                     'UniProt': {
+                         'CCDS1234.5': 'Q12345'.
+                         ...
+                     }
+                 }
+        :param mapping_file: String, local path to file containing
+                                     CCDS xref mappings
+        :return: None
+        """
+        with open(mapping_file, 'rt') as tsvfile:
+            reader = csv.reader(tsvfile, delimiter="\t")
+            for row in reader:
+                (ccds_id, ncbi_protein_id, uniprot_id) = row[0:3]
+                if re.match('^#', ccds_id):
+                    next
+                else:
+                    self.transcript_xrefs['RefSeq'][ccds_id] = ncbi_protein_id
+                    self.transcript_xrefs['UniProt'][ccds_id] = uniprot_id
+
+        return
