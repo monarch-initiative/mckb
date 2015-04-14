@@ -153,7 +153,8 @@ class CGD(MySQLSource):
         geno.addGenotype(genotype_id, genotype_label,
                          geno.genoparts['sequence_alteration'])
 
-        # Make fake amino acid sequence - need to curate these
+        # Make fake amino acid sequence in case we
+        # can't get a CCDS to Uniprot and/or NCBI Protein mapping
         aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
 
         # Add Transcript:
@@ -363,29 +364,38 @@ class CGD(MySQLSource):
              specific_diagnosis, organ, relationship,
              drug_key, drug, therapy_status, pubmed_id) = row
 
+            if specific_diagnosis is not None:
+                diagnoses_label = specific_diagnosis
+            else:
+                diagnoses_label = diagnoses
+
             # Arbitrary IDs to be replaced by ontology mappings
-            population_id = self.make_id('cgd{0}{1}'.format(genotype_key,
-                                                            genotype_label))
-            population_label = "Patient population diagnosed with {0} with" \
-                               " genotype {1}".format(diagnoses, genotype_label)
             genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
-            phenotype_id = self.make_id('cgd-phenotype{0}'.format(diagnoses_key))
+            disease_id = self.make_id('cgd-disease{0}{1}'.format(diagnoses_key,
+                                                                 diagnoses_label))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
             drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
 
+            disease_instance_id = self.make_id('cgd-disease{0}{1}'.format(
+                diagnoses_label, genotype_key))
+            disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, genotype_label)
+
+            # Reified association for disease caused_by genotype
+            disease_genotype_annot = self.make_id("assoc{0}{1}".format(disease_instance_id, genotype_key))
+
             # Add individuals/classes
-            gu.addIndividualToGraph(self.graph, population_id, population_label,
-                                    geno.genoparts['population'])
-            gu.addClassToGraph(self.graph, phenotype_id, diagnoses)
+            gu.addClassToGraph(self.graph, disease_id, diagnoses_label)
             gu.addClassToGraph(self.graph, drug_id, drug)
-            gu.loadObjectProperties(self.graph, {relationship:relationship_id})
+            gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
+                                    disease_id)
+            gu.loadObjectProperties(self.graph, {relationship: relationship_id})
 
             # Add triples
-            gu.addTriple(self.graph, population_id,
-                         geno.properties['has_genotype'], genotype_id)
-            gu.addTriple(self.graph, population_id,
-                         geno.properties['has_phenotype'], phenotype_id)
-            gu.addTriple(self.graph, population_id, relationship_id, drug_id)
+            gu.addTriple(self.graph, disease_instance_id,
+                         'RO:caused_by', genotype_id)
+
+            gu.addTriple(self.graph, drug_id, relationship_id, disease_genotype_annot)
+
 
             # Add 1 association per above triple,
             # see https://github.com/monarch-initiative/mckb/issues/1
@@ -395,24 +405,12 @@ class CGD(MySQLSource):
                 source_id = "PMID:{0}".format(pubmed_id)
                 evidence = 'ECO:0000033'
 
-                genotype_annot = self.make_id("{0}{1}".format(population_id, genotype_label))
-                phenotype_annot = self.make_id("{0}{1}".format(population_id, diagnoses))
-                drug_annot = self.make_id("{0}{1}".format(population_id, drug))
-
-                genotype_assoc = InteractionAssoc(genotype_annot, population_id,
-                                                  genotype_id, source_id, evidence)
-                phenotype_assoc = InteractionAssoc(phenotype_annot, population_id,
-                                                   phenotype_id, source_id, evidence)
-                drug_assoc = InteractionAssoc(drug_annot, population_id,
-                                              drug_id, source_id, evidence)
-
-                genotype_assoc.rel = geno.properties['has_genotype']
-                phenotype_assoc.rel = geno.properties['has_phenotype']
-                drug_assoc.rel = relationship_id
-
-                genotype_assoc.addAssociationToGraph(self.graph)
-                phenotype_assoc.addAssociationToGraph(self.graph)
-                drug_assoc.addAssociationToGraph(self.graph)
+                disease_geno_assoc = InteractionAssoc(disease_genotype_annot,
+                                                      disease_instance_id,
+                                                      genotype_id, source_id,
+                                                      evidence)
+                disease_geno_assoc.rel = 'RO:caused_by'
+                disease_geno_assoc.addAssociationToGraph(self.graph)
 
         return
 

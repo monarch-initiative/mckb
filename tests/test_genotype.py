@@ -145,10 +145,20 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
         MONARCH:GenotypeID owl:sameAs dbSNP:rs121913459
         MONARCH:GenotypeID owl:sameAs COSMIC:12560
-        MONARCH:GenotypeID RO:0002205 CCDS:35166.1
+        MONARCH:GenotypeID RO:0002205 (transcribed_to) CCDS:35166.1
 
         CCDS:35166.1 is an instance of OBO:SO_0000233
         CCDS:35166.1 has the label "CCDS35166.1"
+        CCDS:35166.1 OBO:RO_0002513 (translates_to) UniProtKB:P00519#P00519-1
+        CCDS:35166.1 OBO:RO_0002513 (translates_to) NCBIProtein:NP_005148.2
+
+        UniProtKB:P00519#P00519-1 owl:sameAs NCBIProtein:NP_005148.2
+
+        UniProtKB:P00519#P00519-1  is an instance of OBO:SO_0000104 (polypeptide)
+        UniProtKB:P00519#P00519-1  has the label "P00519#P00519-1"
+
+        NCBIProtein:NP_005148.2  is an instance of OBO:SO_0000104 (polypeptide)
+        NCBIProtein:NP_005148.2  has the label "NP_005148.2"
 
         MONARCH:PositionID1 (amino acid location) has the label "p.T315I"
         MONARCH:PositionID2 (chromosome location) has the label "ABL1 genomic location"
@@ -302,7 +312,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         uniprot_uri = URIRef(cu.get_uri(uniprot_curie))
 
         sparql_query = """
-                       SELECT ?position ?region ?bsPosition ?transcript
+                       SELECT ?position ?region ?bsPosition ?protein
                        WHERE {{
                            ?position a faldo:Position ;
                                rdfs:label "{0}" ;
@@ -315,7 +325,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                            ?bsPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
                                faldo:position {1} ;
-                               faldo:reference ?transcript .
+                               faldo:reference ?protein .
                        }}
                        """.format(amino_acid_variant, position)
 
