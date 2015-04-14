@@ -80,10 +80,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         A Monarch:DrugID is an OWL Class
         A Monarch:DrugID rdfs:label "5FU-based adjuvant therapy"
         A Monarch:RelationID is an object property
-
-        Testing Note: Testing associations (assoc a Annotation) will
-        occur elsewhere, but could also be grouped into this
-        test if needed.
+        PMID:12345 is a named individual
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -119,7 +116,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         Given the above sample input, produce the following:
         A Monarch:DiseaseInstance RO:caused_by Monarch:GenotypeID
 
-        A Monarch:AssociationID has_relationship_to Monarch:DrugID
+        A Monarch:DrugID has_relationship_to Monarch:AssociationID
+
         A Monarch:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
         A Monarch:AssociationID dc:source PMID:20498393
         A Monarch:AssociationID :hasSubject A Monarch:DiseaseInstance
