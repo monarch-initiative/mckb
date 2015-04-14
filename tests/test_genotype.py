@@ -46,8 +46,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                             datetime.datetime(2009, 2, 1, 0, 0)),)
 
         self.cgd.transcript_xrefs = {
-            'RefSeq':  {'CCDS35166.1': 'NP_005148.2'},
-            'UniProt': {'CCDS35166.1': 'P00519-1'}
+            'RefSeq':  {'CCDS35166.1': 'NP_005148.2',
+                        'CCDS413.1': 'NP_000751.1'},
+            'UniProt': {'CCDS35166.1': 'P00519-1',
+                        'CCDS413.1': 'Q99062-1'}
         }
 
         return
@@ -289,15 +291,15 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         position = 741
 
-        aa_seq_id = self.cgd.make_id('cgd-transcript{0}'.format(amino_acid_variant))
+        uniprot_curie = "UniProtKB:Q99062#Q99062-1"
         aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
         region_id = ":_{0}Region".format(aa_position_id)
-        both_strand_id = ":_{0}-{1}".format(aa_seq_id, position)
+        both_strand_id = ":_{0}-{1}".format(uniprot_curie, position)
 
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
-        aa_seq_uri = URIRef(cu.get_uri(aa_seq_id))
+        uniprot_uri = URIRef(cu.get_uri(uniprot_curie))
 
         sparql_query = """
                        SELECT ?position ?region ?bsPosition ?transcript
@@ -318,7 +320,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                        """.format(amino_acid_variant, position)
 
         # Expected Results
-        expected_results = [[aa_position_uri, region_uri, both_strand_uri, aa_seq_uri]]
+        expected_results = [[aa_position_uri, region_uri, both_strand_uri, uniprot_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
