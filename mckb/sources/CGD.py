@@ -2,8 +2,9 @@ from mckb.sources.MySQLSource import MySQLSource
 from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
+from dipper.models.G2PAssoc import G2PAssoc
 from dipper.models.InteractionAssoc import InteractionAssoc
-from dipper.models.GenomicFeature import Feature, makeChromID, makeChromLabel
+from dipper.models.GenomicFeature import Feature, makeChromID
 from dipper import curie_map
 import tempfile
 import gzip
@@ -78,24 +79,24 @@ class CGD(MySQLSource):
 
         self.set_transcript_xrefs(ccds_xref_file)
 
-        genotype_protein_assocs = self. _get_genotype_protein_info(cursor)
-        self.add_genotype_info_to_graph(genotype_protein_assocs)
-        genotype_cdna_assocs = self._get_genotype_cdna_info(cursor)
-        self.add_genotype_info_to_graph(genotype_cdna_assocs)
+        variant_protein_assocs = self. _get_variant_protein_info(cursor)
+        self.add_variant_info_to_graph(variant_protein_assocs)
+        variant_cdna_assocs = self._get_variant_cdna_info(cursor)
+        self.add_variant_info_to_graph(variant_cdna_assocs)
 
-        disease_drug_geno_list = self._get_disease_drug_genotype_relationship(cursor)
-        self.add_disease_drug_genotype_to_graph(disease_drug_geno_list)
+        disease_drug_geno_list = self._get_disease_drug_variant_relationship(cursor)
+        self.add_disease_drug_variant_to_graph(disease_drug_geno_list)
 
         self.load_bindings()
         self._disconnect_from_database(cursor, connection)
         return
 
-    def add_genotype_info_to_graph(self, table):
+    def add_variant_info_to_graph(self, table):
         """
         Takes an iterable or iterables as input with one of two structures,
         Structure 1: Only protein variant information
         optional indices can be null:
-        [[genotype_key, genotype_label, amino_acid_variant,
+        [[variant_key, variant_label, amino_acid_variant,
           amino_acid_position (optional), transcript_id, transcript_priority,
           protein_variant_type (optional), functional_impact,
           stop_gain_loss (optional), transcript_gene,
@@ -103,12 +104,12 @@ class CGD(MySQLSource):
 
         Structure 2: Protein and cDNA information
         optional indices can be null:
-        [[genotype_key genotype_label, amino_acid_variant,
+        [[variant_key variant_label, amino_acid_variant,
           amino_acid_position (optional), transcript_id, transcript_priority,
           protein_variant_type (optional), functional_impact,
           stop_gain_loss (optional), transcript_gene,
           protein_variant_source (optional), variant_gene, bp_pos,
-          genotype_cdna, cosmic_id (optional), db_snp_id (optional),
+          variant_cdna, cosmic_id (optional), db_snp_id (optional),
           genome_pos_start, genome_pos_end, ref_base, variant_base,
           primary_transcript_exons, primary_transcript_variant_sub_types,
           variant_type, chromosome, genome_build, build_version, build_date]]
@@ -120,17 +121,17 @@ class CGD(MySQLSource):
         geno = Genotype(self.graph)
 
         for row in table:
-            self._add_genotype_protein_variant_assoc_to_graph(row)
+            self._add_variant_protein_variant_assoc_to_graph(row)
             if len(row) > 11:
-                self._add_genotype_cdna_variant_assoc_to_graph(row)
+                self._add_variant_cdna_variant_assoc_to_graph(row)
 
         return
 
-    def _add_genotype_protein_variant_assoc_to_graph(self, row):
+    def _add_variant_protein_variant_assoc_to_graph(self, row):
         """
-        Generates relationships between genotypes and protein variants
+        Generates relationships between variants and protein variants
         given a row of data
-        :param iterable: row of data, see add_genotype_info_to_graph()
+        :param iterable: row of data, see add_variant_info_to_graph()
                                       docstring for expected structure
         :return None
         """
@@ -139,18 +140,18 @@ class CGD(MySQLSource):
         is_missense = False
         is_literal = True
 
-        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
          protein_variant_source) = row[0:11]
 
-        genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+        variant_id = self.make_id('cgd-variant{0}'.format(variant_key))
 
         transcript_curie = self._make_transcript_curie(transcript_id)
         uniprot_curie = self._make_uniprot_polypeptide_curie(transcript_id)
         ncbi_protein_curie = self._make_ncbi_polypeptide_curie(transcript_id)
 
-        geno.addGenotype(genotype_id, genotype_label,
+        geno.addGenotype(variant_id, variant_label,
                          geno.genoparts['sequence_alteration'])
 
         # Make fake amino acid sequence in case we
@@ -158,7 +159,7 @@ class CGD(MySQLSource):
         aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
 
         # Add Transcript:
-        geno.addTranscript(genotype_id, transcript_curie, transcript_id,
+        geno.addTranscript(variant_id, transcript_curie, transcript_id,
                            geno.genoparts['transcript'])
 
         # Add polypeptide
@@ -181,18 +182,18 @@ class CGD(MySQLSource):
             aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
 
         if protein_variant_type == 'nonsynonymous - missense' \
-                or re.search(r'missense', genotype_label):
+                or re.search(r'missense', variant_label):
             is_missense = True
-            geno.addGenotype(genotype_id, genotype_label,
+            geno.addGenotype(variant_id, variant_label,
                              geno.genoparts['missense_variant'])
 
         # Get gene ID from gene map
-        self._add_genotype_gene_relationship(genotype_id, transcript_gene)
+        self._add_variant_gene_relationship(variant_id, transcript_gene)
 
         amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
 
         aa_position_id = self.make_id(
-            'cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+            'cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
 
         if is_missense:
             match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
@@ -205,22 +206,22 @@ class CGD(MySQLSource):
             altered_amino_acid = match.group(3)
         else:
             logger.debug("Could not parse amino acid information"
-                         " from {0} genotype:"
+                         " from {0} variant:"
                          " {1} type: {2}".format(amino_acid_variant,
-                                                 genotype_label,
+                                                 variant_label,
                                                  protein_variant_type))
 
         # Add amino acid change to model
         if is_missense is True and match is not None:
-            gu.addTriple(self.graph, genotype_id,
+            gu.addTriple(self.graph, variant_id,
                          geno.properties['reference_amino_acid'],
                          ref_amino_acid, is_literal)
-            gu.addTriple(self.graph, genotype_id,
+            gu.addTriple(self.graph, variant_id,
                          geno.properties['results_in_amino_acid_change'],
                          altered_amino_acid, is_literal)
 
             # Add position/location model for amino acid
-            gu.addTriple(self.graph, genotype_id,
+            gu.addTriple(self.graph, variant_id,
                          Feature.properties['location'], aa_position_id)
             self._add_feature_with_coords(aa_position_id, amino_acid_variant,
                                           Feature.types['Position'], position,
@@ -228,11 +229,11 @@ class CGD(MySQLSource):
 
         return
 
-    def _add_genotype_cdna_variant_assoc_to_graph(self, row):
+    def _add_variant_cdna_variant_assoc_to_graph(self, row):
         """
-        Generates relationships between genotypes and cDNA variants
+        Generates relationships between variants and cDNA variants
         given a row of data
-        :param iterable: row of data, see add_genotype_info_to_graph()
+        :param iterable: row of data, see add_variant_info_to_graph()
                                       docstring for expected structure.
                                       Only applicable for structure 2.
         :return None
@@ -241,28 +242,28 @@ class CGD(MySQLSource):
         geno = Genotype(self.graph)
         is_literal = True
 
-        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
-         protein_variant_source, variant_gene, bp_pos, genotype_cdna,
+         protein_variant_source, variant_gene, bp_pos, variant_cdna,
          cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
          variant_base, primary_transcript_exons,
          primary_transcript_variant_sub_types, variant_type, chromosome,
          genome_build, build_version, build_date) = row
 
-        genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+        variant_id = self.make_id('cgd-variant{0}'.format(variant_key))
         # Chromosomal position ID
         chrom_position_id = self.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
+            'cgd-var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
         chrom_position_label = '{0} genomic location'.format(variant_gene)
 
         #Gene position ID
         gene_position_id = self.make_id(
-            'cgd-transcript-pos{0}{1}'.format(genotype_key, transcript_id))
+            'cgd-transcript-pos{0}{1}'.format(variant_key, transcript_id))
         gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
 
         # Add gene
-        self._add_genotype_gene_relationship(genotype_id, variant_gene)
+        self._add_variant_gene_relationship(variant_id, variant_gene)
 
         # Transcript reference for nucleotide position
         transcript_curie = self._make_transcript_curie(transcript_id)
@@ -280,24 +281,24 @@ class CGD(MySQLSource):
                            build_id, genome_build)
 
         # Add variant coordinates in reference to chromosome
-        gu.addTriple(self.graph, genotype_id,
+        gu.addTriple(self.graph, variant_id,
                      Feature.properties['location'], chrom_position_id)
         self._add_feature_with_coords(chrom_position_id, chrom_position_label,
                                       Feature.types['Position'], genome_pos_start,
                                       genome_pos_end, chromosome_id)
 
         # Add mutation coordinates in reference to gene
-        gu.addTriple(self.graph, genotype_id,
+        gu.addTriple(self.graph, variant_id,
                      Feature.properties['location'], gene_position_id)
         self._add_feature_with_coords(gene_position_id, gene_position_label,
                                       Feature.types['Position'], bp_pos,
                                       bp_pos, transcript_curie)
 
         # Add nucleotide mutation
-        gu.addTriple(self.graph, genotype_id,
+        gu.addTriple(self.graph, variant_id,
                      geno.properties['reference_nucleotide'],
                      ref_base, is_literal)
-        gu.addTriple(self.graph, genotype_id,
+        gu.addTriple(self.graph, variant_id,
                      geno.properties['altered_nucleotide'],
                      variant_base, is_literal)
 
@@ -307,11 +308,17 @@ class CGD(MySQLSource):
             for c_id in cosmic_id_list:
                 cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
                 gu.addIndividualToGraph(self.graph, cosmic_curie, c_id)
-                gu.addSameIndividual(self.graph, genotype_id, cosmic_curie)
+                gu.addSameIndividual(self.graph, variant_id, cosmic_curie)
         if db_snp_id is not None:
             db_snp_curie = re.sub(r'rs(\d+)', r'dbSNP:\1', db_snp_id)
             gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
-            gu.addSameIndividual(self.graph, genotype_id, db_snp_curie)
+            gu.addSameIndividual(self.graph, variant_id, db_snp_curie)
+
+        if (db_snp_id is not None) and (cosmic_id is not None):
+            cosmic_id_list = cosmic_id.split(', ')
+            for c_id in cosmic_id_list:
+                cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
+                gu.addSameIndividual(self.graph, cosmic_curie, db_snp_curie)
 
         return
 
@@ -325,15 +332,15 @@ class CGD(MySQLSource):
         :param reference: URIRef or Curie - reference Node (gene, transcript, genome)
         :return: None
         """
-        transcript_feature = Feature(feature_id, feature_label, feature_type)
-        transcript_feature.addFeatureStartLocation(start_pos, reference)
-        transcript_feature.addFeatureEndLocation(end_pos, reference)
-        transcript_feature.addFeatureToGraph(self.graph)
+        feature = Feature(feature_id, feature_label, feature_type)
+        feature.addFeatureStartLocation(start_pos, reference)
+        feature.addFeatureEndLocation(end_pos, reference)
+        feature.addFeatureToGraph(self.graph)
         return
 
-    def _add_genotype_gene_relationship(self, genotype_id, hgnc_symbol):
+    def _add_variant_gene_relationship(self, variant_id, hgnc_symbol):
         """
-        :param genotype_id
+        :param variant_id
         :param hgnc_symbol
         :return: None
         """
@@ -341,26 +348,26 @@ class CGD(MySQLSource):
         geno = Genotype(self.graph)
         gene_id = self.gene_map[hgnc_symbol]
         gu.addClassToGraph(self.graph, gene_id, hgnc_symbol)
-        geno.addAlleleOfGene(genotype_id, gene_id)
+        geno.addAlleleOfGene(variant_id, gene_id)
         return
 
-    def add_disease_drug_genotype_to_graph(self, table):
+    def add_disease_drug_variant_to_graph(self, table):
         """
         Takes an iterable of iterables as input with the following structure,
         optional indices can be Null:
-        [[genotype_key, genotype_label, diagnoses_key, diagnoses,
+        [[variant_key, variant_label, diagnoses_key, diagnoses,
           specific_diagnosis, organ, relationship,
           drug_key, drug, therapy_status (optional), pubmed_id(optional)]]
 
         :param table: iterable of iterables, for example, a tuple of tuples
-                      from _get_disease_drug_genotype_relationship
+                      from _get_disease_drug_variant_relationship
         :return: None
         """
         gu = GraphUtils(curie_map.get())
         geno = Genotype(self.graph)
 
         for row in table:
-            (genotype_key, genotype_label, diagnoses_key, diagnoses,
+            (variant_key, variant_label, diagnoses_key, diagnoses,
              specific_diagnosis, organ, relationship,
              drug_key, drug, therapy_status, pubmed_id) = row
 
@@ -370,18 +377,18 @@ class CGD(MySQLSource):
                 diagnoses_label = diagnoses
 
             # Arbitrary IDs to be replaced by ontology mappings
-            genotype_id = self.make_id('cgd-genotype{0}'.format(genotype_key))
+            variant_id = self.make_id('cgd-variant{0}'.format(variant_key))
             disease_id = self.make_id('cgd-disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses_label))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
             drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
 
             disease_instance_id = self.make_id('cgd-disease{0}{1}'.format(
-                diagnoses_label, genotype_key))
-            disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, genotype_label)
+                diagnoses_label, variant_key))
+            disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
-            disease_genotype_annot = self.make_id("assoc{0}{1}".format(disease_instance_id, genotype_key))
+            drug_disease_annot = self.make_id("assoc{0}{1}".format(disease_instance_id, drug_key))
 
             # Add individuals/classes
             gu.addClassToGraph(self.graph, disease_id, diagnoses_label)
@@ -391,11 +398,10 @@ class CGD(MySQLSource):
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})
 
             # Add triples
-            gu.addTriple(self.graph, disease_instance_id,
-                         'RO:caused_by', genotype_id)
+            gu.addTriple(self.graph, variant_id,
+                         'RO:0002200', disease_instance_id)
 
-            gu.addTriple(self.graph, drug_id, relationship_id, disease_genotype_annot)
-
+            gu.addTriple(self.graph, drug_id, relationship_id, disease_instance_id)
 
             # Add 1 association per above triple,
             # see https://github.com/monarch-initiative/mckb/issues/1
@@ -405,12 +411,12 @@ class CGD(MySQLSource):
                 source_id = "PMID:{0}".format(pubmed_id)
                 evidence = 'ECO:0000033'
 
-                disease_geno_assoc = InteractionAssoc(disease_genotype_annot,
-                                                      disease_instance_id,
-                                                      genotype_id, source_id,
-                                                      evidence)
-                disease_geno_assoc.rel = 'RO:caused_by'
-                disease_geno_assoc.addAssociationToGraph(self.graph)
+                drug_phenotype_assoc = InteractionAssoc(drug_disease_annot,
+                                                        drug_id,
+                                                        disease_instance_id,
+                                                        source_id, evidence)
+                drug_phenotype_assoc.rel = relationship_id
+                drug_phenotype_assoc.addAssociationToGraph(self.graph)
 
         return
 
@@ -460,9 +466,9 @@ class CGD(MySQLSource):
             pass
         return ncbi_protein_curie
 
-    def _get_disease_drug_genotype_relationship(self, cursor):
+    def _get_disease_drug_variant_relationship(self, cursor):
         """
-        Query database to get disease-drug-genotype associations
+        Query database to get disease-drug-variant associations
         :param: PyMySQL Cursor object generated
                 from self._connect_to_database()
         :return: tuple of query results
@@ -507,7 +513,7 @@ class CGD(MySQLSource):
         results = cursor.fetchall()
         return results
 
-    def _get_genotype_protein_info(self, cursor):
+    def _get_variant_protein_info(self, cursor):
         """
         Select out genotypes that have protein variant information but no
         cdna variant information
@@ -564,9 +570,9 @@ class CGD(MySQLSource):
         results = cursor.fetchall()
         return results
 
-    def _get_genotype_cdna_info(self, cursor):
+    def _get_variant_cdna_info(self, cursor):
         """
-        Query database to therapy genotypes that have been mapped to
+        Query database to therapy variants that have been mapped to
         a cdna variant
         :param: PyMySQL Cursor object generated
                 from self._connect_to_database()

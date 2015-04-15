@@ -9,11 +9,11 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-class DiseaseDrugGenotypeTestCase(unittest.TestCase):
+class DiseaseDrugVariantTestCase(unittest.TestCase):
     """
-    Test triples created from add_disease_drug_genotype_to_graph()
+    Test triples created from add_disease_drug_variant_to_graph()
     Sample data for testing should resemble output from
-    _get_disease_drug_genotype_relationship()
+    _get_disease_drug_variant_relationship()
     """
 
     def setUp(self):
@@ -29,38 +29,36 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         test_data = ((387, 'MLH1 any mutation', 13, 'Adenocarcinoma',
                      None, 'Colon', 'detrimental effect', 1,
                      '5FU-based adjuvant therapy', 'late trials', '20498393'),)
-        self.cgd.add_disease_drug_genotype_to_graph(test_data)
+        self.cgd.add_disease_drug_variant_to_graph(test_data)
 
-        (genotype_key, genotype_label, diagnoses_key, diagnoses,
+        (variant_key, variant_label, diagnoses_key, diagnoses,
              specific_diagnosis, organ, relationship,
              drug_key, drug, therapy_status, pubmed_id) = test_data[0]
 
         source_id = "PMID:{0}".format(pubmed_id)
-        genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
+        variant_id = self.cgd.make_id('cgd-variant{0}'.format(variant_key))
         disease_id = self.cgd.make_id('cgd-disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses))
         relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
         drug_id = self.cgd.make_id('cgd-drug{0}'.format(drug_key))
         disease_instance_id = self.cgd.make_id('cgd-disease{0}{1}'.format(
-            diagnoses, genotype_key))
-        disease_genotype_annot = self.cgd.make_id("assoc{0}{1}".format(
-            disease_instance_id, genotype_key))
+            diagnoses, variant_key))
+        disease_variant_annot = self.cgd.make_id("assoc{0}{1}".format(
+            disease_instance_id, drug_key))
 
         # Set up URIs
         self.source_uri = URIRef(cu.get_uri(source_id))
-        self.genotype_uri = URIRef(cu.get_uri(genotype_id))
+        self.variant_uri = URIRef(cu.get_uri(variant_id))
         self.disease_uri = URIRef(cu.get_uri(disease_id))
         self.disease_ind_uri = URIRef(cu.get_uri(disease_instance_id))
         self.relationship_uri = URIRef(cu.get_uri(relationship_id))
         self.drug_uri = URIRef(cu.get_uri(drug_id))
-        self.dg_annot_uri = URIRef(cu.get_uri(disease_genotype_annot))
+        self.dg_annot_uri = URIRef(cu.get_uri(disease_variant_annot))
 
-        self.genotype_label = genotype_label
-        self.population_label = "Patient population diagnosed with {0} with" \
-                                " genotype {1}".format(diagnoses, genotype_label)
+        self.variant_label = variant_label
         self.disease_label = diagnoses
         self.disease_instance_label = "{0} caused by variant {1}".format(
-            diagnoses, genotype_label)
+            diagnoses, variant_label)
         self.drug_label = drug
 
         return
@@ -114,15 +112,15 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_associations(self):
         """
         Given the above sample input, produce the following:
-        A Monarch:DiseaseInstance RO:caused_by Monarch:GenotypeID
+        Monarch:VariantID has_phenotype(RO:0002200) Monarch:DiseaseInstance
 
-        A Monarch:DrugID has_relationship_to Monarch:AssociationID
+        A Monarch:DrugID has_relationship_to Monarch:DiseaseInstance
 
         A Monarch:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
         A Monarch:AssociationID dc:source PMID:20498393
-        A Monarch:AssociationID :hasSubject A Monarch:DiseaseInstance
-        A Monarch:AssociationID :hasPredicate RO:caused_by
-        A Monarch:AssociationID :hasObject Monarch:GenotypeID
+        A Monarch:AssociationID :hasSubject A Monarch:DrugID
+        A Monarch:AssociationID :hasPredicate has_relationship_to
+        A Monarch:AssociationID :hasObject Monarch:DiseaseInstance
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -134,23 +132,23 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         evidence_uri = URIRef(cu.get_uri(evidence))
 
         sparql_query = """
-                       SELECT ?diseaseInd ?genotype ?dgannot ?drug ?source ?evidence
+                       SELECT ?diseaseInd ?variant ?dgannot ?drug ?source ?evidence
                        WHERE {{
-                           ?diseaseInd OBO:RO_caused_by ?genotype .
+                           ?variant OBO:RO_0002200 ?diseaseInd .
 
-                           ?drug <{0}> ?dgannot .
+                           ?drug <{0}> ?diseaseInd .
 
                            ?dgannot a Annotation: ;
                                dc:evidence ?evidence ;
                                dc:source ?source ;
-                               :hasObject ?genotype ;
-                               :hasPredicate OBO:RO_caused_by ;
-                               :hasSubject ?diseaseInd .
+                               :hasObject ?diseaseInd ;
+                               :hasPredicate <{0}> ;
+                               :hasSubject ?drug .
                        }}
                        """.format(self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.disease_ind_uri, self.genotype_uri,
+        expected_results = [[self.disease_ind_uri, self.variant_uri,
                              self.dg_annot_uri, self.drug_uri,
                              self.source_uri, evidence_uri]]
         # Query graph

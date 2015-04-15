@@ -10,9 +10,9 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-class DiseaseDrugGenotypeTestCase(unittest.TestCase):
+class DiseaseDrugVariantTestCase(unittest.TestCase):
     """
-    Test triples created from genotype modelling functions
+    Test triples created from variant modelling functions
     """
 
     def setUp(self):
@@ -29,13 +29,13 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         mapping_file = '../../resources/mappings/gene.tsv'
         self.cgd.gene_map = self.cgd.set_gene_map(mapping_file)
 
-        # Sample output from _get_genotype_protein_info() where genotype
+        # Sample output from _get_variant_protein_info() where variant
         # is a missense mutation
         self.test_set_1 = ((2, 'CSF3R Q741X  missense mutation', 'p.Q741X ',
                             None, 'CCDS413.1', 'Primary', None,
                             'gain-of-function', None, 'CSF3R', None),)
 
-        # Sample output from _get_genotype_cdna_info()
+        # Sample output from _get_variant_cdna_info()
         self.test_set_2 = ((19, 'ABL1 T315I missense mutation', 'p.T315I',
                             315, 'CCDS35166.1', 'Secondary',
                             'nonsynonymous - missense', 'gain-of-function',
@@ -62,31 +62,31 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_missense_variant_protein_model(self):
         """
         Test missense variant with only protein information
-        Using test data set 1, and the function add_genotype_info_to_graph()
+        Using test data set 1, and the function add_variant_info_to_graph()
         We want to test the following triples:
 
-        MONARCH:GenotypeID is an instance of OBO:SO_0001059
-        MONARCH:GenotypeID is an instance of OBO:SO_0001583
-        MONARCH:GenotypeID has the label "CSF3R Q741X  missense mutation"
-        MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
-        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID
-        MONARCH:GenotypeID OBO:GENO_reference_amino_acid "Q"
-        MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "X"
-        MONARCH:GenotypeID RO:0002205 CCDS:413.1
+        MONARCH:VariantID is an instance of OBO:SO_0001059
+        MONARCH:VariantID is an instance of OBO:SO_0001583
+        MONARCH:VariantID has the label "CSF3R Q741X  missense mutation"
+        MONARCH:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
+        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID
+        MONARCH:VariantID OBO:GENO_reference_amino_acid "Q"
+        MONARCH:VariantID OBO:GENO_results_in_amino_acid_change "X"
+        MONARCH:VariantID RO:0002205 CCDS:413.1
 
         CCDS:413.1 is an instance of OBO:GENO_primary
         CCDS:413.1 has the label "CCDS413.1"
         """
         from dipper.utils.TestUtils import TestUtils
 
-        self.cgd.add_genotype_info_to_graph(self.test_set_1)
+        self.cgd.add_variant_info_to_graph(self.test_set_1)
 
         # Make testutils object and load bindings
         test_env = TestUtils(self.cgd.graph)
         cu = CurieUtil(self.curie_map)
         self.cgd.load_bindings()
 
-        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
          protein_variant_source) = self.test_set_1[0][0:11]
@@ -95,18 +95,18 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         ref_amino_acid = "Q"
         altered_amino_acid = "X"
 
-        genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
+        variant_id = self.cgd.make_id('cgd-variant{0}'.format(variant_key))
         transcript = "CCDS:413.1"
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
-        genotype_uri = URIRef(cu.get_uri(genotype_id))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
+        variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?position ?transcript
+                       SELECT ?variant ?gene ?position ?transcript
                        WHERE {{
-                           ?genotype a OBO:SO_0001059;
+                           ?variant a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
@@ -118,11 +118,11 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                            ?transcript a OBO:SO_0000233 ;
                                rdfs:label "{3}" .
                        }}
-                       """.format(genotype_label, ref_amino_acid,
+                       """.format(variant_label, ref_amino_acid,
                                   altered_amino_acid, transcript_id)
 
         # Expected Results
-        expected_results = [[genotype_uri, gene_uri, aa_position_uri, transcript_uri]]
+        expected_results = [[variant_uri, gene_uri, aa_position_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -131,21 +131,21 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_missense_variant_cdna_model(self):
         """
         Test missense variant with cdna information
-        Using test data set 2, and the function add_genotype_info_to_graph()
+        Using test data set 2, and the function add_variant_info_to_graph()
         We want to test the following triples:
 
-        MONARCH:GenotypeID is an instance of OBO:SO_0001059
-        MONARCH:GenotypeID is an instance of OBO:SO_0001583
-        MONARCH:GenotypeID has the label "ABL1 T315I missense mutation"
-        MONARCH:GenotypeID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
-        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID1 (amino acid location)
-        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID2 (location on chromosome)
-        MONARCH:GenotypeID has location (faldo:location) MONARCH:PositionID3 (location on gene)
-        MONARCH:GenotypeID OBO:GENO_reference_amino_acid "T"
-        MONARCH:GenotypeID OBO:GENO_results_in_amino_acid_change "I"
-        MONARCH:GenotypeID owl:sameAs dbSNP:rs121913459
-        MONARCH:GenotypeID owl:sameAs COSMIC:12560
-        MONARCH:GenotypeID RO:0002205 (transcribed_to) CCDS:35166.1
+        MONARCH:VariantID is an instance of OBO:SO_0001059
+        MONARCH:VariantID is an instance of OBO:SO_0001583
+        MONARCH:VariantID has the label "ABL1 T315I missense mutation"
+        MONARCH:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
+        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID1 (amino acid location)
+        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID2 (location on chromosome)
+        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID3 (location on gene)
+        MONARCH:VariantID OBO:GENO_reference_amino_acid "T"
+        MONARCH:VariantID OBO:GENO_results_in_amino_acid_change "I"
+        MONARCH:VariantID owl:sameAs dbSNP:rs121913459
+        MONARCH:VariantID owl:sameAs COSMIC:12560
+        MONARCH:VariantID RO:0002205 (transcribed_to) CCDS:35166.1
 
         CCDS:35166.1 is an instance of OBO:SO_0000233
         CCDS:35166.1 has the label "CCDS35166.1"
@@ -166,17 +166,17 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         """
         from dipper.utils.TestUtils import TestUtils
 
-        self.cgd.add_genotype_info_to_graph(self.test_set_2)
+        self.cgd.add_variant_info_to_graph(self.test_set_2)
 
         # Make testutils object and load bindings
         test_env = TestUtils(self.cgd.graph)
         cu = CurieUtil(self.curie_map)
         self.cgd.load_bindings()
 
-        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
-         protein_variant_source, variant_gene, bp_pos, genotype_cdna,
+         protein_variant_source, variant_gene, bp_pos, variant_cdna,
          cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
          variant_base, primary_transcript_exons,
          primary_transcript_variant_sub_types, variant_type, chromosome,
@@ -187,19 +187,19 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         altered_amino_acid = "I"
         variant_position_label = '{0} genomic location'.format(variant_gene)
 
-        genotype_id = self.cgd.make_id('cgd-genotype{0}'.format(genotype_key))
+        variant_id = self.cgd.make_id('cgd-variant{0}'.format(variant_key))
         transcript = "CCDS:35166.1"
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
         variant_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
+            'cgd-var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
         gene_position_id = self.cgd.make_id(
-            'cgd-transcript-pos{0}{1}'.format(genotype_key, transcript_id))
+            'cgd-transcript-pos{0}{1}'.format(variant_key, transcript_id))
         gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
         db_snp_curie = "dbSNP:121913459"
         cosmic_curie = "COSMIC:12560"
         uniprot_curie = "UniProtKB:P00519#P00519-1"
         refseq_curie = "NCBIProtein:NP_005148.2"
-        genotype_uri = URIRef(cu.get_uri(genotype_id))
+        variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
         aa_position_uri = URIRef(cu.get_uri(aa_position_id))
@@ -212,11 +212,11 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
 
         sparql_query = """
-                       SELECT ?genotype ?gene ?aaPosition ?chrPosition
+                       SELECT ?variant ?gene ?aaPosition ?chrPosition
                               ?genePosition ?dbSNP ?cosmic ?transcript
                               ?uniprot ?refseq
                        WHERE {{
-                           ?genotype a OBO:SO_0001059;
+                           ?variant a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
@@ -230,6 +230,8 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                                owl:sameAs ?dbSNP ;
                                owl:sameAs ?cosmic ;
                                RO:0002205 ?transcript .
+
+                           ?cosmic owl:sameAs ?dbSNP .
 
                            ?transcript a OBO:SO_0000233 ;
                                rdfs:label "{5}" ;
@@ -251,14 +253,14 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
                            ?dbSNP rdfs:label "{9}" .
                            ?cosmic rdfs:label "{10}" .
                        }}
-                       """.format(genotype_label, ref_amino_acid, ref_base,
+                       """.format(variant_label, ref_amino_acid, ref_base,
                                   variant_base, altered_amino_acid,
                                   transcript_id, amino_acid_variant,
                                   variant_position_label, gene_position_label,
                                   db_snp_id, cosmic_id)
 
         # Expected Results
-        expected_results = [[genotype_uri, gene_uri, aa_position_uri,
+        expected_results = [[variant_uri, gene_uri, aa_position_uri,
                              chr_position_uri, gene_position_uri,
                              db_snp_uri, cosmic_uri, transcript_uri,
                              uniprot_uri, refseq_uri]]
@@ -270,7 +272,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_amino_acid_position_region_model(self):
         """
         Test modelling of amino acid positions
-        Using test data set 1, and the function add_genotype_info_to_graph()
+        Using test data set 1, and the function add_variant_info_to_graph()
         We want to test the following triples:
 
         MONARCH:PositionID is an instance of faldo:Position
@@ -287,14 +289,14 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         MONARCH:BothStrandPositionID faldo:reference MONARCH:TranscriptID
         """
         from dipper.utils.TestUtils import TestUtils
-        self.cgd.add_genotype_info_to_graph(self.test_set_1)
+        self.cgd.add_variant_info_to_graph(self.test_set_1)
 
         # Make testutils object and load bindings
         test_env = TestUtils(self.cgd.graph)
         cu = CurieUtil(self.curie_map)
         self.cgd.load_bindings()
 
-        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
          protein_variant_source) = self.test_set_1[0][0:11]
@@ -302,7 +304,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
         position = 741
 
         uniprot_curie = "UniProtKB:Q99062#Q99062-1"
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(genotype_key, amino_acid_variant))
+        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
         region_id = ":_{0}Region".format(aa_position_id)
         both_strand_id = ":_{0}-{1}".format(uniprot_curie, position)
 
@@ -340,10 +342,10 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_genome_build_chromosome_model(self):
         """
         Test modelling of genome, builds, and chromosomes
-        Using test data set 2, and the function add_genotype_info_to_graph()
+        Using test data set 2, and the function add_variant_info_to_graph()
         """
         from dipper.utils.TestUtils import TestUtils
-        self.cgd.add_genotype_info_to_graph(self.test_set_2)
+        self.cgd.add_variant_info_to_graph(self.test_set_2)
 
         # Make testutils object and load bindings
         test_env = TestUtils(self.cgd.graph)
@@ -403,20 +405,20 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
     def test_chromosome_position_model(self):
         """
         Test modelling of genomic positions
-        Using test data set 2, and the function add_genotype_info_to_graph()
+        Using test data set 2, and the function add_variant_info_to_graph()
         """
         from dipper.utils.TestUtils import TestUtils
-        self.cgd.add_genotype_info_to_graph(self.test_set_2)
+        self.cgd.add_variant_info_to_graph(self.test_set_2)
 
         # Make testutils object and load bindings
         test_env = TestUtils(self.cgd.graph)
         cu = CurieUtil(self.curie_map)
         self.cgd.load_bindings()
 
-        (genotype_key, genotype_label, amino_acid_variant, amino_acid_position,
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
          transcript_id, transcript_priority, protein_variant_type,
          functional_impact, stop_gain_loss, transcript_gene,
-         protein_variant_source, variant_gene, bp_pos, genotype_cdna,
+         protein_variant_source, variant_gene, bp_pos, variant_cdna,
          cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
          variant_base, primary_transcript_exons,
          primary_transcript_variant_sub_types, variant_type, chromosome,
@@ -424,7 +426,7 @@ class DiseaseDrugGenotypeTestCase(unittest.TestCase):
 
         chromosome = ":hg19chr9"
         variant_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(genotype_key, genome_pos_start, genome_pos_end))
+            'cgd-var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
         variant_position_label = '{0} genomic location'.format(variant_gene)
         region_id = ":_{0}Region".format(variant_position_id)
         start_id = ":_{0}-{1}".format(chromosome, genome_pos_start)
