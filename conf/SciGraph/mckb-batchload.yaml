@@ -1,0 +1,104 @@
+graphConfiguration:
+    location: target/mckbGraph
+    indexedNodeProperties:
+      - label
+      - fragment
+    exactNodeProperties:
+      - label
+      - synonym
+
+
+ontologies:
+  - url: http://purl.obolibrary.org/obo/upheno/monarch.owl
+    reasonerConfiguration:
+      factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
+      addDirectInferredEdges: true
+      addInferredEquivalences: true
+      removeUnsatisfiableClasses: true
+  - url: ../../mckb/out/cgd.ttl
+    reasonerConfiguration:
+      factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
+      addDirectInferredEdges: true
+      addInferredEquivalences: true
+      removeUnsatisfiableClasses: true
+  - url: http://biohackathon.org/resource/faldo.ttl
+    reasonerConfiguration:
+      factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
+      addDirectInferredEdges: true
+      addInferredEquivalences: true
+      removeUnsatisfiableClasses: true
+  - url: http://nif-crawler.neuinfo.org/monarch/ttl/ucscbands.ttl
+    reasonerConfiguration:
+      factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
+      addDirectInferredEdges: true
+      addInferredEquivalences: true
+      removeUnsatisfiableClasses: true
+  - url: https://raw.githubusercontent.com/monarch-initiative/GENO-ontology/develop/src/ontology/geno.owl
+    reasonerConfiguration:
+      factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
+      addDirectInferredEdges: true
+      addInferredEquivalences: true
+      removeUnsatisfiableClasses: true
+  - url: http://nif-crawler.neuinfo.org/monarch/ttl/ncbigene.ttl
+    reasonerConfiguration:
+      factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
+      addDirectInferredEdges: false
+      addInferredEquivalences: true
+      removeUnsatisfiableClasses: true
+
+categories:
+    http://purl.obolibrary.org/obo/CL_0000000 : cell
+    http://purl.obolibrary.org/obo/UBERON_0001062 : anatomical entity
+    http://purl.obolibrary.org/obo/ZFA_0009000 : cell
+    http://purl.obolibrary.org/obo/UBERON_0004529 : anatomical projection
+    http://purl.obolibrary.org/obo/UBERON_0000468 : multi-cellular organism
+    http://purl.obolibrary.org/obo/UBERON_0000955 : brain
+    http://purl.obolibrary.org/obo/PATO_0000001 : quality
+    http://purl.obolibrary.org/obo/GO_0005623 : cell
+    http://purl.obolibrary.org/obo/WBbt_0007833 : organism
+    http://purl.obolibrary.org/obo/WBbt_0004017 : Cell
+    http://purl.obolibrary.org/obo/DOID_4 : disease
+    http://purl.obolibrary.org/obo/PATO_0000003 : assay
+    http://purl.obolibrary.org/obo/PATO_0000006 : process
+    http://purl.obolibrary.org/obo/PATO_0000011 : age
+    http://purl.obolibrary.org/obo/ZFA_0000008 : brain
+    http://purl.obolibrary.org/obo/ZFA_0001637 : bony projection
+    http://purl.obolibrary.org/obo/WBPhenotype_0000061 : extended life span
+    http://purl.obolibrary.org/obo/WBPhenotype_0000039 : life span variant
+    http://purl.obolibrary.org/obo/WBPhenotype_0001171 : shortened life span
+    http://purl.obolibrary.org/obo/CHEBI_23367 : molecular entity
+    http://purl.obolibrary.org/obo/CHEBI_23888 : drug
+    http://purl.obolibrary.org/obo/CHEBI_51086 : chemical role
+    http://purl.obolibrary.org/obo/UPHENO_0001001 : Phenotype
+    http://purl.obolibrary.org/obo/GO_0008150 : biological_process
+    http://purl.obolibrary.org/obo/GO_0005575 : cellular component
+    http://purl.obolibrary.org/obo/SO_0000704 : gene
+
+mappedProperties:
+  - name: label
+    properties:
+    - http://www.w3.org/2000/01/rdf-schema#label
+  - name: synonym
+    properties:
+    - http://www.geneontology.org/formats/oboInOwl#hasExactSynonym
+    - http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym
+    - http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym
+    - http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym
+    - http://purl.obolibrary.org/obo/go#systematic_synonym
+    - http://ontology.neuinfo.org/NIF/Backend/OBO_annotation_properties.owl#synonym
+  - name: acronym
+    properties:
+    - http://ontology.neuinfo.org/NIF/Backend/OBO_annotation_properties.owl#acronym
+  - name: abbreviation
+    properties:
+    - http://ontology.neuinfo.org/NIF/Backend/OBO_annotation_properties.owl#abbrev
+  - name: definition
+    properties:
+    - http://purl.obolibrary.org/obo/IAO_0000115
+    - http://www.w3.org/2004/02/skos/core#definition
+  - name: begin
+    properties:
+    - http://biohackathon.org/resource/faldo#begin
+  - name: end
+    properties:
+    - http://biohackathon.org/resource/faldo#end
