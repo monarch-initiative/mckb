@@ -394,8 +394,8 @@ class CGD(MySQLSource):
             drug_variant_annot = self.make_cgd_id("assoc{0}{1}".format(diagnoses_label, variant_key))
 
             # Add individuals/classes
-            gu.addClassToGraph(self.graph, disease_id, diagnoses_label)
-            gu.addClassToGraph(self.graph, drug_id, drug)
+            gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
+            gu.addClassToGraph(self.graph, drug_id, drug, 'CHEBI:23888')
             gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
                                     disease_id)
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})

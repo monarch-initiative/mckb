@@ -121,7 +121,7 @@ graphConfiguration:
     'RefSeq' : 'http://www.ncbi.nlm.nih.gov/refseq/?term='
     'IMPC' : 'http://www.mousephenotype.org/data/genes/'  #FIXME
     'GenBank' : 'http://www.ncbi.nlm.nih.gov/nuccore/'
-    
+    'CGD' : 'http://ohsu.edu/cgd/'
     
     # proteins
     'UniProtKB' : 'http://identifiers.org/uniprot/'
@@ -130,6 +130,9 @@ graphConfiguration:
     'PDB' : 'http://identifiers.org/PDB:'
     'NCBIProtein' : 'http://www.ncbi.nlm.nih.gov/protein/'
     'EC' : 'http://identifiers.org/EC:'  #FIXME: Enzyme Commission numbers. Any preferred url that can resolve this?
+
+    #chemicals
+    'CHEBI' : 'http://www.ebi.ac.uk/chebi/searchId.do?chebiId='
 cypherResources:
     ##################
     ### PHENOTYPES
