@@ -65,14 +65,14 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Using test data set 1, and the function add_variant_info_to_graph()
         We want to test the following triples:
 
-        MONARCH:VariantID is an instance of OBO:SO_0001059
-        MONARCH:VariantID is an instance of OBO:SO_0001583
-        MONARCH:VariantID has the label "CSF3R Q741X  missense mutation"
-        MONARCH:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
-        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID
-        MONARCH:VariantID OBO:GENO_reference_amino_acid "Q"
-        MONARCH:VariantID OBO:GENO_results_in_amino_acid_change "X"
-        MONARCH:VariantID RO:0002205 CCDS:413.1
+        CGD:VariantID is an instance of OBO:SO_0001059
+        CGD:VariantID is an instance of OBO:SO_0001583
+        CGD:VariantID has the label "CSF3R Q741X  missense mutation"
+        CGD:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
+        CGD:VariantID has location (faldo:location) CGD:PositionID
+        CGD:VariantID OBO:GENO_reference_amino_acid "Q"
+        CGD:VariantID OBO:GENO_results_in_amino_acid_change "X"
+        CGD:VariantID RO:0002205 CCDS:413.1
 
         CCDS:413.1 is an instance of OBO:GENO_primary
         CCDS:413.1 has the label "CCDS413.1"
@@ -95,9 +95,9 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         ref_amino_acid = "Q"
         altered_amino_acid = "X"
 
-        variant_id = self.cgd.make_id('cgd-variant{0}'.format(variant_key))
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         transcript = "CCDS:413.1"
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
+        aa_position_id = self.cgd.make_cgd_id('aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
@@ -134,18 +134,18 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Using test data set 2, and the function add_variant_info_to_graph()
         We want to test the following triples:
 
-        MONARCH:VariantID is an instance of OBO:SO_0001059
-        MONARCH:VariantID is an instance of OBO:SO_0001583
-        MONARCH:VariantID has the label "ABL1 T315I missense mutation"
-        MONARCH:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
-        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID1 (amino acid location)
-        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID2 (location on chromosome)
-        MONARCH:VariantID has location (faldo:location) MONARCH:PositionID3 (location on gene)
-        MONARCH:VariantID OBO:GENO_reference_amino_acid "T"
-        MONARCH:VariantID OBO:GENO_results_in_amino_acid_change "I"
-        MONARCH:VariantID owl:sameAs dbSNP:rs121913459
-        MONARCH:VariantID owl:sameAs COSMIC:12560
-        MONARCH:VariantID RO:0002205 (transcribed_to) CCDS:35166.1
+        CGD:VariantID is an instance of OBO:SO_0001059
+        CGD:VariantID is an instance of OBO:SO_0001583
+        CGD:VariantID has the label "ABL1 T315I missense mutation"
+        CGD:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
+        CGD:VariantID has location (faldo:location) PositionID1 (amino acid location)
+        CGD:VariantID has location (faldo:location) PositionID2 (location on chromosome)
+        CGD:VariantID has location (faldo:location) PositionID3 (location on gene)
+        CGD:VariantID OBO:GENO_reference_amino_acid "T"
+        CGD:VariantID OBO:GENO_results_in_amino_acid_change "I"
+        CGD:VariantID owl:sameAs dbSNP:rs121913459
+        CGD:VariantID owl:sameAs COSMIC:12560
+        CGD:VariantID RO:0002205 (transcribed_to) CCDS:35166.1
 
         CCDS:35166.1 is an instance of OBO:SO_0000233
         CCDS:35166.1 has the label "CCDS35166.1"
@@ -160,9 +160,9 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         NCBIProtein:NP_005148.2  is an instance of OBO:SO_0000104 (polypeptide)
         NCBIProtein:NP_005148.2  has the label "NP_005148.2"
 
-        MONARCH:PositionID1 (amino acid location) has the label "p.T315I"
-        MONARCH:PositionID2 (chromosome location) has the label "ABL1 genomic location"
-        MONARCH:PositionID3 (gene location) has the label "ABL1 cdna location c.944C>T"
+        CGD:PositionID1 (amino acid location) has the label "p.T315I"
+        CGD:PositionID2 (chromosome location) has the label "ABL1 genomic location"
+        CGD:PositionID3 (gene location) has the label "ABL1 cdna location c.944C>T"
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -187,13 +187,13 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         altered_amino_acid = "I"
         variant_position_label = '{0} genomic location'.format(variant_gene)
 
-        variant_id = self.cgd.make_id('cgd-variant{0}'.format(variant_key))
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         transcript = "CCDS:35166.1"
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
-        variant_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
-        gene_position_id = self.cgd.make_id(
-            'cgd-transcript-pos{0}{1}'.format(variant_key, transcript_id))
+        aa_position_id = self.cgd.make_cgd_id('aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
+        variant_position_id = self.cgd.make_cgd_id(
+            'var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
+        gene_position_id = self.cgd.make_cgd_id(
+            'transcript-pos{0}{1}'.format(variant_key, transcript_id))
         gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
         db_snp_curie = "dbSNP:121913459"
         cosmic_curie = "COSMIC:12560"
@@ -275,18 +275,18 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Using test data set 1, and the function add_variant_info_to_graph()
         We want to test the following triples:
 
-        MONARCH:PositionID is an instance of faldo:Position
-        MONARCH:PositionID rdfs:label "p.Q741X"
-        MONARCH:PositionID faldo:location MONARCH:RegionID
+        CGD:PositionID is an instance of faldo:Position
+        CGD:PositionID rdfs:label "p.Q741X"
+        CGD:PositionID faldo:location CGD:RegionID
 
-        MONARCH:RegionID is an instance of faldo:Region
-        MONARCH:RegionID faldo:begin MONARCH:BothStrandPositionID
-        MONARCH:RegionID faldo:end MONARCH:BothStrandPositionID
+        CGD:RegionID is an instance of faldo:Region
+        CGD:RegionID faldo:begin BothStrandPositionID
+        CGD:RegionID faldo:end BothStrandPositionID
 
-        MONARCH:BothStrandPositionID is an instance of faldo:BothStrandPosition
-        MONARCH:BothStrandPositionID is an instance of faldo:Position
-        MONARCH:BothStrandPositionID faldo:position 741
-        MONARCH:BothStrandPositionID faldo:reference MONARCH:TranscriptID
+        CGD:BothStrandPositionID is an instance of faldo:BothStrandPosition
+        CGD:BothStrandPositionID is an instance of faldo:Position
+        CGD:BothStrandPositionID faldo:position 741
+        CGD:BothStrandPositionID faldo:reference CGD:TranscriptID
         """
         from dipper.utils.TestUtils import TestUtils
         self.cgd.add_variant_info_to_graph(self.test_set_1)
@@ -304,7 +304,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         position = 741
 
         uniprot_curie = "UniProtKB:Q99062#Q99062-1"
-        aa_position_id = self.cgd.make_id('cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
+        aa_position_id = self.cgd.make_cgd_id('aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
         region_id = ":_{0}Region".format(aa_position_id)
         both_strand_id = ":_{0}-{1}".format(uniprot_curie, position)
 
@@ -425,8 +425,8 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
          genome_build, build_version, build_date) = self.test_set_2[0]
 
         chromosome = ":hg19chr9"
-        variant_position_id = self.cgd.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
+        variant_position_id = self.cgd.make_cgd_id(
+            'var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
         variant_position_label = '{0} genomic location'.format(variant_gene)
         region_id = ":_{0}Region".format(variant_position_id)
         start_id = ":_{0}-{1}".format(chromosome, genome_pos_start)

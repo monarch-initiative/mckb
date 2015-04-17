@@ -36,15 +36,15 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
              drug_key, drug, therapy_status, pubmed_id) = test_data[0]
 
         source_id = "PMID:{0}".format(pubmed_id)
-        variant_id = self.cgd.make_id('cgd-variant{0}'.format(variant_key))
-        disease_id = self.cgd.make_id('cgd-disease{0}{1}'.format(diagnoses_key,
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
+        disease_id = self.cgd.make_cgd_id('disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses))
         relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
-        drug_id = self.cgd.make_id('cgd-drug{0}'.format(drug_key))
-        disease_instance_id = self.cgd.make_id('cgd-disease{0}{1}'.format(
+        drug_id = self.cgd.make_cgd_id('drug{0}'.format(drug_key))
+        disease_instance_id = self.cgd.make_cgd_id('disease{0}{1}'.format(
             diagnoses, variant_key))
-        disease_variant_annot = self.cgd.make_id("assoc{0}{1}".format(
-            disease_instance_id, drug_key))
+        disease_variant_annot = self.cgd.make_cgd_id("assoc{0}{1}{2}".format(
+            diagnoses,variant_label, drug_key))
 
         # Set up URIs
         self.source_uri = URIRef(cu.get_uri(source_id))
@@ -71,13 +71,13 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
     def test_classes_indiv_properties(self):
         """
         Given the above sample input, produce the following:
-        A Monarch:DiseaseID is an OWL Class
-        A Monarch:Disease rdfs:label "Adenocarcinoma"
-        A Monarch:DiseaseInstance is an individual of Monarch:DiseaseID
-        A Monarch:DiseaseInstance rdfs:label "Adenocarcinoma caused by variant MLH1 any mutation"
-        A Monarch:DrugID is an OWL Class
-        A Monarch:DrugID rdfs:label "5FU-based adjuvant therapy"
-        A Monarch:RelationID is an object property
+        A CGD:DiseaseID is an OWL Class
+        A CGD:Disease rdfs:label "Adenocarcinoma"
+        A CGD:DiseaseInstance is an individual of CGD:DiseaseID
+        A CGD:DiseaseInstance rdfs:label "Adenocarcinoma caused by variant MLH1 any mutation"
+        A CGD:DrugID is an OWL Class
+        A CGD:DrugID rdfs:label "5FU-based adjuvant therapy"
+        A CGD:RelationID is an object property
         PMID:12345 is a named individual
         """
         from dipper.utils.TestUtils import TestUtils
@@ -112,15 +112,15 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
     def test_associations(self):
         """
         Given the above sample input, produce the following:
-        Monarch:VariantID has_phenotype(RO:0002200) Monarch:DiseaseInstance
+        CGD:VariantID has_phenotype(RO:0002200) CGD:DiseaseInstance
 
-        A Monarch:DrugID has_relationship_to Monarch:DiseaseInstance
+        A CGD:DrugID has_relationship_to CGD:DiseaseInstance
 
-        A Monarch:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
-        A Monarch:AssociationID dc:source PMID:20498393
-        A Monarch:AssociationID :hasSubject A Monarch:DrugID
-        A Monarch:AssociationID :hasPredicate has_relationship_to
-        A Monarch:AssociationID :hasObject Monarch:DiseaseInstance
+        A CGD:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
+        A CGD:AssociationID dc:source PMID:20498393
+        A CGD:AssociationID :hasSubject A CGD:DrugID
+        A CGD:AssociationID :hasPredicate has_relationship_to
+        A CGD:AssociationID :hasObject CGD:DiseaseInstance
         """
         from dipper.utils.TestUtils import TestUtils
 

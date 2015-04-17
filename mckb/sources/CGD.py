@@ -145,7 +145,7 @@ class CGD(MySQLSource):
          functional_impact, stop_gain_loss, transcript_gene,
          protein_variant_source) = row[0:11]
 
-        variant_id = self.make_id('cgd-variant{0}'.format(variant_key))
+        variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
 
         transcript_curie = self._make_transcript_curie(transcript_id)
         uniprot_curie = self._make_uniprot_polypeptide_curie(transcript_id)
@@ -156,7 +156,7 @@ class CGD(MySQLSource):
 
         # Make fake amino acid sequence in case we
         # can't get a CCDS to Uniprot and/or NCBI Protein mapping
-        aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
+        aa_seq_id = self.make_cgd_id('transcript{0}'.format(amino_acid_variant))
 
         # Add Transcript:
         geno.addTranscript(variant_id, transcript_curie, transcript_id,
@@ -179,7 +179,7 @@ class CGD(MySQLSource):
         if ncbi_protein_curie is not None and uniprot_curie is not None:
             gu.addSameIndividual(self.graph, ncbi_protein_curie, uniprot_curie)
         else:
-            aa_seq_id = self.make_id('cgd-transcript{0}'.format(amino_acid_variant))
+            aa_seq_id = self.make_cgd_id('transcript{0}'.format(amino_acid_variant))
 
         if protein_variant_type == 'nonsynonymous - missense' \
                 or re.search(r'missense', variant_label):
@@ -192,8 +192,8 @@ class CGD(MySQLSource):
 
         amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
 
-        aa_position_id = self.make_id(
-            'cgd-aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
+        aa_position_id = self.make_cgd_id(
+            'aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
 
         if is_missense:
             match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
@@ -251,15 +251,15 @@ class CGD(MySQLSource):
          primary_transcript_variant_sub_types, variant_type, chromosome,
          genome_build, build_version, build_date) = row
 
-        variant_id = self.make_id('cgd-variant{0}'.format(variant_key))
+        variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
         # Chromosomal position ID
-        chrom_position_id = self.make_id(
-            'cgd-var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
+        chrom_position_id = self.make_cgd_id(
+            'var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
         chrom_position_label = '{0} genomic location'.format(variant_gene)
 
         #Gene position ID
-        gene_position_id = self.make_id(
-            'cgd-transcript-pos{0}{1}'.format(variant_key, transcript_id))
+        gene_position_id = self.make_cgd_id(
+            'transcript-pos{0}{1}'.format(variant_key, transcript_id))
         gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
 
         # Add gene
@@ -377,18 +377,18 @@ class CGD(MySQLSource):
                 diagnoses_label = diagnoses
 
             # Arbitrary IDs to be replaced by ontology mappings
-            variant_id = self.make_id('cgd-variant{0}'.format(variant_key))
-            disease_id = self.make_id('cgd-disease{0}{1}'.format(diagnoses_key,
+            variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
+            disease_id = self.make_cgd_id('disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses_label))
             relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
-            drug_id = self.make_id('cgd-drug{0}'.format(drug_key))
+            drug_id = self.make_cgd_id('drug{0}'.format(drug_key))
 
-            disease_instance_id = self.make_id('cgd-disease{0}{1}'.format(
+            disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
                 diagnoses_label, variant_key))
             disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
-            drug_disease_annot = self.make_id("assoc{0}{1}".format(disease_instance_id, drug_key))
+            drug_disease_annot = self.make_cgd_id("assoc{0}{1}{2}".format(diagnoses_label, variant_label, drug_key))
 
             # Add individuals/classes
             gu.addClassToGraph(self.graph, disease_id, diagnoses_label)
@@ -815,3 +815,12 @@ class CGD(MySQLSource):
                     self.transcript_xrefs['UniProt'][ccds_id] = uniprot_id
 
         return
+
+    def make_cgd_id(self, long_string):
+        """
+        Make identifier to CGD prefix
+        :param long_string:
+        :return: Curie with CGD prefix
+        """
+        string = re.sub(r'[\;\,\/\(\)\-\s]', '', long_string)
+        return ':'.join(('CGD', string))
