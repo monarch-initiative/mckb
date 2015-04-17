@@ -32,19 +32,21 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         self.cgd.add_disease_drug_variant_to_graph(test_data)
 
         (variant_key, variant_label, diagnoses_key, diagnoses,
-             specific_diagnosis, organ, relationship,
-             drug_key, drug, therapy_status, pubmed_id) = test_data[0]
+         specific_diagnosis, organ, relationship,
+         drug_key, drug, therapy_status, pubmed_id) = test_data[0]
 
         source_id = "PMID:{0}".format(pubmed_id)
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         disease_id = self.cgd.make_cgd_id('disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses))
-        relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
+        relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
         drug_id = self.cgd.make_cgd_id('drug{0}'.format(drug_key))
         disease_instance_id = self.cgd.make_cgd_id('disease{0}{1}'.format(
             diagnoses, variant_key))
-        disease_variant_annot = self.cgd.make_cgd_id("assoc{0}{1}{2}".format(
-            diagnoses,variant_label, drug_key))
+
+        drug_disease_annot = self.cgd.make_cgd_id("assoc{0}{1}".format(diagnoses, drug_key))
+
+        drug_variant_annot = self.cgd.make_cgd_id("assoc{0}{1}".format(diagnoses, variant_key))
 
         # Set up URIs
         self.source_uri = URIRef(cu.get_uri(source_id))
@@ -53,7 +55,8 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         self.disease_ind_uri = URIRef(cu.get_uri(disease_instance_id))
         self.relationship_uri = URIRef(cu.get_uri(relationship_id))
         self.drug_uri = URIRef(cu.get_uri(drug_id))
-        self.dg_annot_uri = URIRef(cu.get_uri(disease_variant_annot))
+        self.dd_annot_uri = URIRef(cu.get_uri(drug_disease_annot))
+        self.vd_annot_uri = URIRef(cu.get_uri(drug_variant_annot))
 
         self.variant_label = variant_label
         self.disease_label = diagnoses
@@ -132,24 +135,32 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         evidence_uri = URIRef(cu.get_uri(evidence))
 
         sparql_query = """
-                       SELECT ?diseaseInd ?variant ?dgannot ?drug ?source ?evidence
+                       SELECT ?diseaseInd ?variant ?drug ?ddannot ?vdannot ?source ?evidence
                        WHERE {{
                            ?variant OBO:RO_0002200 ?diseaseInd .
 
-                           ?drug <{0}> ?diseaseInd .
+                           ?diseaseInd <{0}> ?drug .
+                           ?variant <{0}> ?drug .
 
-                           ?dgannot a Annotation: ;
+                           ?ddannot a Annotation: ;
                                dc:evidence ?evidence ;
                                dc:source ?source ;
-                               :hasObject ?diseaseInd ;
+                               :hasObject ?drug ;
                                :hasPredicate <{0}> ;
-                               :hasSubject ?drug .
+                               :hasSubject ?diseaseInd .
+
+                            ?vdannot a Annotation: ;
+                               dc:evidence ?evidence ;
+                               dc:source ?source ;
+                               :hasObject ?drug ;
+                               :hasPredicate <{0}> ;
+                               :hasSubject ?variant .
                        }}
                        """.format(self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.disease_ind_uri, self.variant_uri,
-                             self.dg_annot_uri, self.drug_uri,
+        expected_results = [[self.disease_ind_uri, self.variant_uri, self.drug_uri,
+                             self.dd_annot_uri, self.vd_annot_uri,
                              self.source_uri, evidence_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)

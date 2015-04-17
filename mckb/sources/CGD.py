@@ -12,6 +12,7 @@ import logging
 import os
 import csv
 import re
+import hashlib
 
 logger = logging.getLogger(__name__)
 
@@ -380,7 +381,7 @@ class CGD(MySQLSource):
             variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
             disease_id = self.make_cgd_id('disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses_label))
-            relationship_id = ("MONARCH:{0}".format(relationship)).replace(" ", "_")
+            relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
             drug_id = self.make_cgd_id('drug{0}'.format(drug_key))
 
             disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
@@ -388,7 +389,9 @@ class CGD(MySQLSource):
             disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
-            drug_disease_annot = self.make_cgd_id("assoc{0}{1}{2}".format(diagnoses_label, variant_label, drug_key))
+            drug_disease_annot = self.make_cgd_id("assoc{0}{1}".format(diagnoses_label, drug_key))
+
+            drug_variant_annot = self.make_cgd_id("assoc{0}{1}".format(diagnoses_label, variant_key))
 
             # Add individuals/classes
             gu.addClassToGraph(self.graph, disease_id, diagnoses_label)
@@ -401,7 +404,8 @@ class CGD(MySQLSource):
             gu.addTriple(self.graph, variant_id,
                          'RO:0002200', disease_instance_id)
 
-            gu.addTriple(self.graph, drug_id, relationship_id, disease_instance_id)
+            gu.addTriple(self.graph, disease_instance_id, relationship_id, drug_id)
+            gu.addTriple(self.graph, variant_id, relationship_id, drug_id)
 
             # Add 1 association per above triple,
             # see https://github.com/monarch-initiative/mckb/issues/1
@@ -412,11 +416,19 @@ class CGD(MySQLSource):
                 evidence = 'ECO:0000033'
 
                 drug_phenotype_assoc = InteractionAssoc(drug_disease_annot,
-                                                        drug_id,
                                                         disease_instance_id,
+                                                        drug_id,
                                                         source_id, evidence)
                 drug_phenotype_assoc.rel = relationship_id
+
+                drug_variant_assoc = InteractionAssoc(drug_variant_annot,
+                                                      variant_id,
+                                                      drug_id,
+                                                      source_id, evidence)
+                drug_variant_assoc.rel = relationship_id
+
                 drug_phenotype_assoc.addAssociationToGraph(self.graph)
+                drug_variant_assoc.addAssociationToGraph(self.graph)
 
         return
 
@@ -822,5 +834,7 @@ class CGD(MySQLSource):
         :param long_string:
         :return: Curie with CGD prefix
         """
-        string = re.sub(r'[\;\,\/\(\)\-\s]', '', long_string)
-        return ':'.join(('CGD', string))
+        byte_string = long_string.encode("utf-8")
+        md5sum = ':'.join(('CGD', hashlib.md5(byte_string).hexdigest()))
+        md5sum = md5sum[0:12]
+        return md5sum
