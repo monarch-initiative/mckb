@@ -332,12 +332,11 @@ cypherResources:
               START f=node:node_auto_index(fragment={feature_id})
               MATCH (f)<-[seqVar:GENO_0000408*0..1]-(feature)
               OPTIONAL MATCH (feature)-[hasP1:RO_0002200*]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)<-[e:sameAs*]-(genotype)-[hasP2:RO_0002200*]->(phenotype2:Phenotype)
-              OPTIONAL MATCH (feature)-[e2:sameAs*]->(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart:BFO_0000051!*]-(genotype3)-[hasP4:RO_0002200*]->(phenotype4:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart2:BFO_0000051!*]-(genotype4)<-[hasGenotype:GENO_0000222]-(person)-[hasP5:RO_0002200*]->(phenotype5:Phenotype)
-              RETURN DISTINCT f, seqVar, feature, hasP1, phenotype, e, genotype, hasP2, phenotype2, e2, genotype2, hasP3, phenotype3,
-                              hasPart, genotype3, hasP4, phenotype4, hasPart2, genotype4, hasGenotype, person, hasP5, phenotype5
+              OPTIONAL MATCH (feature)<-[e:sameAs*]->(genotype)-[hasP2:RO_0002200*]->(phenotype2:Phenotype)
+              OPTIONAL MATCH (feature)<-[hasPart:BFO_0000051!*]-(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
+              OPTIONAL MATCH (feature)<-[hasPart2:BFO_0000051!*]-(genotype3)<-[hasGenotype:GENO_0000222]-(person)-[hasP4:RO_0002200*]->(phenotype4:Phenotype)
+              RETURN DISTINCT f, seqVar, feature, hasP1, phenotype, e, genotype, hasP2, phenotype2,
+                              hasPart, genotype2, hasP3, phenotype3, hasPart2, genotype3, hasGenotype, person, hasP4, phenotype4
       operations:
         - summary: Get phenotypes for a feature
           parameters:
