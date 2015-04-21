@@ -1,0 +1,10 @@
+{
+  "dbauth" : {
+      "cgd": {
+          "database": "mydb",
+          "user": "username",
+          "password": "pass",
+          "host": "localhost"
+      }
+    }
+}
