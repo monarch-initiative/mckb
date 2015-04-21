@@ -1,0 +1,4366 @@
+Prefix: obo: <http://purl.obolibrary.org/obo/>
+Prefix: oio: <http://www.geneontology.org/formats/oboInOwl#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+
+Ontology: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl>
+
+
+Annotations: 
+    oio:hasOBOFormatVersion "1.2"^^xsd:string
+
+AnnotationProperty: oio:hasDbXref
+
+    Annotations: 
+        rdfs:label "database_cross_reference"^^xsd:string
+    
+    Annotations: 
+        rdfs:label "database_cross_reference"^^xsd:string
+    
+    
+AnnotationProperty: oio:hasOBOFormatVersion
+
+    Annotations: 
+        rdfs:label "has_obo_format_version"^^xsd:string
+    
+    Annotations: 
+        rdfs:label "has_obo_format_version"^^xsd:string
+    
+    
+AnnotationProperty: rdfs:label
+
+    
+AnnotationProperty: oio:id
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: ncit:Disease_Excludes_Abnormal_Cell
+
+    Annotations: 
+        oio:hasDbXref "NCIT:R139"^^xsd:string,
+        oio:id "ncithesaurus:Disease_Excludes_Abnormal_Cell"^^xsd:string,
+        rdfs:label "disease_excludes_abnormal_cell"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Excludes_Finding
+
+    Annotations: 
+        oio:hasDbXref "NCIT:R142"^^xsd:string,
+        rdfs:label "disease_excludes_finding"^^xsd:string,
+        oio:id "ncithesaurus:Disease_Excludes_Finding"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Has_Abnormal_Cell
+
+    Annotations: 
+        oio:id "ncithesaurus:Disease_Has_Abnormal_Cell"^^xsd:string,
+        oio:hasDbXref "NCIT:R105"^^xsd:string,
+        rdfs:label "disease_has_abnormal_cell"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Is_Grade
+
+    Annotations: 
+        rdfs:label "disease_is_grade"^^xsd:string,
+        oio:hasDbXref "NCIT:R110"^^xsd:string,
+        oio:id "ncithesaurus:Disease_Is_Grade"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_May_Have_Molecular_Abnormality
+
+    Annotations: 
+        oio:hasDbXref "NCIT:R89"^^xsd:string,
+        oio:id "ncithesaurus:Disease_May_Have_Molecular_Abnormality"^^xsd:string,
+        rdfs:label "disease_may_have_molecular_abnormality"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Excludes_Molecular_Abnormality
+
+    Annotations: 
+        oio:id "ncithesaurus:Disease_Excludes_Molecular_Abnormality"^^xsd:string,
+        rdfs:label "disease_excludes_molecular_abnormality"^^xsd:string,
+        oio:hasDbXref "NCIT:R140"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Is_Stage
+
+    Annotations: 
+        oio:id "ncithesaurus:Disease_Is_Stage"^^xsd:string,
+        rdfs:label "disease_is_stage"^^xsd:string,
+        oio:hasDbXref "NCIT:R88"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Has_Finding
+
+    Annotations: 
+        rdfs:label "disease_has_finding"^^xsd:string,
+        oio:hasDbXref "NCIT:R108"^^xsd:string,
+        oio:id "ncithesaurus:Disease_Has_Finding"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_May_Have_Finding
+
+    Annotations: 
+        oio:id "ncithesaurus:Disease_May_Have_Finding"^^xsd:string,
+        oio:hasDbXref "NCIT:R115"^^xsd:string,
+        rdfs:label "disease_may_have_finding"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Mapped_To_Gene
+
+    Annotations: 
+        rdfs:label "disease_mapped_to_gene"^^xsd:string,
+        oio:id "ncithesaurus:Disease_Mapped_To_Gene"^^xsd:string,
+        oio:hasDbXref "NCIT:R176"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_Has_Molecular_Abnormality
+
+    Annotations: 
+        oio:hasDbXref "NCIT:R106"^^xsd:string,
+        rdfs:label "disease_has_molecular_abnormality"^^xsd:string,
+        oio:id "ncithesaurus:Disease_Has_Molecular_Abnormality"^^xsd:string
+    
+    
+ObjectProperty: ncit:Disease_May_Have_Associated_Disease
+
+    Annotations: 
+        rdfs:label "disease_may_have_associated_disease"^^xsd:string,
+        oio:id "ncithesaurus:Disease_May_Have_Associated_Disease"^^xsd:string,
+        oio:hasDbXref "NCIT:R116"^^xsd:string
+    
+    
+Class: ncit:Stage_IV_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IV_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "stage iv adult diffuse large cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280175"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Intermediate_Risk_Colorectal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        rdfs:label "intermediate risk colorectal gastrointestinal stromal tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334219"^^xsd:string,
+        oio:id "ncithesaurus:Intermediate_Risk_Colorectal_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Lymphoma_Leukemia_by_Kiel_Classification_Antiquated
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518076"^^xsd:string,
+        oio:id "ncithesaurus:Lymphoma_Leukemia_by_Kiel_Classification_Antiquated"^^xsd:string,
+        rdfs:label "lymphoma/leukemia by kiel classification (antiquated)"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Stage_IIB_Nasopharyngeal_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IIB_Nasopharyngeal_Carcinoma"^^xsd:string,
+        rdfs:label "stage iib nasopharyngeal carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336188"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Malignant_Non-Hodgkin_s_Lymphoma_Cleaved_Cell
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518225"^^xsd:string,
+        rdfs:label "malignant non-hodgkin's lymphoma, cleaved cell"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Non-Hodgkin_s_Lymphoma_Cleaved_Cell"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_by_Cell_Type_Working_Formulation
+    
+    
+Class: ncit:Low_Risk_Colorectal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334429"^^xsd:string,
+        rdfs:label "low risk colorectal gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:Low_Risk_Colorectal_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Diffuse_Intraductal_Papillomatosis
+
+    Annotations: 
+        oio:id "ncithesaurus:Diffuse_Intraductal_Papillomatosis"^^xsd:string,
+        oio:hasDbXref "UMLS:C1377912"^^xsd:string,
+        rdfs:label "diffuse intraductal papillomatosis"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Benign_Thymoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0040101"^^xsd:string,
+        rdfs:label "benign thymoma"^^xsd:string,
+        oio:id "ncithesaurus:Benign_Thymoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_III_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iii low grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280154"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Recurrent_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "recurrent low grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280180"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Non-T_Non-B_cALLa_Positive_Childhood_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0279586"^^xsd:string,
+        oio:id "ncithesaurus:Non-T_Non-B_cALLa_Positive_Childhood_Acute_Lymphoblastic_Leukemia"^^xsd:string,
+        rdfs:label "non-t non-b calla positive childhood acute lymphoblastic leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:cALLa_Positive_Lymphoblastic_Leukemia
+    
+    
+Class: ncit:Astler-Coller_A_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516057"^^xsd:string,
+        rdfs:label "astler-coller a colorectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_A_Colorectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:High_Risk_Colorectal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        rdfs:label "high risk colorectal gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:High_Risk_Colorectal_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334023"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Hodgkin_s_Paragranuloma_Involving_Spleen
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0153734"^^xsd:string,
+        rdfs:label "hodgkin's paragranuloma involving spleen"^^xsd:string,
+        oio:id "ncithesaurus:Hodgkin_s_Paragranuloma_Involving_Spleen"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Stage_IIA_Nasopharyngeal_Squamous_Cell_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336166"^^xsd:string,
+        rdfs:label "stage iia nasopharyngeal keratinizing squamous cell carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIA_Nasopharyngeal_Squamous_Cell_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Papillary_Eccrine_Adenoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334350"^^xsd:string,
+        oio:id "ncithesaurus:Papillary_Eccrine_Adenoma"^^xsd:string,
+        rdfs:label "papillary eccrine adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_III_High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0855129"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        rdfs:label "stage iii high grade burkitt-like lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Burkitt-Like_Lymphoma
+    
+    
+Class: ncit:Grade_3a_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "grade 3a malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Grade_3a_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333848"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Grade_3_Malignant_Neoplasm
+    
+    
+Class: ncit:Stage_II_Contiguous_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage ii contiguous adult diffuse large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Contiguous_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677695"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0278761"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Astler-Coller_C1_Rectal_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_C1_Rectal_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516070"^^xsd:string,
+        rdfs:label "astler-coller c1 rectal carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_C1_Colorectal_Carcinoma
+    
+    
+Class: ncit:Granulosa_Cell-Theca_Cell_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334402"^^xsd:string,
+        oio:id "ncithesaurus:Granulosa_Cell-Theca_Cell_Neoplasm"^^xsd:string,
+        rdfs:label "granulosa cell-theca cell tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Malignant_Hemangiopericytoma_NCI_Grade_3
+
+    Annotations: 
+        rdfs:label "malignant hemangiopericytoma nci grade 3"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334589"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Hemangiopericytoma_NCI_Grade_3"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hemangiopericytic_Neoplasm
+    
+    
+Class: ncit:Stage_I_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_Extrahepatic_Bile_Duct_Cancer"^^xsd:string,
+        rdfs:label "stage i extrahepatic bile duct cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1168218"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Childhood_Acute_Eosinophilic_Leukemia
+
+    Annotations: 
+        rdfs:label "childhood acute eosinophilic leukemia"^^xsd:string,
+        oio:id "ncithesaurus:Childhood_Acute_Eosinophilic_Leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279648"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Acute_Eosinophilic_Leukemia
+    
+    
+Class: ncit:Clear_Cell_Malignant_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Clear_Cell_Malignant_Neoplasm"^^xsd:string,
+        rdfs:label "clear cell malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1880101"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Clear_Cell_Tumor
+    
+    
+Class: ncit:Childhood_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Childhood_Large_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0281710"^^xsd:string,
+        rdfs:label "childhood large cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Large_Cell_Type
+    
+    
+Class: obo:ncithesaurus_Oligodendroblastoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Oligodendroblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0344461"^^xsd:string,
+        oio:hasDbXref "NCIT:C66802"^^xsd:string,
+        rdfs:label "oligodendroblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Common_Connective_and_Soft_Tissue_Neoplasm
+
+    Annotations: 
+        rdfs:label "common connective and soft tissue neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Common_Connective_and_Soft_Tissue_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333129"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Common_Neoplasm
+    
+    
+Class: ncit:Malignant_Non-Hodgkin_s_Lymphoma_Small_Cleaved_Cell
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518227"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Non-Hodgkin_s_Lymphoma_Small_Cleaved_Cell"^^xsd:string,
+        rdfs:label "malignant non-hodgkin's lymphoma, small cleaved cell"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Non-Hodgkin_s_Lymphoma_Cleaved_Cell
+    
+    
+Class: ncit:Islet_Cell_Adenoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0022134"^^xsd:string,
+        rdfs:label "islet cell adenoma"^^xsd:string,
+        oio:id "ncithesaurus:Islet_Cell_Adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Miscellaneous_Neoplasm
+
+    Annotations: 
+        rdfs:label "miscellaneous neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Miscellaneous_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Mixed_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Mixed_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0024304"^^xsd:string,
+        rdfs:label "mixed cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Lymphoma
+    
+    
+Class: ncit:Metachronous_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "metachronous malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Metachronous_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334703"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Solid_Pseudopapillary_Carcinoma_of_the_Pancreas
+
+    Annotations: 
+        rdfs:label "solid pseudopapillary carcinoma of the pancreas"^^xsd:string,
+        oio:id "ncithesaurus:Solid_Pseudopapillary_Carcinoma_of_the_Pancreas"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336029"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Poorly_Differentiated_Malignant_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1335444"^^xsd:string,
+        rdfs:label "poorly differentiated malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Poorly_Differentiated_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Stage_II_Non-Contiguous_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage ii non-contiguous adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Non-Contiguous_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677707"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Hodgkin_s_Lymphoma_Antiquated
+
+    Annotations: 
+        rdfs:label "hodgkin's lymphoma (antiquated)"^^xsd:string,
+        oio:id "ncithesaurus:Hodgkin_s_Lymphoma_Antiquated"^^xsd:string,
+        oio:hasDbXref "UMLS:C1512479"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Mixed_Type_Osteosarcoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Mixed_Type_Osteosarcoma"^^xsd:string,
+        rdfs:label "mixed type osteosarcoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279604"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Low_Grade_Malignant_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Low_Grade_Malignant_Neoplasm"^^xsd:string,
+        rdfs:label "low grade malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334425"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Stage_III_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iii adult diffuse small cleaved cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280160"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Recurrent_Hodgkin_s_Disease_Lymphocyte_Predominance_Type
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0855074"^^xsd:string,
+        rdfs:label "recurrent hodgkin's disease lymphocyte predominance type"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_Hodgkin_s_Disease_Lymphocyte_Predominance_Type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphocyte_Predominant_Type_Hodgkin_s_Disease
+    
+    
+Class: ncit:Hemangioblastic_Meningioma
+
+    Annotations: 
+        rdfs:label "hemangioblastic meningioma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334609"^^xsd:string,
+        oio:id "ncithesaurus:Hemangioblastic_Meningioma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IVA_Esophageal_Squamous_Cell_Carcinoma
+
+    Annotations: 
+        rdfs:label "stage iva esophageal squamous cell carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVA_Esophageal_Squamous_Cell_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336337"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IVA_Esophageal_Cancer
+    
+    
+Class: ncit:Stage_IVB_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        rdfs:label "stage ivb extrahepatic bile duct cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336368"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVB_Extrahepatic_Bile_Duct_Cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IV_Extrahepatic_Bile_Duct_Cancer
+    
+    
+Class: ncit:Mixed_Cell_Adenocarcinoma
+
+    Annotations: 
+        rdfs:label "mixed cell adenocarcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334324"^^xsd:string,
+        oio:id "ncithesaurus:Mixed_Cell_Adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_II_High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_II_High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        rdfs:label "stage ii high grade burkitt-like lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855128"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Burkitt-Like_Lymphoma
+    
+    
+Class: ncit:Adult_Malignant_Mesenchymoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0279548"^^xsd:string,
+        rdfs:label "adult malignant mesenchymoma"^^xsd:string,
+        oio:id "ncithesaurus:Adult_Malignant_Mesenchymoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Mesenchymoma
+    
+    
+Class: ncit:Lymphosarcoma_Involving_Spleen
+
+    Annotations: 
+        rdfs:label "lymphosarcoma involving spleen"^^xsd:string,
+        oio:hasDbXref "UMLS:C0153710"^^xsd:string,
+        oio:id "ncithesaurus:Lymphosarcoma_Involving_Spleen"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Lymphosarcoma
+    
+    
+Class: ncit:Stage_IV_Gastric_Cancer_with_Metastasis
+
+    Annotations: 
+        rdfs:label "stage iv gastric cancer with metastasis"^^xsd:string,
+        oio:hasDbXref "UMLS:C0854752"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Gastric_Cancer_with_Metastasis"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Small_Glands_Tubules_or_Cords
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336911"^^xsd:string,
+        oio:id "ncithesaurus:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Small_Glands_Tubules_or_Cords"^^xsd:string,
+        rdfs:label "endometrial endometrioid adenocarcinoma with small glands, tubules or cords"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Moderately_Differentiated_Malignant_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Moderately_Differentiated_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334791"^^xsd:string,
+        rdfs:label "moderately differentiated malignant neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Connective_and_Soft_Tissue_Neoplasm_Antiquated"^^xsd:string,
+        rdfs:label "connective and soft tissue neoplasm (antiquated)"^^xsd:string,
+        oio:hasDbXref "UMLS:C1880169"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Acidophil_Adenoma
+
+    Annotations: 
+        rdfs:label "pituitary gland acidophil adenoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0001433"^^xsd:string,
+        oio:id "ncithesaurus:Acidophil_Adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: ncit:Primary_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Primary_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677930"^^xsd:string,
+        rdfs:label "primary neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Non-T_Non-B_cALLa_Positive_Adult_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0279595"^^xsd:string,
+        rdfs:label "non-t non-b calla positive adult acute lymphoblastic leukemia"^^xsd:string,
+        oio:id "ncithesaurus:Non-T_Non-B_cALLa_Positive_Adult_Acute_Lymphoblastic_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:cALLa_Positive_Lymphoblastic_Leukemia
+    
+    
+Class: ncit:Grade_4_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "grade 4 malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333854"^^xsd:string,
+        oio:id "ncithesaurus:Grade_4_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Astler-Coller_B2_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516063"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B2_Colorectal_Carcinoma"^^xsd:string,
+        rdfs:label "astler-coller b2 colorectal carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Intermediate-Grade_B-Cell_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Intermediate-Grade_B-Cell_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "intermediate grade b-cell non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0563641"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Lymphoma
+    
+    
+Class: ncit:Malignant_Mesenchymoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334492"^^xsd:string,
+        rdfs:label "malignant mesenchymoma"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Mesenchymoma"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Mesenchymoma
+    
+    
+Class: ncit:AIDS-Related_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "aids-related diffuse small cleaved cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:AIDS-Related_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0281394"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Non-Hodgkin_s_Lymphoma_Cleaved_Cell,
+        ncit:AIDS-Related_Lymphoma_by_Working_Formulation,
+        ncit:Diffuse_Malignant_Lymphoma
+    
+    
+Class: ncit:Malignant_Trophoblastic_Teratoma
+
+    Annotations: 
+        rdfs:label "malignant trophoblastic teratoma"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Trophoblastic_Teratoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334528"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Germ_Cell_Tumor_Antiquated
+    
+    
+Class: ncit:Malignant_Lymphoma_Large_Cell_Cleaved_and_Non-Cleaved
+
+    Annotations: 
+        rdfs:label "malignant lymphoma, large cell, cleaved and non-cleaved"^^xsd:string,
+        oio:hasDbXref "UMLS:C1521845"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Large_Cell_Cleaved_and_Non-Cleaved"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Large_Cell_Type
+    
+    
+Class: ncit:High-Grade_B-Cell_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:High-Grade_B-Cell_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "high grade b-cell non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0456863"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Lymphoma
+    
+    
+Class: ncit:Stage_IVA_Pancreatic_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IVA_Pancreatic_Cancer"^^xsd:string,
+        rdfs:label "stage iva pancreatic cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Malignant_Lymphoma_Non-Cleaved_Cell_Type
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518190"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Non-Cleaved_Cell_Type"^^xsd:string,
+        rdfs:label "malignant lymphoma, non-cleaved cell type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_by_Cell_Type_Working_Formulation
+    
+    
+Class: ncit:Adult_Acute_Eosinophilic_Leukemia
+
+    Annotations: 
+        oio:id "ncithesaurus:Adult_Acute_Eosinophilic_Leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279630"^^xsd:string,
+        rdfs:label "adult acute eosinophilic leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Acute_Eosinophilic_Leukemia
+    
+    
+Class: ncit:Pituitary_Gland_Neoplasm_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Pituitary_Gland_Neoplasm_Antiquated"^^xsd:string,
+        rdfs:label "pituitary gland neoplasm (antiquated)"^^xsd:string,
+        oio:hasDbXref "UMLS:C1709553"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Astler-Coller_C2_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516072"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_C2_Colorectal_Carcinoma"^^xsd:string,
+        rdfs:label "astler-coller c2 colorectal carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Stage_III_Childhood_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0281705"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Childhood_Large_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "stage iii childhood large cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Childhood_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Pancreatic_Polypeptide_Tumor
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Polypeptide_Tumor"^^xsd:string,
+        rdfs:label "pancreatic polypeptide tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1882278"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Very_Low_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336961"^^xsd:string,
+        oio:id "ncithesaurus:Very_Low_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        rdfs:label "very low risk small intestinal gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Very_Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Astler-Coller_A_Rectal_Carcinoma
+
+    Annotations: 
+        rdfs:label "astler-coller a rectal carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516058"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_A_Rectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_A_Colorectal_Carcinoma
+    
+    
+Class: ncit:Pancreatic_G-Cell_Adenoma
+
+    Annotations: 
+        rdfs:label "pancreatic g-cell adenoma"^^xsd:string,
+        oio:id "ncithesaurus:Pancreatic_G-Cell_Adenoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1882277"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Islet_Cell_Adenoma
+    
+    
+Class: ncit:Astler-Coller_B1_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_B1_Colorectal_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516060"^^xsd:string,
+        rdfs:label "astler-coller b1 colorectal carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Colon_Cancer_by_Astler-Coller_Stage
+
+    Annotations: 
+        oio:id "ncithesaurus:Colon_Cancer_by_Astler-Coller_Stage"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516700"^^xsd:string,
+        rdfs:label "colon cancer by astler-coller stage"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Stage_II_Childhood_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0281703"^^xsd:string,
+        rdfs:label "stage ii childhood large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Childhood_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Childhood_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Undifferentiated_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "undifferentiated malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336860"^^xsd:string,
+        oio:id "ncithesaurus:Undifferentiated_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Very_Low_Risk_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336960"^^xsd:string,
+        oio:id "ncithesaurus:Very_Low_Risk_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        rdfs:label "very low risk gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Malignant_Coccygeal_Body_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Malignant_Coccygeal_Body_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C2607933"^^xsd:string,
+        rdfs:label "malignant coccygeal body neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Coccygeal_Body_Neoplasm
+    
+    
+Class: ncit:Stage_IA_Retinoblastoma
+
+    Annotations: 
+        rdfs:label "stage ia retinoblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336123"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IA_Retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_I_Retinoblastoma
+    
+    
+Class: ncit:Mycosis_Fungoides_Working_Formulation
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0862195"^^xsd:string,
+        oio:id "ncithesaurus:Mycosis_Fungoides_Working_Formulation"^^xsd:string,
+        rdfs:label "mycosis fungoides (working formulation)"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Intermediate_Risk_Esophageal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334220"^^xsd:string,
+        rdfs:label "intermediate risk esophageal gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:Intermediate_Risk_Esophageal_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Grade_2_Malignant_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Grade_2_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333840"^^xsd:string,
+        rdfs:label "grade 2 malignant neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Non-Hodgkin_s_Lymphoma_Lymphoblastic_WF
+
+    Annotations: 
+        oio:id "ncithesaurus:Non-Hodgkin_s_Lymphoma_Lymphoblastic_WF"^^xsd:string,
+        rdfs:label "non-hodgkin's lymphoma, lymphoblastic (wf)"^^xsd:string,
+        oio:hasDbXref "UMLS:C1518357"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Stage_IIB_Retinoblastoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336194"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIB_Retinoblastoma"^^xsd:string,
+        rdfs:label "stage iib retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Retinoblastoma
+    
+    
+Class: ncit:Recurrent_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Recurrent_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "recurrent adult diffuse small cleaved cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Hodgkin_s_Granuloma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334626"^^xsd:string,
+        oio:id "ncithesaurus:Hodgkin_s_Granuloma"^^xsd:string,
+        rdfs:label "hodgkin's granuloma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Aromatic_Dyes-Related_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "aromatic dyes-related malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Aromatic_Dyes-Related_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1332334"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Occupational_Malignant_Neoplasm
+    
+    
+Class: ncit:Stage_IVB_Esophageal_Cancer
+
+    Annotations: 
+        rdfs:label "stage ivb esophageal cancer"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVB_Esophageal_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336366"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Stage_IV_Retinoblastoma
+
+    Annotations: 
+        rdfs:label "stage iv retinoblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336438"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0278762"^^xsd:string,
+        rdfs:label "adult diffuse large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Large_Cell_Type,
+        ncit:Diffuse_Malignant_Lymphoma
+    
+    
+Class: ncit:Malignant_Histiocytosis
+
+    Annotations: 
+        oio:id "ncithesaurus:Malignant_Histiocytosis"^^xsd:string,
+        rdfs:label "malignant histiocytosis"^^xsd:string,
+        oio:hasDbXref "UMLS:C0019623"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Pancreatic_Mucinous_Cystadenocarcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Mucinous_Cystadenocarcinoma"^^xsd:string,
+        rdfs:label "pancreatic mucinous cystadenocarcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335308"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:B-Cell_Leukemia
+
+    Annotations: 
+        oio:id "ncithesaurus:B-Cell_Leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C2004493"^^xsd:string,
+        rdfs:label "b-cell leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: obo:ncithesaurus_Tumorlet
+
+    Annotations: 
+        oio:id "ncithesaurus:Tumorlet"^^xsd:string,
+        rdfs:label "tumorlet"^^xsd:string,
+        oio:hasDbXref "UMLS:C1266001"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Benign_Neoplasm
+    
+    
+Class: ncit:Spindle_Cell_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336052"^^xsd:string,
+        oio:id "ncithesaurus:Spindle_Cell_Neoplasm"^^xsd:string,
+        rdfs:label "spindle cell neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Renal_Benign_Mesenchymoma
+
+    Annotations: 
+        rdfs:label "renal benign mesenchymoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C2827349"^^xsd:string,
+        oio:id "ncithesaurus:Renal_Benign_Mesenchymoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Benign_Mesenchymoma
+    
+    
+Class: ncit:Very_Low_Risk_Colorectal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:id "ncithesaurus:Very_Low_Risk_Colorectal_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        rdfs:label "very low risk colorectal gastrointestinal stromal tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336957"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Very_Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Stage_III_High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iii high grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_High-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280163"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Malignant_Neoplasm_by_Grade
+
+    Annotations: 
+        rdfs:label "malignant neoplasm by grade"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334606"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Neoplasm_by_Grade"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Monoclonal_Polymorphic_Post-Transplant_Lymphoproliferative_Disorder
+
+    Annotations: 
+        rdfs:label "monoclonal polymorphic post-transplant lymphoproliferative disorder"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334796"^^xsd:string,
+        oio:id "ncithesaurus:Monoclonal_Polymorphic_Post-Transplant_Lymphoproliferative_Disorder"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Acidophil_Adenocarcinoma
+
+    Annotations: 
+        rdfs:label "pituitary gland acidophil carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334311"^^xsd:string,
+        oio:id "ncithesaurus:Acidophil_Adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: ncit:High_Grade_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "high grade malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:High_Grade_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334017"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Medullary_Carcinoma_NOS
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0206693"^^xsd:string,
+        rdfs:label "medullary carcinoma, not otherwise specified"^^xsd:string,
+        oio:id "ncithesaurus:Medullary_Carcinoma_NOS"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Low-Grade_T-Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0456876"^^xsd:string,
+        rdfs:label "low grade t-cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Low-Grade_T-Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Lymphoma
+    
+    
+Class: obo:ncithesaurus_Reticulosarcoma
+
+    Annotations: 
+        rdfs:label "reticulosarcoma"^^xsd:string,
+        oio:id "ncithesaurus:Reticulosarcoma"^^xsd:string,
+        oio:hasDbXref "NCIT:C27824"^^xsd:string,
+        oio:hasDbXref "UMLS:C0024302"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Stage_I_High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_High-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "stage i high grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279964"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Pancreatic_Delta_Cell_Adenoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Delta_Cell_Adenoma"^^xsd:string,
+        rdfs:label "pancreatic delta cell adenoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279726"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Islet_Cell_Adenoma
+    
+    
+Class: ncit:L1_Adult_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:id "ncithesaurus:L1_Adult_Acute_Lymphoblastic_Leukemia"^^xsd:string,
+        rdfs:label "l1 adult acute lymphoblastic leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279589"^^xsd:string
+    
+    SubClassOf: 
+        ncit:L1_Acute_Lymphoblastic_Leukemia
+    
+    
+Class: ncit:Hodgkin_s_Disease_Lymphocyte_Depletion_Reticular
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1881059"^^xsd:string,
+        rdfs:label "hodgkin's disease, lymphocyte depletion, reticular"^^xsd:string,
+        oio:id "ncithesaurus:Hodgkin_s_Disease_Lymphocyte_Depletion_Reticular"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Astler-Coller_A_Colon_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_A_Colon_Carcinoma"^^xsd:string,
+        rdfs:label "astler-coller a colon carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516056"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colon_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_A_Colorectal_Carcinoma
+    
+    
+Class: ncit:Hodgkin_s_Disease_Nodular_Sclerosis_Lymphocyte_Depletion
+
+    Annotations: 
+        oio:id "ncithesaurus:Hodgkin_s_Disease_Nodular_Sclerosis_Lymphocyte_Depletion"^^xsd:string,
+        rdfs:label "hodgkin's disease, nodular sclerosis, lymphocyte depletion"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334630"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Astler-Coller_B1_Colon_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_B1_Colon_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516059"^^xsd:string,
+        rdfs:label "astler-coller b1 colon carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colon_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_B1_Colorectal_Carcinoma
+    
+    
+Class: ncit:Stage_II_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_II_Extrahepatic_Bile_Duct_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1168219"^^xsd:string,
+        rdfs:label "stage ii extrahepatic bile duct cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Neurofibromatosis_1_and_2_NF1_and_NF2
+
+    Annotations: 
+        rdfs:label "neurofibromatosis 1 and 2 (nf1 and nf2)"^^xsd:string,
+        oio:id "ncithesaurus:Neurofibromatosis_1_and_2_NF1_and_NF2"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677781"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Low_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334433"^^xsd:string,
+        oio:id "ncithesaurus:Low_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        rdfs:label "low risk small intestinal gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Stage_III_Retinoblastoma
+
+    Annotations: 
+        rdfs:label "stage iii retinoblastoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Retinoblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336268"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Occupational_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "occupational malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335101"^^xsd:string,
+        oio:id "ncithesaurus:Occupational_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Occupational_Neoplasm
+    
+    
+Class: ncit:Stage_IIC_Soft_Tissue_Sarcoma
+
+    Annotations: 
+        rdfs:label "stage iic soft tissue sarcoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0796622"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIC_Soft_Tissue_Sarcoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Philadelphia_Chromosome_Negative_BCR-ABL_Negative_Chronic_Myelogenous_Leukemia
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1335401"^^xsd:string,
+        rdfs:label "philadelphia chromosome negative bcr-abl1 negative chronic myelogenous leukemia"^^xsd:string,
+        oio:id "ncithesaurus:Philadelphia_Chromosome_Negative_BCR-ABL_Negative_Chronic_Myelogenous_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Astler-Coller_B2_Colon_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516062"^^xsd:string,
+        rdfs:label "astler-coller b2 colon carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B2_Colon_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colon_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_B2_Colorectal_Carcinoma
+    
+    
+Class: ncit:Mixed_Acidophil-Basophil_Adenoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334312"^^xsd:string,
+        oio:id "ncithesaurus:Mixed_Acidophil-Basophil_Adenoma"^^xsd:string,
+        rdfs:label "pituitary gland mixed acidophil-basophil adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: ncit:Common_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Common_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333132"^^xsd:string,
+        rdfs:label "common neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Nodular_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334971"^^xsd:string,
+        oio:id "ncithesaurus:Nodular_Neoplasm"^^xsd:string,
+        rdfs:label "nodular neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Stage_IV_Hodgkin_s_Disease_Lymphocyte_Predominance_Type
+
+    Annotations: 
+        rdfs:label "stage iv hodgkin's disease lymphocyte predominance type"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855077"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Hodgkin_s_Disease_Lymphocyte_Predominance_Type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphocyte_Predominant_Type_Hodgkin_s_Disease
+    
+    
+Class: ncit:Astler-Coller_C3_Rectal_Carcinoma
+
+    Annotations: 
+        rdfs:label "astler-coller c3 rectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_C3_Rectal_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516075"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Astler-Coller_C3_Colorectal_Carcinoma,
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Stage_II_Low_Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage ii low grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279965"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Low_Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Lymphocyte_Predominant_Type_Hodgkin_s_Disease
+
+    Annotations: 
+        oio:id "ncithesaurus:Lymphocyte_Predominant_Type_Hodgkin_s_Disease"^^xsd:string,
+        oio:hasDbXref "UMLS:C1266194"^^xsd:string,
+        rdfs:label "lymphocyte predominant type hodgkin's disease"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:T_Cell_Chronic_Lymphocytic_Leukemia
+
+    Annotations: 
+        rdfs:label "t-cell chronic lymphocytic leukemia"^^xsd:string,
+        oio:id "ncithesaurus:T_Cell_Chronic_Lymphocytic_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Stage_II_Contiguous_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0677690"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Contiguous_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "stage ii contiguous adult diffuse small cleaved cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Malignant_Neoplasm_Uncertain_Whether_Primary_or_Metastatic
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334224"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Neoplasm_Uncertain_Whether_Primary_or_Metastatic"^^xsd:string,
+        rdfs:label "malignant neoplasm, uncertain whether primary or metastatic"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Non-Hematologic_Malignancy
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0935681"^^xsd:string,
+        oio:id "ncithesaurus:Non-Hematologic_Malignancy"^^xsd:string,
+        rdfs:label "non-hematologic malignancy"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Neoplasm_by_Morphology
+
+    Annotations: 
+        oio:id "ncithesaurus:Neoplasm_by_Morphology"^^xsd:string,
+        rdfs:label "neoplasm by morphology"^^xsd:string,
+        oio:hasDbXref "UMLS:C0474796"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Neoplasm
+    
+    
+Class: ncit:Malignant_Lymphoma_by_Cell_Type_Working_Formulation
+
+    Annotations: 
+        rdfs:label "malignant lymphoma by cell type (working formulation)"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_by_Cell_Type_Working_Formulation"^^xsd:string,
+        oio:hasDbXref "UMLS:C1518191"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Nonestrogen-dependent_Cancer
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1709263"^^xsd:string,
+        oio:id "ncithesaurus:Nonestrogen-dependent_Cancer"^^xsd:string,
+        rdfs:label "nonestrogen-dependent cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Papillae
+
+    Annotations: 
+        oio:id "ncithesaurus:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Papillae"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336910"^^xsd:string,
+        rdfs:label "endometrial endometrioid adenocarcinoma with papillae"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Focal_Intraductal_Papillomatosis
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1333626"^^xsd:string,
+        rdfs:label "focal intraductal papillomatosis"^^xsd:string,
+        oio:id "ncithesaurus:Focal_Intraductal_Papillomatosis"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Cystic_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Cystic_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333190"^^xsd:string,
+        rdfs:label "cystic neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Pancreatic_Intraductal_Papillary-Mucinous_Carcinoma
+
+    Annotations: 
+        rdfs:label "pancreatic intraductal papillary-mucinous carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335304"^^xsd:string,
+        oio:id "ncithesaurus:Pancreatic_Intraductal_Papillary-Mucinous_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Hodgkin_s_Paragranuloma
+
+    Annotations: 
+        oio:id "ncithesaurus:Hodgkin_s_Paragranuloma"^^xsd:string,
+        rdfs:label "hodgkin's paragranuloma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Malignant_Lymphoma_Follicular_Large_Cleaved_Cell_Type
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518187"^^xsd:string,
+        rdfs:label "malignant lymphoma follicular, large cleaved cell type"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Follicular_Large_Cleaved_Cell_Type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Large_Cell_Cleaved
+    
+    
+Class: ncit:Non-Metastatic_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334991"^^xsd:string,
+        oio:id "ncithesaurus:Non-Metastatic_Neoplasm"^^xsd:string,
+        rdfs:label "non-metastatic neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Anaplastic_Small_Cell_Thyroid_Carcinoma
+
+    Annotations: 
+        rdfs:label "thyroid gland undifferentiated small cell carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Anaplastic_Small_Cell_Thyroid_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0278860"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Undifferentiated_Immature_Teratoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Undifferentiated_Immature_Teratoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334521"^^xsd:string,
+        rdfs:label "undifferentiated immature teratoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Germ_Cell_Tumor_Antiquated
+    
+    
+Class: ncit:Malignant_Non-Hodgkin_s_Lymphoma_Diffuse_Lymphocytic_Poorly_Differentiated
+
+    Annotations: 
+        rdfs:label "malignant non-hodgkin's lymphoma, diffuse, lymphocytic, poorly differentiated"^^xsd:string,
+        oio:hasDbXref "UMLS:C1518226"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Non-Hodgkin_s_Lymphoma_Diffuse_Lymphocytic_Poorly_Differentiated"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Diffuse_Malignant_Lymphoma
+    
+    
+Class: ncit:Recurrent_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "recurrent adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280187"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Infrequent_Neoplasm
+
+    Annotations: 
+        rdfs:label "infrequent neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334185"^^xsd:string,
+        oio:id "ncithesaurus:Infrequent_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Pre-Pre-B_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1514294"^^xsd:string,
+        oio:id "ncithesaurus:Pre-Pre-B_Acute_Lymphoblastic_Leukemia"^^xsd:string,
+        rdfs:label "pre-pre-b acute lymphoblastic leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Stage_I_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "stage i low grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279951"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Malignant_Enteroglucagonoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Malignant_Enteroglucagonoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1266017"^^xsd:string,
+        rdfs:label "malignant enteroglucagonoma"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Enteroglucagonoma
+    
+    
+Class: ncit:Pulmonary_Adenomatosis
+
+    Annotations: 
+        rdfs:label "pulmonary adenomatosis"^^xsd:string,
+        oio:id "ncithesaurus:Pulmonary_Adenomatosis"^^xsd:string,
+        oio:hasDbXref "UMLS:C0206676"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Astler-Coller_B2_Rectal_Carcinoma
+
+    Annotations: 
+        rdfs:label "astler-coller b2 rectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B2_Rectal_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516064"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_B2_Colorectal_Carcinoma
+    
+    
+Class: ncit:Polyclonal_Polymorphic_Post-Transplant_Lymphoproliferative_Disorder
+
+    Annotations: 
+        oio:id "ncithesaurus:Polyclonal_Polymorphic_Post-Transplant_Lymphoproliferative_Disorder"^^xsd:string,
+        rdfs:label "polyclonal polymorphic post-transplant lymphoproliferative disorder"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335438"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Malignant_Lymphoma_Centroblastic_Follicular
+
+    Annotations: 
+        rdfs:label "malignant lymphoma centroblastic, follicular"^^xsd:string,
+        oio:hasDbXref "UMLS:C0862984"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Centroblastic_Follicular"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_Leukemia_by_Kiel_Classification_Antiquated
+    
+    
+Class: ncit:Recurrent_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "recurrent adult diffuse large cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280188"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Benign_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0086692"^^xsd:string,
+        oio:id "ncithesaurus:Benign_Neoplasm"^^xsd:string,
+        rdfs:label "benign neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Grade_III_Neuroendocrine_Carcinoma
+
+    Annotations: 
+        rdfs:label "grade iii neuroendocrine carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1266149"^^xsd:string,
+        oio:id "ncithesaurus:Grade_III_Neuroendocrine_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Astler-Coller_B3_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516066"^^xsd:string,
+        rdfs:label "astler-coller b3 colorectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B3_Colorectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Germ_Cell_Tumor_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Germ_Cell_Tumor_Antiquated"^^xsd:string,
+        rdfs:label "germ cell tumor (antiquated)"^^xsd:string,
+        oio:hasDbXref "UMLS:C1880953"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Pineal_Region_Dysgerminoma
+
+    Annotations: 
+        rdfs:label "pineal region dysgerminoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335415"^^xsd:string,
+        oio:id "ncithesaurus:Pineal_Region_Dysgerminoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Germ_Cell_Tumor_Antiquated
+    
+    
+Class: ncit:Neoplasm_by_Obsolete_Classification
+
+    Annotations: 
+        oio:id "ncithesaurus:Neoplasm_by_Obsolete_Classification"^^xsd:string,
+        rdfs:label "neoplasm by obsolete classification"^^xsd:string,
+        oio:hasDbXref "UMLS:C1709159"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: obo:ncithesaurus_Mesenchymoma
+
+    Annotations: 
+        rdfs:label "mesenchymoma"^^xsd:string,
+        oio:id "ncithesaurus:Mesenchymoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0025464"^^xsd:string,
+        oio:hasDbXref "NCIT:C3233"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Malignant_Hemangiopericytoma_NCI_Grade_2
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334588"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Hemangiopericytoma_NCI_Grade_2"^^xsd:string,
+        rdfs:label "malignant hemangiopericytoma nci grade 2"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hemangiopericytic_Neoplasm
+    
+    
+Class: ncit:Malignant_Lymphoma_Follicular_Large_Noncleaved_Cell_Type
+
+    Annotations: 
+        oio:id "ncithesaurus:Malignant_Lymphoma_Follicular_Large_Noncleaved_Cell_Type"^^xsd:string,
+        oio:hasDbXref "UMLS:C1518188"^^xsd:string,
+        rdfs:label "malignant lymphoma follicular, large noncleaved cell type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Non-Cleaved_Cell_Type
+    
+    
+Class: ncit:Mixed_Acidophil-Basophil_Carcinoma
+
+    Annotations: 
+        rdfs:label "pituitary gland mixed acidophil-basophil carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Mixed_Acidophil-Basophil_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: ncit:Occupational_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1335102"^^xsd:string,
+        rdfs:label "occupational neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Occupational_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Cause
+    
+    
+Class: ncit:Astler-Coller_B1_Rectal_Carcinoma
+
+    Annotations: 
+        rdfs:label "astler-coller b1 rectal carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516061"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B1_Rectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_B1_Colorectal_Carcinoma
+    
+    
+Class: ncit:Grade_II_Neuroendocrine_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Grade_II_Neuroendocrine_Carcinoma"^^xsd:string,
+        rdfs:label "grade ii neuroendocrine carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333862"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Benign_Ovarian_Partly_Luteinized_Thecoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1332526"^^xsd:string,
+        rdfs:label "benign ovarian partly luteinized thecoma"^^xsd:string,
+        oio:id "ncithesaurus:Benign_Ovarian_Partly_Luteinized_Thecoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Papillary_and_Follicular_Adenocarcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Papillary_and_Follicular_Adenocarcinoma"^^xsd:string,
+        rdfs:label "thyroid gland papillary and follicular carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0206683"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "intermediate grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279076"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Non-Hodgkin_s_Lymphoma_Grade,
+        ncit:Intermediate-Grade_Lymphoma
+    
+    
+Class: obo:ncithesaurus_Pseudolymphoma
+
+    Annotations: 
+        rdfs:label "pseudolymphoma"^^xsd:string,
+        oio:hasDbXref "NCIT:C3825"^^xsd:string,
+        oio:id "ncithesaurus:Pseudolymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0221269"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Small_Nonvillous_Papillae
+
+    Annotations: 
+        oio:id "ncithesaurus:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Small_Nonvillous_Papillae"^^xsd:string,
+        rdfs:label "endometrial endometrioid adenocarcinoma with small nonvillous papillae"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336912"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Papillae
+    
+    
+Class: ncit:Hybrid_Odontogenic_Fibroma
+
+    Annotations: 
+        rdfs:label "hybrid odontogenic fibroma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334063"^^xsd:string,
+        oio:id "ncithesaurus:Hybrid_Odontogenic_Fibroma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IIB_Nasopharyngeal_Squamous_Cell_Carcinoma
+
+    Annotations: 
+        rdfs:label "stage iib nasopharyngeal keratinizing squamous cell carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336189"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIB_Nasopharyngeal_Squamous_Cell_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Stage_IIA_Bladder_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IIA_Bladder_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336154"^^xsd:string,
+        rdfs:label "stage iia bladder cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Stage_II_Non-Contiguous_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0677704"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Non-Contiguous_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "stage ii non-contiguous adult diffuse small cleaved cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Stage_IVB_Pancreatic_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IVB_Pancreatic_Cancer"^^xsd:string,
+        rdfs:label "stage ivb pancreatic cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Mature_T-ALL
+
+    Annotations: 
+        oio:id "ncithesaurus:Mature_T-ALL"^^xsd:string,
+        oio:hasDbXref "UMLS:C1521897"^^xsd:string,
+        rdfs:label "mature t-all"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:High_Risk_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334026"^^xsd:string,
+        oio:id "ncithesaurus:High_Risk_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        rdfs:label "high risk gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Refractory_High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Refractory_High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        rdfs:label "refractory high grade burkitt-like lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855126"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Burkitt-Like_Lymphoma
+    
+    
+Class: ncit:Stage_I_Childhood_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0281701"^^xsd:string,
+        rdfs:label "stage i childhood large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_I_Childhood_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Childhood_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Adult_Non-Hodgkin_s_Lymphoma_Grade
+
+    Annotations: 
+        oio:id "ncithesaurus:Adult_Non-Hodgkin_s_Lymphoma_Grade"^^xsd:string,
+        rdfs:label "adult non-hodgkin's lymphoma grade"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280193"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Tubular_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336832"^^xsd:string,
+        rdfs:label "tubular neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Tubular_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Environment-Related_Malignant_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0920506"^^xsd:string,
+        rdfs:label "environment-related malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Environment-Related_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm,
+        ncit:Environment-Related_Neoplasm
+    
+    
+Class: ncit:Grade_3_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "grade 3 malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333845"^^xsd:string,
+        oio:id "ncithesaurus:Grade_3_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Neoplasm_of_Uncertain_Malignant_Potential
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0154129"^^xsd:string,
+        rdfs:label "neoplasm of uncertain malignant potential"^^xsd:string,
+        oio:id "ncithesaurus:Neoplasm_of_Uncertain_Malignant_Potential"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:AIDS-Related_Lymphoma_by_Working_Formulation
+
+    Annotations: 
+        oio:id "ncithesaurus:AIDS-Related_Lymphoma_by_Working_Formulation"^^xsd:string,
+        rdfs:label "aids-related lymphoma by working formulation"^^xsd:string,
+        oio:hasDbXref "UMLS:C1510691"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Malignant_Tumor_Small_Cell_Type
+
+    Annotations: 
+        rdfs:label "malignant tumor, small cell type"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334228"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Tumor_Small_Cell_Type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Astler-Coller_C1_Colon_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_C1_Colon_Carcinoma"^^xsd:string,
+        rdfs:label "astler-coller c1 colon carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516068"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colon_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_C1_Colorectal_Carcinoma
+    
+    
+Class: ncit:Trichofollicular_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Trichofollicular_Carcinoma"^^xsd:string,
+        rdfs:label "trichofollicular carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1710482"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Recurrent_High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "recurrent high grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_High-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280189"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Neoplasm_by_Cause
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334934"^^xsd:string,
+        rdfs:label "neoplasm by cause"^^xsd:string,
+        oio:id "ncithesaurus:Neoplasm_by_Cause"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Hodgkin_s_Disease_Lymphocyte_Depletion_Diffuse_Fibrosis
+
+    Annotations: 
+        rdfs:label "hodgkin's disease, lymphocyte depletion, diffuse fibrosis"^^xsd:string,
+        oio:id "ncithesaurus:Hodgkin_s_Disease_Lymphocyte_Depletion_Diffuse_Fibrosis"^^xsd:string,
+        oio:hasDbXref "UMLS:C1881058"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Stage_I_Retinoblastoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_Retinoblastoma"^^xsd:string,
+        rdfs:label "stage i retinoblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336479"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:TdT_Positive_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:id "ncithesaurus:TdT_Positive_Acute_Lymphoblastic_Leukemia"^^xsd:string,
+        rdfs:label "tdt positive acute lymphoblastic leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C2348656"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Carcinoma_Simplex
+
+    Annotations: 
+        oio:id "ncithesaurus:Carcinoma_Simplex"^^xsd:string,
+        rdfs:label "carcinoma simplex"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334297"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:High-Grade_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:High-Grade_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0079740"^^xsd:string,
+        rdfs:label "high grade lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Villous_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336963"^^xsd:string,
+        oio:id "ncithesaurus:Villous_Neoplasm"^^xsd:string,
+        rdfs:label "villous neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Well_Differentiated_Malignant_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1337019"^^xsd:string,
+        rdfs:label "well differentiated malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Well_Differentiated_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Nervous_System_Neoplasm_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Nervous_System_Neoplasm_Antiquated"^^xsd:string,
+        rdfs:label "nervous system neoplasm (antiquated)"^^xsd:string,
+        oio:hasDbXref "UMLS:C1882066"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Malignant_Lymphoma_Large_Cell_Type
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518189"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Large_Cell_Type"^^xsd:string,
+        rdfs:label "malignant lymphoma, large cell type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_by_Cell_Type_Working_Formulation
+    
+    
+Class: ncit:Stage_IVA_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IVA_Extrahepatic_Bile_Duct_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336338"^^xsd:string,
+        rdfs:label "stage iva extrahepatic bile duct cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IV_Extrahepatic_Bile_Duct_Cancer
+    
+    
+Class: ncit:Very_Low_Risk_Esophageal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        rdfs:label "very low risk esophageal gastrointestinal stromal tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336958"^^xsd:string,
+        oio:id "ncithesaurus:Very_Low_Risk_Esophageal_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Very_Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Intermediate_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        rdfs:label "intermediate risk small intestinal gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:Intermediate_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334223"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Clear_Cell_Tumor
+
+    Annotations: 
+        rdfs:label "clear cell neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1265994"^^xsd:string,
+        oio:id "ncithesaurus:Clear_Cell_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Stage_IVB_Esophageal_Adenocarcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IVB_Esophageal_Adenocarcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336365"^^xsd:string,
+        rdfs:label "stage ivb esophageal adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IVB_Esophageal_Cancer
+    
+    
+Class: ncit:True_Histiocytic_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:True_Histiocytic_Lymphoma"^^xsd:string,
+        rdfs:label "true histiocytic lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Basophilic_Adenoma
+
+    Annotations: 
+        rdfs:label "pituitary gland basophil adenoma"^^xsd:string,
+        oio:id "ncithesaurus:Basophilic_Adenoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0001431"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: obo:ncithesaurus_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0375111"^^xsd:string,
+        rdfs:label "neoplasm"^^xsd:string
+    
+    
+Class: ncit:Basophil_Adenocarcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1704778"^^xsd:string,
+        rdfs:label "pituitary gland basophil carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Basophil_Adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: ncit:Neoplasm_by_Site
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0027653"^^xsd:string,
+        rdfs:label "neoplasm by site"^^xsd:string,
+        oio:id "ncithesaurus:Neoplasm_by_Site"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Neoplasm
+    
+    
+Class: ncit:Diffuse_Malignant_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Diffuse_Malignant_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334620"^^xsd:string,
+        rdfs:label "diffuse malignant lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Superficial_Spreading_Adenocarcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334278"^^xsd:string,
+        rdfs:label "superficial spreading adenocarcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Superficial_Spreading_Adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Adult_Non-Hodgkin_s_Lymphoma_Stage
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0279948"^^xsd:string,
+        oio:id "ncithesaurus:Adult_Non-Hodgkin_s_Lymphoma_Stage"^^xsd:string,
+        rdfs:label "adult non-hodgkin's lymphoma stage"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Non-Burkitt_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Non-Burkitt_s_Lymphoma"^^xsd:string,
+        rdfs:label "non-burkitt's lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Non-Cleaved_Cell_Type
+    
+    
+Class: ncit:Stage_II_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_II_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280149"^^xsd:string,
+        rdfs:label "stage ii adult diffuse large cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Low_Risk_Gastric_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:id "ncithesaurus:Low_Risk_Gastric_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334431"^^xsd:string,
+        rdfs:label "low risk gastric gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Stage_I_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage i adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_I_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279959"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Stage_IV_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0280167"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Low-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "stage iv low grade adult non-hodgkin's lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Epithelial_Neoplasm_Antiquated
+
+    Annotations: 
+        rdfs:label "epithelial neoplasm (antiquated)"^^xsd:string,
+        oio:id "ncithesaurus:Epithelial_Neoplasm_Antiquated"^^xsd:string,
+        oio:hasDbXref "UMLS:C1880537"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: obo:ncithesaurus_Spongioneuroblastoma
+
+    Annotations: 
+        oio:hasDbXref "NCIT:C66811"^^xsd:string,
+        rdfs:label "spongioneuroblastoma"^^xsd:string,
+        oio:id "ncithesaurus:Spongioneuroblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334598"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_III_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_III_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280162"^^xsd:string,
+        rdfs:label "stage iii adult diffuse large cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Neoplasm_by_Special_Category
+
+    Annotations: 
+        oio:id "ncithesaurus:Neoplasm_by_Special_Category"^^xsd:string,
+        rdfs:label "neoplasm by special category"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334935"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Neoplasm
+    
+    
+Class: ncit:Benign_Stromal_Tumor
+
+    Annotations: 
+        oio:id "ncithesaurus:Benign_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C0474833"^^xsd:string,
+        rdfs:label "benign stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Trichoepithelial_Carcinoma
+
+    Annotations: 
+        rdfs:label "trichoepithelial carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1710481"^^xsd:string,
+        oio:id "ncithesaurus:Trichoepithelial_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "diffuse mixed cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0079757"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Diffuse_Centroblastic-Centrocytic_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334637"^^xsd:string,
+        rdfs:label "diffuse centroblastic-centrocytic lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Diffuse_Centroblastic-Centrocytic_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_Leukemia_by_Kiel_Classification_Antiquated
+    
+    
+Class: ncit:Fibrous_Synovial_Sarcoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1333616"^^xsd:string,
+        oio:id "ncithesaurus:Fibrous_Synovial_Sarcoma"^^xsd:string,
+        rdfs:label "fibrous synovial sarcoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Giant_Cell_Sarcoma
+
+    Annotations: 
+        rdfs:label "giant cell sarcoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1261358"^^xsd:string,
+        oio:id "ncithesaurus:Giant_Cell_Sarcoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IV_High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iv high grade burkitt-like lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855130"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Burkitt-Like_Lymphoma
+    
+    
+Class: ncit:Leukemia_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Leukemia_Antiquated"^^xsd:string,
+        rdfs:label "leukemia (antiquated)"^^xsd:string,
+        oio:hasDbXref "UMLS:C1517805"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Pre_T-ALL
+
+    Annotations: 
+        rdfs:label "pre t-all"^^xsd:string,
+        oio:id "ncithesaurus:Pre_T-ALL"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Stage_I_Centroblastic_Follicular_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0863046"^^xsd:string,
+        oio:id "ncithesaurus:Stage_I_Centroblastic_Follicular_Lymphoma"^^xsd:string,
+        rdfs:label "stage i centroblastic follicular lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Centroblastic_Follicular
+    
+    
+Class: ncit:Hemangiopericytic_Neoplasm
+
+    Annotations: 
+        rdfs:label "hemangiopericytic neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Hemangiopericytic_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0476144"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Intermediate_Immature_Teratoma
+
+    Annotations: 
+        rdfs:label "intermediate immature teratoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334522"^^xsd:string,
+        oio:id "ncithesaurus:Intermediate_Immature_Teratoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Germ_Cell_Tumor_Antiquated
+    
+    
+Class: ncit:Carcinoid_Tumor_of_Uncertain_Malignant_Potential
+
+    Annotations: 
+        rdfs:label "carcinoid tumor of uncertain malignant potential"^^xsd:string,
+        oio:id "ncithesaurus:Carcinoid_Tumor_of_Uncertain_Malignant_Potential"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Childhood_Malignant_Mesenchymoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0279991"^^xsd:string,
+        oio:id "ncithesaurus:Childhood_Malignant_Mesenchymoma"^^xsd:string,
+        rdfs:label "childhood malignant mesenchymoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Mesenchymoma
+    
+    
+Class: ncit:Low_Risk_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1266136"^^xsd:string,
+        rdfs:label "low risk gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:Low_Risk_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IB_Retinoblastoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336143"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IB_Retinoblastoma"^^xsd:string,
+        rdfs:label "stage ib retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_I_Retinoblastoma
+    
+    
+Class: ncit:Rectal_Cancer_by_Astler-Coller_Stage
+
+    Annotations: 
+        rdfs:label "rectal cancer by astler-coller stage"^^xsd:string,
+        oio:hasDbXref "UMLS:C1514800"^^xsd:string,
+        oio:id "ncithesaurus:Rectal_Cancer_by_Astler-Coller_Stage"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Benign_Teratoma
+
+    Annotations: 
+        rdfs:label "benign teratoma"^^xsd:string,
+        oio:id "ncithesaurus:Benign_Teratoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1879828"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Germ_Cell_Tumor_Antiquated
+    
+    
+Class: ncit:High_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334027"^^xsd:string,
+        rdfs:label "high risk small intestinal gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:High_Risk_Small_Intestinal_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Refractory_Hodgkin_s_Disease_Lymphocyte_Predominance_Type
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0855075"^^xsd:string,
+        oio:id "ncithesaurus:Refractory_Hodgkin_s_Disease_Lymphocyte_Predominance_Type"^^xsd:string,
+        rdfs:label "refractory hodgkin's disease lymphocyte predominance type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphocyte_Predominant_Type_Hodgkin_s_Disease
+    
+    
+Class: ncit:Stage_IIC_Retinoblastoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336201"^^xsd:string,
+        rdfs:label "stage iic retinoblastoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIC_Retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Retinoblastoma
+    
+    
+Class: ncit:Astler-Coller_C1_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_C1_Colorectal_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516069"^^xsd:string,
+        rdfs:label "astler-coller c1 colorectal carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Intermediate-Grade_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Intermediate-Grade_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0079741"^^xsd:string,
+        rdfs:label "intermediate grade lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Stage_IVA_Bladder_Cancer
+
+    Annotations: 
+        rdfs:label "stage iva bladder cancer"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVA_Bladder_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336332"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Small_Cell_Intermediate_Cell_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334239"^^xsd:string,
+        oio:id "ncithesaurus:Small_Cell_Intermediate_Cell_Carcinoma"^^xsd:string,
+        rdfs:label "small cell intermediate cell carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Grade_III_Neuroendocrine_Carcinoma
+    
+    
+Class: ncit:Classic_Type_Trichoepithelioma
+
+    Annotations: 
+        rdfs:label "classic type trichoepithelioma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333061"^^xsd:string,
+        oio:id "ncithesaurus:Classic_Type_Trichoepithelioma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        rdfs:label "high grade burkitt-like lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855124"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_B-Cell_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Common_Hematopoietic_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1333131"^^xsd:string,
+        oio:id "ncithesaurus:Common_Hematopoietic_Neoplasm"^^xsd:string,
+        rdfs:label "common hematopoietic neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Common_Neoplasm
+    
+    
+Class: ncit:Stage_IVB_Bladder_Cancer
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336362"^^xsd:string,
+        rdfs:label "stage ivb bladder cancer"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVB_Bladder_Cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Common_Germ_Cell_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1333130"^^xsd:string,
+        oio:id "ncithesaurus:Common_Germ_Cell_Neoplasm"^^xsd:string,
+        rdfs:label "common germ cell tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Common_Neoplasm
+    
+    
+Class: ncit:Astler-Coller_B3_Rectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516067"^^xsd:string,
+        rdfs:label "astler-coller b3 rectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B3_Rectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_B3_Colorectal_Carcinoma
+    
+    
+Class: ncit:Stage_IIA_Nasopharyngeal_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IIA_Nasopharyngeal_Carcinoma"^^xsd:string,
+        rdfs:label "stage iia nasopharyngeal carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336165"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Primary_Low-Grade_B-Cell_Dural_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Primary_Low-Grade_B-Cell_Dural_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1514423"^^xsd:string,
+        rdfs:label "primary low grade b-cell dural lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_B-Cell_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Medulloepithelioma_not_Otherwise_Specified
+
+    Annotations: 
+        rdfs:label "medulloepithelioma not otherwise specified"^^xsd:string,
+        oio:id "ncithesaurus:Medulloepithelioma_not_Otherwise_Specified"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Malignant_Lymphoma_Histiocytic_Diffuse
+
+    Annotations: 
+        rdfs:label "malignant lymphoma, histiocytic, diffuse"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Histiocytic_Diffuse"^^xsd:string,
+        oio:hasDbXref "UMLS:C1521844"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Large_Cell_Type,
+        ncit:Diffuse_Malignant_Lymphoma
+    
+    
+Class: ncit:High_Risk_Esophageal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334024"^^xsd:string,
+        oio:id "ncithesaurus:High_Risk_Esophageal_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        rdfs:label "high risk esophageal gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Chronic_Monocytic_Leukemia
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0023466"^^xsd:string,
+        rdfs:label "chronic monocytic leukemia"^^xsd:string,
+        oio:id "ncithesaurus:Chronic_Monocytic_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Metachronous_Wilms_Tumor
+
+    Annotations: 
+        rdfs:label "metachronous wilms tumor"^^xsd:string,
+        oio:id "ncithesaurus:Metachronous_Wilms_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334705"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Metachronous_Malignant_Neoplasm
+    
+    
+Class: ncit:High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "high grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279079"^^xsd:string,
+        oio:id "ncithesaurus:High-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Lymphoma,
+        ncit:Adult_Non-Hodgkin_s_Lymphoma_Grade
+    
+    
+Class: ncit:Common_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1333128"^^xsd:string,
+        rdfs:label "common carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Common_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Common_Neoplasm
+    
+    
+Class: ncit:Verrucous_Papilloma
+
+    Annotations: 
+        rdfs:label "verrucous papilloma"^^xsd:string,
+        oio:id "ncithesaurus:Verrucous_Papilloma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334243"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Peripheral_T-Cell_Lymphoma_Large_Cell
+
+    Annotations: 
+        oio:id "ncithesaurus:Peripheral_T-Cell_Lymphoma_Large_Cell"^^xsd:string,
+        rdfs:label "peripheral t-cell lymphoma, large cell"^^xsd:string,
+        oio:hasDbXref "UMLS:C1337079"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Necrotic_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Necrotic_Neoplasm"^^xsd:string,
+        rdfs:label "necrotic neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1300818"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Acute_Eosinophilic_Leukemia
+
+    Annotations: 
+        oio:id "ncithesaurus:Acute_Eosinophilic_Leukemia"^^xsd:string,
+        rdfs:label "acute eosinophilic leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C0023439"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Stage_IV_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336417"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Extrahepatic_Bile_Duct_Cancer"^^xsd:string,
+        rdfs:label "stage iv extrahepatic bile duct cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Stage_III_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        rdfs:label "stage iii extrahepatic bile duct cancer"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Extrahepatic_Bile_Duct_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1168220"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Mesenchymal_Extraskeletal_Chondrosarcoma
+
+    Annotations: 
+        rdfs:label "mesenchymal extraskeletal chondrosarcoma"^^xsd:string,
+        oio:id "ncithesaurus:Mesenchymal_Extraskeletal_Chondrosarcoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1275279"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IV_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iv intermediate grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280171"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Water-Clear_Cell_Adenocarcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Water-Clear_Cell_Adenocarcinoma"^^xsd:string,
+        rdfs:label "water-clear cell adenocarcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334322"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Low-Grade_B-Cell_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0456861"^^xsd:string,
+        rdfs:label "low grade b-cell non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Low-Grade_B-Cell_Non-Hodgkin_s_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low-Grade_Lymphoma
+    
+    
+Class: ncit:Malignant_Lymphoma_Non-Cleaved_Diffuse
+
+    Annotations: 
+        oio:id "ncithesaurus:Malignant_Lymphoma_Non-Cleaved_Diffuse"^^xsd:string,
+        rdfs:label "malignant lymphoma, non-cleaved, diffuse"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334642"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Non-Cleaved_Cell_Type,
+        ncit:Diffuse_Malignant_Lymphoma
+    
+    
+Class: ncit:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Metaplastic_Changes
+
+    Annotations: 
+        rdfs:label "endometrial endometrioid adenocarcinoma with metaplastic changes"^^xsd:string,
+        oio:id "ncithesaurus:Uterine_Corpus_Endometrioid_Adenocarcinoma_with_Metaplastic_Changes"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336909"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_II_Retinoblastoma
+
+    Annotations: 
+        rdfs:label "stage ii retinoblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336315"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0278885"^^xsd:string,
+        oio:id "ncithesaurus:Low-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "low grade adult non-hodgkin's lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Non-Hodgkin_s_Lymphoma_Grade,
+        ncit:Low-Grade_Lymphoma
+    
+    
+Class: ncit:Stage_III_Hodgkin_s_Disease_Lymphocyte_Predominance_Type
+
+    Annotations: 
+        rdfs:label "stage iii hodgkin's disease lymphocyte predominance type"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855076"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Hodgkin_s_Disease_Lymphocyte_Predominance_Type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphocyte_Predominant_Type_Hodgkin_s_Disease
+    
+    
+Class: ncit:Cancer_Stage_Antiquated
+
+    Annotations: 
+        rdfs:label "cancer stage (antiquated)"^^xsd:string,
+        oio:id "ncithesaurus:Cancer_Stage_Antiquated"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:AIDS-Related_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "aids-related diffuse mixed cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:AIDS-Related_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0281393"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Diffuse_Malignant_Lymphoma,
+        ncit:AIDS-Related_Lymphoma_by_Working_Formulation,
+        ncit:Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:High-Grade_T-Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0456877"^^xsd:string,
+        oio:id "ncithesaurus:High-Grade_T-Cell_Lymphoma"^^xsd:string,
+        rdfs:label "high grade t-cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Lymphoma
+    
+    
+Class: ncit:High_Risk_Gastric_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        rdfs:label "high risk gastric gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:High_Risk_Gastric_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334025"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Pre-B_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:id "ncithesaurus:Pre-B_Acute_Lymphoblastic_Leukemia"^^xsd:string,
+        rdfs:label "pre-b acute lymphoblastic leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Stage_IVA_Esophageal_Cancer
+
+    Annotations: 
+        rdfs:label "stage iva esophageal cancer"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVA_Esophageal_Cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336336"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Grade_I_Neuroendocrine_Carcinoma
+
+    Annotations: 
+        rdfs:label "grade i neuroendocrine carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1266147"^^xsd:string,
+        oio:id "ncithesaurus:Grade_I_Neuroendocrine_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Lymphoma_by_Working_Formulation_Antiquated
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518078"^^xsd:string,
+        rdfs:label "lymphoma by working formulation (antiquated)"^^xsd:string,
+        oio:id "ncithesaurus:Lymphoma_by_Working_Formulation_Antiquated"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Stage_II_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0280147"^^xsd:string,
+        rdfs:label "stage ii adult diffuse small cleaved cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Stage_IIB_Bladder_Cancer
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336176"^^xsd:string,
+        rdfs:label "stage iib bladder cancer"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIB_Bladder_Cancer"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Astler-Coller_C2_Rectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516073"^^xsd:string,
+        rdfs:label "astler-coller c2 rectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_C2_Rectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Astler-Coller_C2_Colorectal_Carcinoma,
+        ncit:Rectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Recurrent_Childhood_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0281709"^^xsd:string,
+        rdfs:label "recurrent childhood large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_Childhood_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Childhood_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Granular_Cell_Odontogenic_Fibroma
+
+    Annotations: 
+        oio:id "ncithesaurus:Granular_Cell_Odontogenic_Fibroma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333872"^^xsd:string,
+        rdfs:label "granular cell odontogenic fibroma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IVA_Esophageal_Adenocarcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336335"^^xsd:string,
+        rdfs:label "stage iva esophageal adenocarcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVA_Esophageal_Adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IVA_Esophageal_Cancer
+    
+    
+Class: ncit:Stage_II_Contiguous_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage ii contiguous adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677693"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Contiguous_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:cALLa_Positive_Lymphoblastic_Leukemia
+
+    Annotations: 
+        rdfs:label "calla positive lymphoblastic leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C0023438"^^xsd:string,
+        oio:id "ncithesaurus:cALLa_Positive_Lymphoblastic_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Lymphoma_by_Lukes-Collins_Classification_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Lymphoma_by_Lukes-Collins_Classification_Antiquated"^^xsd:string,
+        oio:hasDbXref "UMLS:C1518077"^^xsd:string,
+        rdfs:label "lymphoma by lukes-collins classification (antiquated)"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Stage_I_High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855127"^^xsd:string,
+        rdfs:label "stage i high grade burkitt-like lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Burkitt-Like_Lymphoma
+    
+    
+Class: ncit:Polar_Spongioblastoma
+
+    Annotations: 
+        rdfs:label "polar spongioblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0555199"^^xsd:string,
+        oio:id "ncithesaurus:Polar_Spongioblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Polygonal_Cell_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Polygonal_Cell_Carcinoma"^^xsd:string,
+        rdfs:label "polygonal cell carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334236"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_0_Extrahepatic_Bile_Duct_Cancer
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_0_Extrahepatic_Bile_Duct_Cancer"^^xsd:string,
+        rdfs:label "stage 0 extrahepatic bile duct cancer"^^xsd:string,
+        oio:hasDbXref "UMLS:C0345914"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Glassy_Cell_Carcinoma
+
+    Annotations: 
+        rdfs:label "glassy cell carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1265998"^^xsd:string,
+        oio:id "ncithesaurus:Glassy_Cell_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_I_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "stage i intermediate grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279957"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Stage_IVB_Esophageal_Squamous_Cell_Carcinoma
+
+    Annotations: 
+        rdfs:label "stage ivb esophageal squamous cell carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336367"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IVB_Esophageal_Squamous_Cell_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IVB_Esophageal_Cancer
+    
+    
+Class: ncit:Stage_IIA_Retinoblastoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336171"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIA_Retinoblastoma"^^xsd:string,
+        rdfs:label "stage iia retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Retinoblastoma
+    
+    
+Class: ncit:Stage_IV_Childhood_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0281707"^^xsd:string,
+        rdfs:label "stage iv childhood large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Childhood_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Childhood_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Low-Grade_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0079747"^^xsd:string,
+        oio:id "ncithesaurus:Low-Grade_Lymphoma"^^xsd:string,
+        rdfs:label "low grade lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Lymphoma_by_Working_Formulation_Antiquated
+    
+    
+Class: ncit:Environment-Related_Neoplasm
+
+    Annotations: 
+        rdfs:label "environment-related neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0920701"^^xsd:string,
+        oio:id "ncithesaurus:Environment-Related_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Cause
+    
+    
+Class: ncit:Malignant_Lymphoma_Large_Cell_Cleaved
+
+    Annotations: 
+        rdfs:label "malignant lymphoma, large cell, cleaved"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334641"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Large_Cell_Cleaved"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Non-Hodgkin_s_Lymphoma_Cleaved_Cell
+    
+    
+Class: ncit:Intermediate_Grade_Malignant_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334216"^^xsd:string,
+        rdfs:label "intermediate grade malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Intermediate_Grade_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Cerebellar_Sarcoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334592"^^xsd:string,
+        oio:id "ncithesaurus:Cerebellar_Sarcoma"^^xsd:string,
+        rdfs:label "cerebellar sarcoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Nervous_System_Neoplasm_Antiquated
+    
+    
+Class: ncit:Malignant_Lymphoma_Convoluted
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1518186"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Lymphoma_Convoluted"^^xsd:string,
+        rdfs:label "malignant lymphoma, convoluted"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_by_Cell_Type_Working_Formulation
+    
+    
+Class: ncit:Pancreatic_Beta_Cell_Adenoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Beta_Cell_Adenoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279719"^^xsd:string,
+        rdfs:label "pancreatic beta cell adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Islet_Cell_Adenoma
+    
+    
+Class: ncit:Recurrent_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0280184"^^xsd:string,
+        rdfs:label "recurrent intermediate grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Complex_Epithelial_Neoplasm
+
+    Annotations: 
+        rdfs:label "complex epithelial neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334391"^^xsd:string,
+        oio:id "ncithesaurus:Complex_Epithelial_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_III_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0280158"^^xsd:string,
+        rdfs:label "stage iii intermediate grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516707"^^xsd:string,
+        rdfs:label "colorectal cancer by astler-coller stage"^^xsd:string,
+        oio:id "ncithesaurus:Colorectal_Cancer_by_Astler-Coller_Stage"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:Second_Primary_Malignant_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Second_Primary_Malignant_Neoplasm"^^xsd:string,
+        rdfs:label "second primary malignant neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Primary_Malignant_Neoplasm
+    
+    
+Class: ncit:Stage_IIC_Adult_Soft_Tissue_Sarcoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IIC_Adult_Soft_Tissue_Sarcoma"^^xsd:string,
+        rdfs:label "stage iic adult soft tissue sarcoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0796439"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_IIC_Soft_Tissue_Sarcoma
+    
+    
+Class: ncit:Intermediate_Risk_Gastric_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:id "ncithesaurus:Intermediate_Risk_Gastric_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334221"^^xsd:string,
+        rdfs:label "intermediate risk gastric gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Intermediate_Risk_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:id "ncithesaurus:Intermediate_Risk_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334222"^^xsd:string,
+        rdfs:label "intermediate risk gastrointestinal stromal tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IV_High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IV_High-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280176"^^xsd:string,
+        rdfs:label "stage iv high grade adult non-hodgkin's lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:chronic_lymphoblastic_lymphoma
+
+    Annotations: 
+        rdfs:label "chronic lymphoblastic lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:chronic_lymphoblastic_lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1515567"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Refractory_Anemia_with_Excess_Blasts_in_Transformation
+
+    Annotations: 
+        oio:id "ncithesaurus:Refractory_Anemia_with_Excess_Blasts_in_Transformation"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280028"^^xsd:string,
+        rdfs:label "refractory anemia with excess blasts in transformation"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Small_Lymphocytic_Lymphoma_Variant
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C2826613"^^xsd:string,
+        rdfs:label "small lymphocytic lymphoma variant"^^xsd:string,
+        oio:id "ncithesaurus:Small_Lymphocytic_Lymphoma_Variant"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Cancer_Other
+
+    Annotations: 
+        oio:id "ncithesaurus:Cancer_Other"^^xsd:string,
+        rdfs:label "cancer other"^^xsd:string,
+        oio:hasDbXref "UMLS:C1707251"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Pancreatic_Non-Invasive_Mucinous_Cystadenocarcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Non-Invasive_Mucinous_Cystadenocarcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1518874"^^xsd:string,
+        rdfs:label "pancreatic non-invasive mucinous cystadenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Intraepidermal_Epithelioma_of_Jadassohn
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C2937231"^^xsd:string,
+        oio:id "ncithesaurus:Intraepidermal_Epithelioma_of_Jadassohn"^^xsd:string,
+        rdfs:label "intraepidermal epithelioma of jadassohn"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: obo:ncithesaurus_Lymphosarcoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Lymphosarcoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0079734"^^xsd:string,
+        rdfs:label "lymphosarcoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+    
+    
+Class: ncit:Stage_IV_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0280174"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        rdfs:label "stage iv adult diffuse mixed cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:L1_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        rdfs:label "l1 acute lymphoblastic leukemia"^^xsd:string,
+        oio:id "ncithesaurus:L1_Acute_Lymphoblastic_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Coccygeal_Body_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Coccygeal_Body_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0474821"^^xsd:string,
+        rdfs:label "coccygeal body neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Malignant_Spindle_Cell_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334230"^^xsd:string,
+        rdfs:label "malignant spindle cell neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Spindle_Cell_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Spindle_Cell_Neoplasm
+    
+    
+Class: ncit:Giant_Cell_and_Spindle_Cell_Carcinoma
+
+    Annotations: 
+        rdfs:label "giant cell and spindle cell carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334234"^^xsd:string,
+        oio:id "ncithesaurus:Giant_Cell_and_Spindle_Cell_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Benign_Hemangioendothelioma
+
+    Annotations: 
+        rdfs:label "benign hemangioendothelioma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334536"^^xsd:string,
+        oio:id "ncithesaurus:Benign_Hemangioendothelioma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:AIDS-Related_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0281242"^^xsd:string,
+        rdfs:label "aids-related diffuse large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:AIDS-Related_Diffuse_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:AIDS-Related_Lymphoma_by_Working_Formulation,
+        ncit:Diffuse_Malignant_Lymphoma,
+        ncit:Malignant_Lymphoma_Large_Cell_Type
+    
+    
+Class: ncit:Low_Risk_Esophageal_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334430"^^xsd:string,
+        rdfs:label "low risk esophageal gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:Low_Risk_Esophageal_Gastrointestinal_Stromal_Tumor"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
+Class: ncit:Stage_III_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iii adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_III_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280161"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "adult diffuse small cleaved cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1622814"^^xsd:string,
+        oio:id "ncithesaurus:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Non-Hodgkin_s_Lymphoma_Cleaved_Cell
+    
+    
+Class: ncit:Solid_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Solid_Neoplasm"^^xsd:string,
+        rdfs:label "solid tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280100"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Primary_Malignant_Neoplasm
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1306459"^^xsd:string,
+        rdfs:label "primary malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Primary_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm,
+        ncit:Primary_Neoplasm
+    
+    
+Class: ncit:Non-Encapsulated_Neoplasm
+
+    Annotations: 
+        rdfs:label "non-encapsulated neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Non-Encapsulated_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1334975"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Stage_II_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0280145"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "stage ii intermediate grade adult non-hodgkin's lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Intermediate-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Premalignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "premalignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335472"^^xsd:string,
+        oio:id "ncithesaurus:Premalignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: obo:ncithesaurus_Angiomyosarcoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334479"^^xsd:string,
+        oio:id "ncithesaurus:Angiomyosarcoma"^^xsd:string,
+        rdfs:label "angiomyosarcoma"^^xsd:string,
+        oio:hasDbXref "NCIT:C66771"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Connective_and_Soft_Tissue_Neoplasm_Antiquated
+    
+    
+Class: ncit:Ureter_Transitional_Cell_Carcinoma_with_Mixed_Differentiation
+
+    Annotations: 
+        rdfs:label "infiltrating ureter urothelial carcinoma with mixed differentiation"^^xsd:string,
+        oio:id "ncithesaurus:Ureter_Transitional_Cell_Carcinoma_with_Mixed_Differentiation"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336881"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: obo:ncithesaurus_Enteroglucagonoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Enteroglucagonoma"^^xsd:string,
+        rdfs:label "enteroglucagonoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1266016"^^xsd:string,
+        oio:hasDbXref "NCIT:C66925"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Grade_3b_Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "grade 3b malignant neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333851"^^xsd:string,
+        oio:id "ncithesaurus:Grade_3b_Malignant_Neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Grade_3_Malignant_Neoplasm
+    
+    
+Class: ncit:Stage_I_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_I_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279960"^^xsd:string,
+        rdfs:label "stage i adult diffuse large cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Astler-Coller_B3_Colon_Carcinoma
+
+    Annotations: 
+        rdfs:label "astler-coller b3 colon carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_B3_Colon_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516065"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colon_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_B3_Colorectal_Carcinoma
+    
+    
+Class: ncit:Malignant_neoplasms_of_multiple_primary_sites
+
+    Annotations: 
+        rdfs:label "malignant neoplasm of multiple primary sites"^^xsd:string,
+        oio:hasDbXref "UMLS:C0362051"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_neoplasms_of_multiple_primary_sites"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm
+    
+    
+Class: ncit:Mucin-Rich_Uterine_Corpus_Endometrioid_Adenocarcinoma
+
+    Annotations: 
+        rdfs:label "mucin-rich endometrial endometrioid adenocarcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1513711"^^xsd:string,
+        oio:id "ncithesaurus:Mucin-Rich_Uterine_Corpus_Endometrioid_Adenocarcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Granular_Renal_Cell_Carcinoma
+
+    Annotations: 
+        rdfs:label "granular renal cell carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279703"^^xsd:string,
+        oio:id "ncithesaurus:Granular_Renal_Cell_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_IV_Gastric_Cancer_without_Metastasis
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_IV_Gastric_Cancer_without_Metastasis"^^xsd:string,
+        oio:hasDbXref "UMLS:C0863193"^^xsd:string,
+        rdfs:label "stage iv gastric cancer without metastasis"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Cancer_Stage_Antiquated
+    
+    
+Class: ncit:TdT_Negative_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        rdfs:label "tdt negative acute lymphoblastic leukemia"^^xsd:string,
+        oio:hasDbXref "UMLS:C2348655"^^xsd:string,
+        oio:id "ncithesaurus:TdT_Negative_Acute_Lymphoblastic_Leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Grade_1_Malignant_Neoplasm
+
+    Annotations: 
+        oio:id "ncithesaurus:Grade_1_Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C1333834"^^xsd:string,
+        rdfs:label "grade 1 malignant neoplasm"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Neoplasm_by_Grade
+    
+    
+Class: ncit:Common_Acute_Lymphoblastic_Leukemia
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0349637"^^xsd:string,
+        oio:id "ncithesaurus:Common_Acute_Lymphoblastic_Leukemia"^^xsd:string,
+        rdfs:label "common acute lymphoblastic leukemia"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Pituitary_Gland_Chromophobe_Adenoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0001432"^^xsd:string,
+        rdfs:label "pituitary gland chromophobe adenoma"^^xsd:string,
+        oio:id "ncithesaurus:Pituitary_Gland_Chromophobe_Adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Pituitary_Gland_Neoplasm_Antiquated
+    
+    
+Class: ncit:Astler-Coller_C2_Colon_Carcinoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Astler-Coller_C2_Colon_Carcinoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1516071"^^xsd:string,
+        rdfs:label "astler-coller c2 colon carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colon_Cancer_by_Astler-Coller_Stage,
+        ncit:Astler-Coller_C2_Colorectal_Carcinoma
+    
+    
+Class: ncit:Malignant_Neoplasm
+
+    Annotations: 
+        rdfs:label "malignant neoplasm"^^xsd:string,
+        oio:id "ncithesaurus:Malignant_Neoplasm"^^xsd:string,
+        oio:hasDbXref "UMLS:C0006826"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Recurrent_High-Grade_Burkitt-Like_Lymphoma
+
+    Annotations: 
+        rdfs:label "recurrent high grade burkitt-like lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Recurrent_High-Grade_Burkitt-Like_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0855125"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Burkitt-Like_Lymphoma
+    
+    
+Class: ncit:Stage_IIIA_Retinoblastoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1336214"^^xsd:string,
+        rdfs:label "stage iiia retinoblastoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIIA_Retinoblastoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_III_Retinoblastoma
+    
+    
+Class: ncit:Neoplasm_Uncertain_Whether_Primary_or_Metastatic
+
+    Annotations: 
+        oio:id "ncithesaurus:Neoplasm_Uncertain_Whether_Primary_or_Metastatic"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677041"^^xsd:string,
+        rdfs:label "neoplasm, uncertain whether benign or malignant"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Special_Category
+    
+    
+Class: ncit:Stage_IIIB_Retinoblastoma
+
+    Annotations: 
+        rdfs:label "stage iiib retinoblastoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IIIB_Retinoblastoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336229"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_III_Retinoblastoma
+    
+    
+Class: ncit:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated
+
+    Annotations: 
+        oio:id "ncithesaurus:Hematopoietic_and_Lymphoid_Neoplasms_Antiquated"^^xsd:string,
+        oio:hasDbXref "UMLS:C1512396"^^xsd:string,
+        rdfs:label "hematopoietic and lymphoid neoplasm (antiquated)"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Neoplasm_by_Obsolete_Classification
+    
+    
+Class: ncit:Stage_IV_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage iv adult diffuse small cleaved cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_IV_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280173"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Benign_Mesenchymoma
+
+    Annotations: 
+        rdfs:label "benign mesenchymoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334491"^^xsd:string,
+        oio:id "ncithesaurus:Benign_Mesenchymoma"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Mesenchymoma
+    
+    
+Class: ncit:Hodgkin_s_Disease_Nodular_Sclerosis_Lymphocyte_Predominance
+
+    Annotations: 
+        oio:id "ncithesaurus:Hodgkin_s_Disease_Nodular_Sclerosis_Lymphocyte_Predominance"^^xsd:string,
+        oio:hasDbXref "UMLS:C1264183"^^xsd:string,
+        rdfs:label "hodgkin's disease, nodular sclerosis, lymphocyte predominance"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:Stage_II_Non-Contiguous_Adult_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_II_Non-Contiguous_Adult_Diffuse_Large_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0677709"^^xsd:string,
+        rdfs:label "stage ii non-contiguous adult diffuse large cell lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Stage_II_Adult_Diffuse_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Reticulosarcoma_Involving_Spleen
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0153702"^^xsd:string,
+        rdfs:label "reticulosarcoma involving spleen"^^xsd:string,
+        oio:id "ncithesaurus:Reticulosarcoma_Involving_Spleen"^^xsd:string
+    
+    SubClassOf: 
+        obo:ncithesaurus_Reticulosarcoma
+    
+    
+Class: ncit:Childhood_Diffuse_Large_Cell_Lymphoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0278840"^^xsd:string,
+        rdfs:label "childhood diffuse large cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Childhood_Diffuse_Large_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Childhood_Large_Cell_Lymphoma
+    
+    
+Class: ncit:Hodgkin_s_Disease_Nodular_Sclerosis_Mixed_Cellularity
+
+    Annotations: 
+        rdfs:label "hodgkin's disease, nodular sclerosis, mixed cellularity"^^xsd:string,
+        oio:hasDbXref "UMLS:C0334629"^^xsd:string,
+        oio:id "ncithesaurus:Hodgkin_s_Disease_Nodular_Sclerosis_Mixed_Cellularity"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Hodgkin_s_Lymphoma_Antiquated
+    
+    
+Class: ncit:FAB_L2
+
+    Annotations: 
+        rdfs:label "l2 acute lymphoblastic leukemia"^^xsd:string,
+        oio:id "ncithesaurus:FAB_L2"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Leukemia_Antiquated
+    
+    
+Class: ncit:Stage_II_Adult_Diffuse_Mixed_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage ii adult diffuse mixed cell lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280148"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Adult_Diffuse_Mixed_Cell_Lymphoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Mixed_Cell_Lymphoma
+    
+    
+Class: ncit:Small_Cell_Carcinoma_Fusiform_Cell_Type
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C0334238"^^xsd:string,
+        oio:id "ncithesaurus:Small_Cell_Carcinoma_Fusiform_Cell_Type"^^xsd:string,
+        rdfs:label "small cell carcinoma, fusiform cell type"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Grade_III_Neuroendocrine_Carcinoma
+    
+    
+Class: ncit:Stage_II_High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Stage_II_High-Grade_Adult_Non-Hodgkin_s_Lymphoma"^^xsd:string,
+        rdfs:label "stage ii high grade adult non-hodgkin's lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0280150"^^xsd:string
+    
+    SubClassOf: 
+        ncit:High-Grade_Adult_Non-Hodgkin_s_Lymphoma
+    
+    
+Class: ncit:Stage_II_Centroblastic_Follicular_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage ii centroblastic follicular lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_II_Centroblastic_Follicular_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0863052"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Malignant_Lymphoma_Centroblastic_Follicular
+    
+    
+Class: ncit:Pancreatic_Alpha_Cell_Adenoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Alpha_Cell_Adenoma"^^xsd:string,
+        rdfs:label "pancreatic alpha cell adenoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Islet_Cell_Adenoma
+    
+    
+Class: ncit:Non-Invasive_Verrucous_Carcinoma_of_the_Penis
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1334984"^^xsd:string,
+        rdfs:label "non-invasive verrucous carcinoma of the penis"^^xsd:string,
+        oio:id "ncithesaurus:Non-Invasive_Verrucous_Carcinoma_of_the_Penis"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Stage_I_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+
+    Annotations: 
+        rdfs:label "stage i adult diffuse small cleaved cell lymphoma"^^xsd:string,
+        oio:id "ncithesaurus:Stage_I_Adult_Diffuse_Small_Cleaved_Cell_Lymphoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C0279958"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Adult_Diffuse_Small_Cleaved_Cell_Lymphoma
+    
+    
+Class: ncit:Astler-Coller_C3_Colorectal_Carcinoma
+
+    Annotations: 
+        oio:hasDbXref "UMLS:C1516074"^^xsd:string,
+        rdfs:label "astler-coller c3 colorectal carcinoma"^^xsd:string,
+        oio:id "ncithesaurus:Astler-Coller_C3_Colorectal_Carcinoma"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Colorectal_Cancer_by_Astler-Coller_Stage
+    
+    
+Class: ncit:Pancreatic_Mucinous_Cystadenoma
+
+    Annotations: 
+        oio:id "ncithesaurus:Pancreatic_Mucinous_Cystadenoma"^^xsd:string,
+        rdfs:label "pancreatic mucinous cystadenoma"^^xsd:string,
+        oio:hasDbXref "UMLS:C1335309"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Epithelial_Neoplasm_Antiquated
+    
+    
+Class: ncit:Very_Low_Risk_Gastric_Gastrointestinal_Stromal_Tumor
+
+    Annotations: 
+        rdfs:label "very low risk gastric gastrointestinal stromal tumor"^^xsd:string,
+        oio:id "ncithesaurus:Very_Low_Risk_Gastric_Gastrointestinal_Stromal_Tumor"^^xsd:string,
+        oio:hasDbXref "UMLS:C1336959"^^xsd:string
+    
+    SubClassOf: 
+        ncit:Very_Low_Risk_Gastrointestinal_Stromal_Tumor
+    
+    
