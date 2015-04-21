@@ -175,7 +175,7 @@ Astrocytoma	DOID:3069	astrocytoma
 Astrocytoma/Oligodendroglioma		
 Carcinoma, NOS		
 Carcinosarcoma	DOID:4236	carcinosarcoma
-Cell line	CLO_0000001	cell line cell
+Cell line	CLO:0000001	cell line cell
 Chondrosarcoma	DOID:3371	chondrosarcoma
 Chordoma	DOID:3302	chordoma
 Dendritic cell sarcoma	DOID:7849	dendritic cell sarcoma
