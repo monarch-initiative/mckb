@@ -75,10 +75,12 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         """
         Given the above sample input, produce the following:
         A CGD:DiseaseID is an OWL Class
+        A CGD:DiseaseID is a subclass of DOID:4
         A CGD:Disease rdfs:label "Adenocarcinoma"
         A CGD:DiseaseInstance is an individual of CGD:DiseaseID
         A CGD:DiseaseInstance rdfs:label "Adenocarcinoma caused by variant MLH1 any mutation"
         A CGD:DrugID is an OWL Class
+        A CGD:DrugID is a subclass of CHEBI:23888
         A CGD:DrugID rdfs:label "5FU-based adjuvant therapy"
         A CGD:RelationID is an object property
         PMID:12345 is a named individual
@@ -93,10 +95,12 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                        SELECT ?disease ?diseaseInd ?drug ?source
                        WHERE {{
                            ?disease a owl:Class ;
+                               rdfs:subClassOf DOID:4 ;
                                rdfs:label "{0}" .
                            ?diseaseInd a ?disease ;
                                rdfs:label "{1}" .
                            ?drug a owl:Class ;
+                               rdfs:subClassOf CHEBI:23888 ;
                                rdfs:label "{2}" .
                            <{3}> a owl:ObjectProperty .
                            ?source a owl:NamedIndividual .

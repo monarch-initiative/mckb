@@ -286,7 +286,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         CGD:BothStrandPositionID is an instance of faldo:BothStrandPosition
         CGD:BothStrandPositionID is an instance of faldo:Position
         CGD:BothStrandPositionID faldo:position 741
-        CGD:BothStrandPositionID faldo:reference CGD:TranscriptID
+        CGD:BothStrandPositionID faldo:reference UniProtID
         """
         from dipper.utils.TestUtils import TestUtils
         self.cgd.add_variant_info_to_graph(self.test_set_1)
@@ -333,6 +333,81 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         # Expected Results
         expected_results = [[aa_position_uri, region_uri, both_strand_uri, uniprot_uri]]
+
+        # Query graph
+        sparql_output = test_env.query_graph(sparql_query)
+
+        self.assertEqual(expected_results, sparql_output)
+
+    def test_variant_position_region_model(self):
+        """
+        Test modelling of variant positions on a transcript
+        Using test data set 2, and the function add_variant_info_to_graph()
+        We want to test the following triples:
+
+        CGD:PositionID is an instance of faldo:Position
+        CGD:PositionID rdfs:label "c.944C>T"
+        CGD:PositionID faldo:location CGD:RegionID
+
+        CGD:RegionID is an instance of faldo:Region
+        CGD:RegionID faldo:begin BothStrandPositionID
+        CGD:RegionID faldo:end BothStrandPositionID
+
+        CGD:BothStrandPositionID is an instance of faldo:BothStrandPosition
+        CGD:BothStrandPositionID is an instance of faldo:Position
+        CGD:BothStrandPositionID faldo:position 944
+        CGD:BothStrandPositionID faldo:reference CGD:TranscriptID
+        """
+        from dipper.utils.TestUtils import TestUtils
+        self.cgd.add_variant_info_to_graph(self.test_set_2)
+
+        # Make testutils object and load bindings
+        test_env = TestUtils(self.cgd.graph)
+        cu = CurieUtil(self.curie_map)
+        self.cgd.load_bindings()
+
+        (variant_key, variant_label, amino_acid_variant, amino_acid_position,
+         transcript_id, transcript_priority, protein_variant_type,
+         functional_impact, stop_gain_loss, transcript_gene,
+         protein_variant_source, variant_gene, bp_pos, variant_cdna,
+         cosmic_id, db_snp_id, genome_pos_start, genome_pos_end, ref_base,
+         variant_base, primary_transcript_exons,
+         primary_transcript_variant_sub_types, variant_type, chromosome,
+         genome_build, build_version, build_date) = self.test_set_2[0]
+
+        transcript_curie = self.cgd._make_transcript_curie(transcript_id)
+
+        gene_position_id = self.cgd.make_cgd_id(
+            'transcript-pos{0}{1}'.format(variant_key, transcript_id))
+        gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
+        region_id = ":_{0}Region".format(gene_position_id)
+        both_strand_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
+
+        gene_position_uri = URIRef(cu.get_uri(gene_position_id))
+        region_uri = URIRef(cu.get_uri(region_id))
+        both_strand_uri = URIRef(cu.get_uri(both_strand_id))
+        ccds_uri = URIRef(cu.get_uri(transcript_curie))
+
+        sparql_query = """
+                       SELECT ?position ?region ?bsPosition ?transcript
+                       WHERE {{
+                           ?position a faldo:Position ;
+                               rdfs:label "{0}" ;
+                               faldo:location ?region .
+
+                           ?region a faldo:Region ;
+                               faldo:begin ?bsPosition ;
+                               faldo:end ?bsPosition .
+
+                           ?bsPosition a faldo:BothStrandPosition ;
+                               a faldo:Position ;
+                               faldo:position {1} ;
+                               faldo:reference ?transcript .
+                       }}
+                       """.format(gene_position_label, bp_pos)
+
+        # Expected Results
+        expected_results = [[gene_position_uri, region_uri, both_strand_uri, ccds_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
