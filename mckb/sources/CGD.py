@@ -380,7 +380,7 @@ class CGD(MySQLSource):
         for row in table:
             (variant_key, variant_label, diagnoses_key, diagnoses,
              specific_diagnosis, organ, relationship,
-             drug_key, drug, therapy_status, pubmed_id) = row
+             drug_key, drug_label, therapy_status, pubmed_id) = row
 
             if specific_diagnosis is not None:
                 diagnoses_label = specific_diagnosis
@@ -391,7 +391,7 @@ class CGD(MySQLSource):
             variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
             disease_id = self._get_disease_id(diagnoses_key, diagnoses_label)
             relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
-            drug_id = self.make_cgd_id('drug{0}'.format(drug_key))
+            drug_id = self._get_drug_id(drug_key, drug_label)
 
             disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
                 diagnoses_label, variant_key))
@@ -404,7 +404,7 @@ class CGD(MySQLSource):
             if re.match(r'^CGD', disease_id):
                 gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
 
-            gu.addClassToGraph(self.graph, drug_id, drug, 'CHEBI:23888')
+            gu.addClassToGraph(self.graph, drug_id, drug_label, 'CHEBI:23888')
             gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
                                     disease_id)
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})
@@ -827,3 +827,16 @@ class CGD(MySQLSource):
                 diagnoses_key, diagnoses_label))
 
         return disease_id
+
+    def _get_drug_id(self, drug_key, drug_label):
+        if (drug_label in self.drug_map) \
+                and (self.drug_map[drug_label] != ''):
+            drug_id = self.drug_map[drug_label]
+        else:
+            logger.debug("Can't map drug {0}"
+                         " to ontology".format(drug_label))
+            drug_id = self.make_cgd_id('drug{0}'.format(drug_key))
+
+        return drug_id
+
+
