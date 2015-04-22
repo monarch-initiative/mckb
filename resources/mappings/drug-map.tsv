@@ -4,7 +4,7 @@ afatinib	CHEBI:61390
 cetuximab	DB:00002	
 AKT inhibitors		
 ALK inhibitors		
-IGF1R inhibitors		
+IGF1R inhibitors	CID:72435	
 allosteric AKT inhibitors		
 anthracyclines	CHEBI:48120	anthracycline
 anti-EGFR mAbs		
@@ -14,7 +14,7 @@ anti-HER3 mAbs
 anti-tubulin agents		
 AR antagonist		
 ARN-509	CID:24872560	
-aromatase inhhibitors		
+aromatase inhhibitors	CHEBI:50790	EC 1.14.14.14 (aromatase) inhibitor
 aspirin in adjuvant setting	DB:00945	Acetylsalicylic acid
 ATP-competitive AKT inhibitors		
 ATRA	DB:00755	Tretinoin
@@ -29,10 +29,10 @@ bicalutamide	DB:01128	Bicalutamide
 bortezomib	DB:00188	Bortezomib
 bosutinib	DB:06616	Bosutinib
 BRAF		
-BRAF inhibitors		
-CDK2/4 inhibitors		
-EGFR inhibitors		
-HSP90 inhibitors		
+BRAF inhibitors	CID:53438230	BRAF inhibitor
+CDK2/4 inhibitors	CID:16760362	cdk2/5 inhibitor
+EGFR inhibitors	CID:9549299	EGFR inhibitor
+HSP90 inhibitors	CHEBI:63962	
 PI3K pathway inhibitors		
 BRAF inhibitors in BRAF mutant tumor		
 BRAF inhibitors in BRAF mutant tumors		
@@ -56,25 +56,25 @@ EGFR TKIs
 enzalutamide	DB:08899	
 EPHA3 inhibitors		
 ERBB2 TKIs		
-ERK inhibitors		
+ERK inhibitors	CID:16760416	Erk Inhibitor
 everolimus	DB:01590	
-EZH2 inhibitor		
+EZH2 inhibitor	CID:68210102	GSK126
 FAK inhibitors		
 FGFR inhibitors		
 FLT3 inhibitors		
 flutamide	DB:00499	
 Gamma secretase inhibitors		
-CDK4 inhibitors		
-mTOR inhibitors		
+CDK4 inhibitors	CID:5330797	Cdk4 Inhibitor
+mTOR inhibitors	CHEBI:68481	mTOR inhibitor
 gefitinib	DB:00317	
-gemcitabine		
-HDAC inhibitors		
+gemcitabine	CHEBI:175901	
+HDAC inhibitors	CID:10460379	(S)-6-acetamido-2-(2-((S)-2-acetamido-4-methylpentanamido)acetamido)-N-(4-methyl-2-oxo-2H-chromen-7-yl)hexanamide; 660847-06-3
 ibrutinib	CHEBI:76612	
 IDH inhibitors		
 imatinib	DB:00619	
 irinotecan plus CHK1/2 inhibitor in ATM deficient tumor		
 irreversible EGFR TKIs		
-JAK inhibitors		
+JAK inhibitors	CID:5494425	Pyridone 6
 lapatinib	DB:01259	
 lestaurtinib	CID:126565	
 liposomal doxorubicin		
@@ -91,7 +91,7 @@ temsirolimus	CHEBI:79699
 nilotinib	DB:04868	
 PAK inhibitors		
 panitumumab	DB:01269	
-PARP inhibitors		
+PARP inhibitors	CID:78243706	ABT-888, PARP Inhibitor
 pazopanib	CID:10113978	
 PDGFR inhibitors		
 PDL1 inhibitors		
@@ -101,9 +101,9 @@ PI3K alpha inhibitors
 PI3K beta inhibitors		
 AR antagonists		
 MEK inhibitor		
-PKC inhibitor		
+PKC inhibitor	CHEBI:37700	EC 2.7.11.13 (protein kinase C) inhibitor
 PKC412	CHEBI:63452	midostaurin
-platinum agents		
+platinum agents	CHEBI:33364	platinum
 ponatinib	DB:08901	Ponatinib
 proteosome inhibitors		
 quizartinib	CID:24889392	
@@ -114,11 +114,11 @@ ruxolitinib	DB:08877
 selumetinib	CID:10127622	
 sorafenib	DB:00398	
 azacytidine	DB:00928	
-SRC inhibitors		
-steroids		
+SRC inhibitors	CHEBI:78332	Src Inhibitor-1
+steroids	CHEBI:35341	steroid
 sunitinib	DB:01268	
-SYK inhibitors		
-tankyrase inhibitors		
+SYK inhibitors	CID:6419747	Syk Inhibitor
+tankyrase inhibitors	CHEBI:62887	tankyrase inhibitor
 temozolomide	DB:00853	
 trastuzumab	DB:00072	
 chemotherapy		
@@ -127,7 +127,7 @@ vandetanib	DB:05294
 VEGFR inhibitors		
 vemurafenib	DB:08881	
 vismodegib	DB:08828	
-wee1 inhibitors		
+wee1 inhibitors	CID:10384072	Wee1 Inhibitor
 encorafenib	CID:50922675	LGX-818
 E6201	CID:10172827	UNII-CZP9GB25HO
 binimetinib	CID:10288191	MEK162
