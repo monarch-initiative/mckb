@@ -44,9 +44,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         disease_instance_id = self.cgd.make_cgd_id('disease{0}{1}'.format(
             diagnoses, variant_key))
 
-        drug_disease_annot = self.cgd.make_cgd_id("assoc{0}{1}".format(diagnoses, drug_key))
-
-        drug_variant_annot = self.cgd.make_cgd_id("assoc{0}{1}".format(diagnoses, variant_key))
+        variant_disease_annot = self.cgd.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses))
 
         # Set up URIs
         self.source_uri = URIRef(cu.get_uri(source_id))
@@ -55,8 +53,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         self.disease_ind_uri = URIRef(cu.get_uri(disease_instance_id))
         self.relationship_uri = URIRef(cu.get_uri(relationship_id))
         self.drug_uri = URIRef(cu.get_uri(drug_id))
-        self.dd_annot_uri = URIRef(cu.get_uri(drug_disease_annot))
-        self.vd_annot_uri = URIRef(cu.get_uri(drug_variant_annot))
+        self.vd_annot_uri = URIRef(cu.get_uri(variant_disease_annot))
 
         self.variant_label = variant_label
         self.disease_label = diagnoses
@@ -121,12 +118,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Given the above sample input, produce the following:
         CGD:VariantID has_phenotype(RO:0002200) CGD:DiseaseInstance
 
-        A CGD:DrugID has_relationship_to CGD:DiseaseInstance
-
         A CGD:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
         A CGD:AssociationID dc:source PMID:20498393
-        A CGD:AssociationID :hasSubject A CGD:DrugID
-        A CGD:AssociationID :hasPredicate has_relationship_to
+        A CGD:AssociationID has_response CGD:DrugID
+        A CGD:AssociationID :hasSubject A CGD:VariantID
+        A CGD:AssociationID :hasPredicate has_phenotype
         A CGD:AssociationID :hasObject CGD:DiseaseInstance
         """
         from dipper.utils.TestUtils import TestUtils
@@ -139,32 +135,23 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         evidence_uri = URIRef(cu.get_uri(evidence))
 
         sparql_query = """
-                       SELECT ?diseaseInd ?variant ?drug ?ddannot ?vdannot ?source ?evidence
+                       SELECT ?diseaseInd ?variant ?drug ?vdannot ?source ?evidence
                        WHERE {{
                            ?variant OBO:RO_0002200 ?diseaseInd .
 
-                           ?diseaseInd <{0}> ?drug .
-                           ?variant <{0}> ?drug .
-
-                           ?ddannot a Annotation: ;
+                           ?vdannot a Annotation: ;
                                dc:evidence ?evidence ;
                                dc:source ?source ;
-                               :hasObject ?drug ;
-                               :hasPredicate <{0}> ;
-                               :hasSubject ?diseaseInd .
-
-                            ?vdannot a Annotation: ;
-                               dc:evidence ?evidence ;
-                               dc:source ?source ;
-                               :hasObject ?drug ;
-                               :hasPredicate <{0}> ;
+                               <{0}> ?drug ;
+                               :hasObject ?diseaseInd ;
+                               :hasPredicate OBO:RO_0002200 ;
                                :hasSubject ?variant .
                        }}
                        """.format(self.relationship_uri)
 
         # Expected Results
         expected_results = [[self.disease_ind_uri, self.variant_uri, self.drug_uri,
-                             self.dd_annot_uri, self.vd_annot_uri,
+                             self.vd_annot_uri,
                              self.source_uri, evidence_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)

@@ -3,7 +3,7 @@ from mckb.sources.CGDOntologyMap import CGDOntologyMap
 from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
-from dipper.models.InteractionAssoc import InteractionAssoc
+from dipper.models.G2PAssoc import G2PAssoc
 from dipper.models.GenomicFeature import Feature, makeChromID
 from dipper import curie_map
 import tempfile
@@ -398,9 +398,7 @@ class CGD(MySQLSource):
             disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
-            drug_disease_annot = self.make_cgd_id("assoc{0}{1}".format(diagnoses_label, drug_key))
-
-            drug_variant_annot = self.make_cgd_id("assoc{0}{1}".format(diagnoses_label, variant_key))
+            variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
 
             # Add individuals/classes
             if re.match(r'^CGD', disease_id):
@@ -411,35 +409,19 @@ class CGD(MySQLSource):
                                     disease_id)
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})
 
-            # Add triples
-            gu.addTriple(self.graph, variant_id,
-                         'RO:0002200', disease_instance_id)
-
-            gu.addTriple(self.graph, disease_instance_id, relationship_id, drug_id)
-            gu.addTriple(self.graph, variant_id, relationship_id, drug_id)
-
-            # Add 1 association per above triple,
-            # see https://github.com/monarch-initiative/mckb/issues/1
-            # refactor using generic associations,
-            # see https://github.com/monarch-initiative/dipper/issues/96
             if pubmed_id is not None:
                 source_id = "PMID:{0}".format(pubmed_id)
                 evidence = 'ECO:0000033'
+            else:
+                source_id = None
+                evidence = None
 
-                drug_phenotype_assoc = InteractionAssoc(drug_disease_annot,
-                                                        disease_instance_id,
-                                                        drug_id,
-                                                        source_id, evidence)
-                drug_phenotype_assoc.rel = relationship_id
-
-                drug_variant_assoc = InteractionAssoc(drug_variant_annot,
-                                                      variant_id,
-                                                      drug_id,
-                                                      source_id, evidence)
-                drug_variant_assoc.rel = relationship_id
-
-                drug_phenotype_assoc.addAssociationToGraph(self.graph)
-                drug_variant_assoc.addAssociationToGraph(self.graph)
+            variant_phenotype_assoc = G2PAssoc(variant_disease_annot,
+                                               variant_id,
+                                               disease_instance_id,
+                                               source_id, evidence)
+            variant_phenotype_assoc.addAssociationToGraph(self.graph)
+            gu.addTriple(self.graph, variant_disease_annot, relationship_id, drug_id)
 
         return
 
