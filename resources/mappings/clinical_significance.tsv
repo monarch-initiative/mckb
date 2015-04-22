@@ -1,1 +1,1 @@
-1	Known pathogenic		2	Suspected pathogenic		3	Known benign	SO:0001770Ê	benign_variant4	Suspected benign		5	Unknown significance		
+ID	Description	Ontology ID	Ontology Label1	Known pathogenic	SO:0001772	disease causing variant2	Suspected pathogenic		3	Known benign	SO:0001770	benign_variant4	Suspected benign		5	Unknown significance		
