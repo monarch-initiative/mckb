@@ -51,8 +51,8 @@ class CGDOntologyMap(CuratedSource):
             with open(os.path.join(os.path.dirname(__file__), file)) as tsvfile:
                 reader = csv.reader(tsvfile, delimiter="\t")
                 for row in reader:
-                    label = row[1]
-                    id = row[2]
+                    label = row[0]
+                    id = row[1]
                     id_map[label] = id
 
         return id_map

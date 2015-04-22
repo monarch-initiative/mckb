@@ -389,8 +389,7 @@ class CGD(MySQLSource):
 
             # Arbitrary IDs to be replaced by ontology mappings
             variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
-            disease_id = self.make_cgd_id('disease{0}{1}'.format(diagnoses_key,
-                                                                 diagnoses_label))
+            disease_id = self._get_disease_id(diagnoses_key, diagnoses_label)
             relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
             drug_id = self.make_cgd_id('drug{0}'.format(drug_key))
 
@@ -404,7 +403,9 @@ class CGD(MySQLSource):
             drug_variant_annot = self.make_cgd_id("assoc{0}{1}".format(diagnoses_label, variant_key))
 
             # Add individuals/classes
-            gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
+            if re.match(r'^CGD', disease_id):
+                gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
+
             gu.addClassToGraph(self.graph, drug_id, drug, 'CHEBI:23888')
             gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
                                     disease_id)
@@ -832,3 +833,15 @@ class CGD(MySQLSource):
         md5sum = ':'.join(('CGD', hashlib.md5(byte_string).hexdigest()))
         md5sum = md5sum[0:12]
         return md5sum
+
+    def _get_disease_id(self, diagnoses_key, diagnoses_label):
+        if (diagnoses_label in self.disease_map) \
+                and (self.disease_map[diagnoses_label] != ''):
+            disease_id = self.disease_map[diagnoses_label]
+        else:
+            logger.debug("Can't map disease {0}"
+                         " to ontology".format(diagnoses_label))
+            disease_id = self.make_cgd_id('disease{0}{1}'.format(
+                diagnoses_key, diagnoses_label))
+
+        return disease_id
