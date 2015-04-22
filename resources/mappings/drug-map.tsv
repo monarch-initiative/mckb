@@ -1,7 +1,7 @@
-5FU-based adjuvant therapy	DB:00544	Fluorouracil
-ado-trastuzumab emtansine	DB:05773	
+5FU-based adjuvant therapy	DrugBank:DB00544	Fluorouracil
+ado-trastuzumab emtansine	DrugBank:DB05773	
 afatinib	CHEBI:61390	
-cetuximab	DB:00002	
+cetuximab	DrugBank:DB00002	
 AKT inhibitors		
 ALK inhibitors		
 IGF1R inhibitors	CID:72435	
@@ -15,19 +15,19 @@ anti-tubulin agents
 AR antagonist		
 ARN-509	CID:24872560	
 aromatase inhhibitors	CHEBI:50790	EC 1.14.14.14 (aromatase) inhibitor
-aspirin in adjuvant setting	DB:00945	Acetylsalicylic acid
+aspirin in adjuvant setting	DrugBank:DB00945	Acetylsalicylic acid
 ATP-competitive AKT inhibitors		
-ATRA	DB:00755	Tretinoin
-arsenic trioxide	DB:01169	
+ATRA	DrugBank:DB00755	Tretinoin
+arsenic trioxide	DrugBank:DB01169	
 AURK inhibitors		
 BCR-ABL1 inhibitors		
 BCL2 inhibitors		
 BET inhibitors		
 BET inhibitors in LKB1 wt		
-bevacizumab	DB:00112	Bevacizumab
-bicalutamide	DB:01128	Bicalutamide
-bortezomib	DB:00188	Bortezomib
-bosutinib	DB:06616	Bosutinib
+bevacizumab	DrugBank:DB00112	Bevacizumab
+bicalutamide	DrugBank:DB01128	Bicalutamide
+bortezomib	DrugBank:DB00188	Bortezomib
+bosutinib	DrugBank:DB06616	Bosutinib
 BRAF		
 BRAF inhibitors	CID:53438230	BRAF inhibitor
 CDK2/4 inhibitors	CID:16760362	cdk2/5 inhibitor
@@ -36,46 +36,46 @@ HSP90 inhibitors	CHEBI:63962
 PI3K pathway inhibitors		
 BRAF inhibitors in BRAF mutant tumor		
 BRAF inhibitors in BRAF mutant tumors		
-cabozantinib	DB:08875	
+cabozantinib	DrugBank:DB08875	
 CDK2 inhibitors		
 CDK4/6 inhibitors		
 ceritinib	CHEBI:78432	
-sirolimus	DB:00877	
-cisplatin	DB:00515	
+sirolimus	DrugBank:DB00877	
+cisplatin	DrugBank:DB00515	
 crenolanib	CID:10366136	
-crizotinib	DB:08865	
-dabrafenib	DB:08912	
-trametinib	DB:08911	
-dasatinib	DB:01254	
-erlotinib	DB:00544	
-daunorubicin	DB:00694	
+crizotinib	DrugBank:DB08865	
+dabrafenib	DrugBank:DB08912	
+trametinib	DrugBank:DB08911	
+dasatinib	DrugBank:DB01254	
+erlotinib	DrugBank:DB00544	
+daunorubicin	DrugBank:DB00694	
 DNA-PK inhibitors		
 DOT1L inhibitors		
-dovitinib	DB:05928	CHIR-258
+dovitinib	DrugBank:DB05928	CHIR-258
 EGFR TKIs		
-enzalutamide	DB:08899	
+enzalutamide	DrugBank:DB08899	
 EPHA3 inhibitors		
 ERBB2 TKIs		
 ERK inhibitors	CID:16760416	Erk Inhibitor
-everolimus	DB:01590	
+everolimus	DrugBank:DB01590	
 EZH2 inhibitor	CID:68210102	GSK126
 FAK inhibitors		
 FGFR inhibitors		
 FLT3 inhibitors		
-flutamide	DB:00499	
+flutamide	DrugBank:DB00499	
 Gamma secretase inhibitors		
 CDK4 inhibitors	CID:5330797	Cdk4 Inhibitor
 mTOR inhibitors	CHEBI:68481	mTOR inhibitor
-gefitinib	DB:00317	
+gefitinib	DrugBank:DB00317	
 gemcitabine	CHEBI:175901	
 HDAC inhibitors	CID:10460379	(S)-6-acetamido-2-(2-((S)-2-acetamido-4-methylpentanamido)acetamido)-N-(4-methyl-2-oxo-2H-chromen-7-yl)hexanamide; 660847-06-3
 ibrutinib	CHEBI:76612	
 IDH inhibitors		
-imatinib	DB:00619	
+imatinib	DrugBank:DB00619	
 irinotecan plus CHK1/2 inhibitor in ATM deficient tumor		
 irreversible EGFR TKIs		
 JAK inhibitors	CID:5494425	Pyridone 6
-lapatinib	DB:01259	
+lapatinib	DrugBank:DB01259	
 lestaurtinib	CID:126565	
 liposomal doxorubicin		
 MDM2 inhibitors		
@@ -84,19 +84,19 @@ BCL-XL inhibitors
 docetaxel in KRAS mutant		
 MET inhibitors		
 midostaurin	CHEBI:63452	
-Mitomycin C	DB:00305	
+Mitomycin C	DrugBank:DB00305	
 BH3 mimetics		
 neratinib	CHEBI:61397	
 temsirolimus	CHEBI:79699	
-nilotinib	DB:04868	
+nilotinib	DrugBank:DB04868	
 PAK inhibitors		
-panitumumab	DB:01269	
+panitumumab	DrugBank:DB01269	
 PARP inhibitors	CID:78243706	ABT-888, PARP Inhibitor
 pazopanib	CID:10113978	
 PDGFR inhibitors		
 PDL1 inhibitors		
-pertuzumab	DB:06366	
-phenformin	DB:00914	
+pertuzumab	DrugBank:DB06366	
+phenformin	DrugBank:DB00914	
 PI3K alpha inhibitors		
 PI3K beta inhibitors		
 AR antagonists		
@@ -104,29 +104,29 @@ MEK inhibitor
 PKC inhibitor	CHEBI:37700	EC 2.7.11.13 (protein kinase C) inhibitor
 PKC412	CHEBI:63452	midostaurin
 platinum agents	CHEBI:33364	platinum
-ponatinib	DB:08901	Ponatinib
+ponatinib	DrugBank:DB08901	Ponatinib
 proteosome inhibitors		
 quizartinib	CID:24889392	
-rapamycin	DB:00877	Sirolimus
-regorafenib	DB:08896	
+rapamycin	DrugBank:DB00877	Sirolimus
+regorafenib	DrugBank:DB08896	
 RET inhibitors		
-ruxolitinib	DB:08877	
+ruxolitinib	DrugBank:DB08877	
 selumetinib	CID:10127622	
-sorafenib	DB:00398	
-azacytidine	DB:00928	
+sorafenib	DrugBank:DB00398	
+azacytidine	DrugBank:DB00928	
 SRC inhibitors	CHEBI:78332	Src Inhibitor-1
 steroids	CHEBI:35341	steroid
-sunitinib	DB:01268	
+sunitinib	DrugBank:DB01268	
 SYK inhibitors	CID:6419747	Syk Inhibitor
 tankyrase inhibitors	CHEBI:62887	tankyrase inhibitor
-temozolomide	DB:00853	
-trastuzumab	DB:00072	
+temozolomide	DrugBank:DB00853	
+trastuzumab	DrugBank:DB00072	
 chemotherapy		
 TRK inhibitors		
-vandetanib	DB:05294	
+vandetanib	DrugBank:DB05294	
 VEGFR inhibitors		
-vemurafenib	DB:08881	
-vismodegib	DB:08828	
+vemurafenib	DrugBank:DB08881	
+vismodegib	DrugBank:DB08828	
 wee1 inhibitors	CID:10384072	Wee1 Inhibitor
 encorafenib	CID:50922675	LGX-818
 E6201	CID:10172827	UNII-CZP9GB25HO
