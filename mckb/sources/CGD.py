@@ -1,8 +1,8 @@
 from mckb.sources.MySQLSource import MySQLSource
+from mckb.sources.CGDOntologyMap import CGDOntologyMap
 from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
-from dipper.models.G2PAssoc import G2PAssoc
 from dipper.models.InteractionAssoc import InteractionAssoc
 from dipper.models.GenomicFeature import Feature, makeChromID
 from dipper import curie_map
@@ -40,6 +40,8 @@ class CGD(MySQLSource):
         super().__init__('cgd', database, username, password, host)
         self.dataset = Dataset('cgd', 'cgd', 'http://ga4gh.org')
         self.gene_map = {}
+        self.disease_map = {}
+        self.drug_map = {}
         self.transcript_xrefs = {'RefSeq': {}, 'UniProt': {}}
 
     def fetch(self, is_dl_forced):
@@ -72,8 +74,11 @@ class CGD(MySQLSource):
             logger.info("Database contains tables, "
                         "skipping load from dump file")
 
-        self.gene_map = self.set_gene_map(
-            self.static_files['ncbi_gene_mappings']['file'])
+        ontology_map = CGDOntologyMap('cgd-ontology-mappings')
+        ontology_map.parse()
+        self.gene_map = ontology_map.gene_map
+        self.disease_map = ontology_map.disease_map
+        self.drug_map = ontology_map.drug_map
 
         ccds_xref_file = '/'.join((self.rawdir,
                                    self.files['transcript_xrefs']['file']))
@@ -347,7 +352,12 @@ class CGD(MySQLSource):
         """
         gu = GraphUtils(curie_map.get())
         geno = Genotype(self.graph)
-        gene_id = self.gene_map[hgnc_symbol]
+        if hgnc_symbol in self.gene_map:
+            gene_id = self.gene_map[hgnc_symbol]
+        else:
+            gene_id = self.make_cgd_id("{0}{1}".format(variant_id, hgnc_symbol))
+            logger.warn("Can't map gene symbol {0} "
+                        "to entrez ID".format(hgnc_symbol))
         gu.addClassToGraph(self.graph, gene_id, hgnc_symbol)
         geno.addAlleleOfGene(variant_id, gene_id)
         return
@@ -782,22 +792,6 @@ class CGD(MySQLSource):
             os.system("mysql -h {0} -p{1} -u {2} -D {3} < {4}".format(self.host, self.password,
                       self.username, self.database, f.name))
         return
-
-    def set_gene_map(self, mapping_file):
-        """
-        :param mapping_file: String, path to file containing gene label-id mappings
-        :return: dict where keys are gene labels and values are entrez ids
-        """
-        gene_id_map = {}
-        if os.path.exists(os.path.join(os.path.dirname(__file__), mapping_file)):
-            with open(os.path.join(os.path.dirname(__file__), mapping_file)) as tsvfile:
-                reader = csv.reader(tsvfile, delimiter="\t")
-                for row in reader:
-                    gene_label = row[1]
-                    gene_id = row[2]
-                    gene_id_map[gene_label] = gene_id
-
-        return gene_id_map
 
     def set_transcript_xrefs(self, mapping_file):
         """

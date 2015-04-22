@@ -6,7 +6,7 @@ import csv
 logger = logging.getLogger(__name__)
 
 
-class CgdOntologyMap(CuratedSource):
+class CGDOntologyMap(CuratedSource):
     """
     Ontology mappings for CGD diseases and drugs, manually curated
     Entrez gene ID mappings from HGNC symbols, automatically/manually curated
@@ -25,20 +25,20 @@ class CgdOntologyMap(CuratedSource):
     }
 
     def __init__(self, source_name):
-        super().__init__(source_name)
+        super().__init__(source_name, 'CGD')
         self.disease_map = {}
         self.gene_map = {}
         self.drug_map = {}
 
     def parse(self):
         self.disease_map = self._parse_mapping_file(
-            self.static_files.disease_map.file)
-
-        self.gene_map = self._parse_mapping_file(
-            self.static_files.gene_map.file)
+            self.static_files['disease_map']['file'])
 
         self.drug_map = self._parse_mapping_file(
-            self.static_files.drug_map.file)
+            self.static_files['drug_map']['file'])
+
+        self.gene_map = self._parse_mapping_file(
+            self.static_files['gene_map']['file'])
 
     def _parse_mapping_file(self, file):
         """

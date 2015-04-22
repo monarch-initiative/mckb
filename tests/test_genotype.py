@@ -1,5 +1,6 @@
 from dipper import curie_map
 from mckb.sources.CGD import CGD
+from mckb.sources.CGDOntologyMap import CGDOntologyMap
 from rdflib.namespace import URIRef
 from dipper.utils.CurieUtil import CurieUtil
 import unittest
@@ -25,9 +26,10 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         password = 'baz'
 
         self.cgd = CGD(database, user, password)
+        ontology_map = CGDOntologyMap('cgd-ontology-mappings')
+        ontology_map.parse()
 
-        mapping_file = '../../resources/mappings/gene.tsv'
-        self.cgd.gene_map = self.cgd.set_gene_map(mapping_file)
+        self.cgd.gene_map = ontology_map.gene_map
 
         # Sample output from _get_variant_protein_info() where variant
         # is a missense mutation
