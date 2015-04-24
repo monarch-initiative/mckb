@@ -1,1 +1,1 @@
-ID	Description	Ontology ID	Ontology Label1	synonymous	SO:0001815	synonymous 2	nonsynonymous - missense		3	nonsynonymous - nonsense		4	frameshift	SO:0000865	frameshift5	in-frame	SO:0001817	inframe
+ID	Description	Ontology ID	Ontology Label1	synonymous	SO:0001815	synonymous 2	nonsynonymous - missense	SO:0001583	missense_variant3	nonsynonymous - nonsense		4	frameshift	SO:0000865	frameshift5	in-frame	SO:0001817	inframe
