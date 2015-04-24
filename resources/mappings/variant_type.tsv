@@ -1,8 +1,1 @@
-1	Substitution
-2	Insertion
-3	Deletion
-4	Deletion/insertion (indels)
-5	Translocation
-6	Inversion
-7	Conversion
-8	Duplication
+ID	Description	Ontology ID	Ontology Label1	Substitution	SO:1000002 	substitution 2	Insertion	SO:0000667	insertion3	Deletion	SO:0000159	deletion4	Deletion/insertion (indels)	SO:1000032	indel5	Translocation	SO:0000199	translocation6	Inversion	SO:1000036	Inversion7	Conversion		8	Duplication	SO:1000035	duplication
