@@ -393,9 +393,9 @@ class CGD(MySQLSource):
             relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
             drug_id = self._get_drug_id(drug_key, drug_label)
 
-            disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
-                diagnoses_label, variant_key))
-            disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
+            #disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
+            #    diagnoses_label, variant_key))
+            #disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
             variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
@@ -405,8 +405,8 @@ class CGD(MySQLSource):
                 gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
 
             gu.addClassToGraph(self.graph, drug_id, drug_label, 'CHEBI:23888')
-            gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
-                                    disease_id)
+            #gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
+            #                        disease_id)
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})
 
             if pubmed_id is not None:
@@ -418,7 +418,7 @@ class CGD(MySQLSource):
 
             variant_phenotype_assoc = G2PAssoc(variant_disease_annot,
                                                variant_id,
-                                               disease_instance_id,
+                                               disease_id,
                                                source_id, evidence)
             variant_phenotype_assoc.addAssociationToGraph(self.graph)
             gu.addTriple(self.graph, variant_disease_annot, relationship_id, drug_id)

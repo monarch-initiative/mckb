@@ -89,25 +89,22 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         self.cgd.load_bindings()
 
         sparql_query = """
-                       SELECT ?disease ?diseaseInd ?drug ?source
+                       SELECT ?disease ?drug ?source
                        WHERE {{
                            ?disease a owl:Class ;
                                rdfs:subClassOf DOID:4 ;
                                rdfs:label "{0}" .
-                           ?diseaseInd a ?disease ;
-                               rdfs:label "{1}" .
                            ?drug a owl:Class ;
                                rdfs:subClassOf CHEBI:23888 ;
-                               rdfs:label "{2}" .
-                           <{3}> a owl:ObjectProperty .
+                               rdfs:label "{1}" .
+                           <{2}> a owl:ObjectProperty .
                            ?source a owl:NamedIndividual .
                        }}
-                       """.format(self.disease_label, self.disease_instance_label,
+                       """.format(self.disease_label,
                                   self.drug_label, self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.disease_uri, self.disease_ind_uri,
-                             self.drug_uri, self.source_uri]]
+        expected_results = [[self.disease_uri, self.drug_uri, self.source_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -150,7 +147,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                        """.format(self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.disease_ind_uri, self.variant_uri, self.drug_uri,
+        expected_results = [[self.disease_uri, self.variant_uri, self.drug_uri,
                              self.vd_annot_uri,
                              self.source_uri, evidence_uri]]
         # Query graph

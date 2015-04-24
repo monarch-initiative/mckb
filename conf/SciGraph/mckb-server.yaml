@@ -26,8 +26,8 @@ graphConfiguration:
     # base
     '': 'http://www.monarchinitiative.org/'
     'MONARCH': 'http://www.monarchinitiative.org/MONARCH_'
-    
-    
+
+
     # ontologies
     'HP': 'http://purl.obolibrary.org/obo/HP_'
     'ECO': 'http://purl.obolibrary.org/obo/ECO_'
@@ -65,8 +65,9 @@ graphConfiguration:
     'SNOMED' : 'http://purl.obolibrary.org/obo/SNOMED_'
     'ERO' : 'http://purl.obolibrary.org/obo/ERO_'
     'NCBITaxon' : 'http://purl.obolibrary.org/obo/NCBITaxon_'
-    
-    
+    'CHEBI' : 'http://purl.obolibrary.org/obo/CHEBI_'
+
+
     # publication/reference sources
     'PMID': 'http://www.ncbi.nlm.nih.gov/pubmed/'
     'PMCID' : 'http://www.ncbi.nlm.nih.gov/pmc/'
@@ -76,7 +77,7 @@ graphConfiguration:
     'ISBN': 'http://www.monarchinitiative.org/ISBN_'
     'DOI' : 'http://dx.doi.org/'
     'J' : 'http://www.informatics.jax.org/reference/J:'
-    
+
     # other
     'Annotation': 'http://www.w3.org/ns/oa#Annotation'
     'HPO' : 'http://human-phenotype-ontology.org/'  #to be used for persons, though they don't resolve with this
@@ -101,7 +102,7 @@ graphConfiguration:
     'dbVAR' : 'http://www.ncbi.nlm.nih.gov/dbvar/'
     'COSMIC' : 'http://cancer.sanger.ac.uk/cosmic/mutation/overview?id='
     'CCDS' : 'http://www.ncbi.nlm.nih.gov/CCDS/CcdsBrowse.cgi?REQUEST=CCDS&DATA='
-    
+
     # genes
     'NCBIGene' : 'http://www.ncbi.nlm.nih.gov/gene/'
     'HGNC' : 'http://www.genenames.org/cgi-bin/gene_symbol_report?hgnc_id=HGNC:'
@@ -122,7 +123,7 @@ graphConfiguration:
     'IMPC' : 'http://www.mousephenotype.org/data/genes/'  #FIXME
     'GenBank' : 'http://www.ncbi.nlm.nih.gov/nuccore/'
     'CGD' : 'http://ohsu.edu/cgd/'
-    
+
     # proteins
     'UniProtKB' : 'http://identifiers.org/uniprot/'
     'SwissProt' : 'http://identifiers.org/SwissProt:'
@@ -132,7 +133,8 @@ graphConfiguration:
     'EC' : 'http://identifiers.org/EC:'  #FIXME: Enzyme Commission numbers. Any preferred url that can resolve this?
 
     #chemicals
-    'CHEBI' : 'http://www.ebi.ac.uk/chebi/searchId.do?chebiId='
+    'CID' : 'http://pubchem.ncbi.nlm.nih.gov/compound/'
+
 cypherResources:
     ##################
     ### PHENOTYPES
