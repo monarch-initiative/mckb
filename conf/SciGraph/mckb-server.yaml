@@ -361,6 +361,17 @@ cypherResources:
           parameters:
             - name: feature_id
               description: The ID of the feature
+
+    ## Phenotypes from feature
+    - path: /dynamic/relationships/{relationship_id}/phenotypes
+      query: |
+              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[MONARCH_hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
+              RETURN DISTINCT drug, rel, assoc, variant, hasP, phenotype
+      operations:
+        - summary: Get phenotypes for a relationship
+          parameters:
+            - name: relationship_id
+              description: The ID of the relationship
     
     ## Genotypes from feature
     - path: /dynamic/features/{feature_id}/genotypes
