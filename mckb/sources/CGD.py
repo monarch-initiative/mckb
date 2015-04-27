@@ -407,7 +407,7 @@ class CGD(MySQLSource):
 
             # disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
             #    diagnoses_label, variant_key))
-            # disease_instance_label = "{0} related to variant {1}".format(diagnoses_label, variant_label)
+            # disease_instance_label = "{0} linked to variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
             variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
