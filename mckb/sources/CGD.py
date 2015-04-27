@@ -370,6 +370,9 @@ class CGD(MySQLSource):
           specific_diagnosis, organ, relationship,
           drug_key, drug, therapy_status (optional), pubmed_id(optional)]]
 
+        See ongoing discussion of how to best model here:
+        https://github.com/monarch-initiative/mckb/issues/9
+
         :param table: iterable of iterables, for example, a tuple of tuples
                       from _get_disease_drug_variant_relationship
         :return: None
@@ -393,9 +396,18 @@ class CGD(MySQLSource):
             relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
             drug_id = self._get_drug_id(drug_key, drug_label)
 
-            #disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
+            """
+            Here we can either create an instance of the disease class
+            or link the disease class directly.  For now we will link
+            the class directly as this is easier to query out with the
+            current scigraph services, but down the line this should be
+            added back in along with updating the cypher query in the
+            scigraph layer
+            """
+
+            # disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
             #    diagnoses_label, variant_key))
-            #disease_instance_label = "{0} caused by variant {1}".format(diagnoses_label, variant_label)
+            # disease_instance_label = "{0} related to variant {1}".format(diagnoses_label, variant_label)
 
             # Reified association for disease caused_by genotype
             variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
