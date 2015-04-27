@@ -1,0 +1,3 @@
+pymysql
+rdflib
+https://github.com/monarch-initiative/dipper/tarball/master#egg=Dipper-0.0.1
