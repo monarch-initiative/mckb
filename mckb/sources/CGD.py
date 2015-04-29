@@ -198,9 +198,6 @@ class CGD(MySQLSource):
 
         amino_acid_regex = re.compile(r'^p\.([A-Za-z]{1,3})(\d+)([A-Za-z]{1,3})$')
 
-        aa_position_id = self.make_cgd_id(
-            'aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
-
         if is_missense:
             match = re.match(amino_acid_regex, amino_acid_variant.rstrip())
         else:
@@ -226,11 +223,7 @@ class CGD(MySQLSource):
                          geno.properties['results_in_amino_acid_change'],
                          altered_amino_acid, is_literal)
 
-            # Add position/location model for amino acid
-            gu.addTriple(self.graph, variant_id,
-                         Feature.properties['location'], aa_position_id)
-            self._add_feature_with_coords(aa_position_id, amino_acid_variant,
-                                          Feature.types['Position'], position,
+            self._add_feature_with_coords(variant_id, position,
                                           position, aa_seq_id)
 
         return
@@ -258,15 +251,6 @@ class CGD(MySQLSource):
          genome_build, build_version, build_date) = row
 
         variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
-        # Chromosomal position ID
-        chrom_position_id = self.make_cgd_id(
-            'var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
-        chrom_position_label = '{0} genomic location'.format(variant_gene)
-
-        #Gene position ID
-        gene_position_id = self.make_cgd_id(
-            'transcript-pos{0}{1}'.format(variant_key, transcript_id))
-        gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
 
         # Add gene
         self._add_variant_gene_relationship(variant_id, variant_gene)
@@ -287,17 +271,11 @@ class CGD(MySQLSource):
                            build_id, genome_build)
 
         # Add variant coordinates in reference to chromosome
-        gu.addTriple(self.graph, variant_id,
-                     Feature.properties['location'], chrom_position_id)
-        self._add_feature_with_coords(chrom_position_id, chrom_position_label,
-                                      Feature.types['Position'], genome_pos_start,
+        self._add_feature_with_coords(variant_id,genome_pos_start,
                                       genome_pos_end, chromosome_id)
 
         # Add mutation coordinates in reference to gene
-        gu.addTriple(self.graph, variant_id,
-                     Feature.properties['location'], gene_position_id)
-        self._add_feature_with_coords(gene_position_id, gene_position_label,
-                                      Feature.types['Position'], bp_pos,
+        self._add_feature_with_coords(variant_id, bp_pos,
                                       bp_pos, transcript_curie)
 
         # Add nucleotide mutation
@@ -330,7 +308,7 @@ class CGD(MySQLSource):
 
         return
 
-    def _add_feature_with_coords(self, feature_id, feature_label, feature_type, start_pos, end_pos, reference):
+    def _add_feature_with_coords(self, feature_id, start_pos, end_pos, reference):
         """
         :param feature_id: URIRef or Curie - instance of faldo:Position
         :param feature_label: String
@@ -340,7 +318,7 @@ class CGD(MySQLSource):
         :param reference: URIRef or Curie - reference Node (gene, transcript, genome)
         :return: None
         """
-        feature = Feature(feature_id, feature_label, feature_type)
+        feature = Feature(feature_id, None, None)
         feature.addFeatureStartLocation(start_pos, reference)
         feature.addFeatureEndLocation(end_pos, reference)
         feature.addFeatureToGraph(self.graph)

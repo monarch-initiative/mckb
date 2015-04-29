@@ -71,7 +71,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         CGD:VariantID is an instance of OBO:SO_0001583
         CGD:VariantID has the label "CSF3R Q741X  missense mutation"
         CGD:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:1441
-        CGD:VariantID has location (faldo:location) CGD:PositionID
+        CGD:VariantID has location (faldo:location) CGD:RegionID
         CGD:VariantID OBO:GENO_reference_amino_acid "Q"
         CGD:VariantID OBO:GENO_results_in_amino_acid_change "X"
         CGD:VariantID RO:0002205 CCDS:413.1
@@ -99,20 +99,20 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         transcript = "CCDS:413.1"
-        aa_position_id = self.cgd.make_cgd_id('aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
+        region_id = ":_{0}Region".format(variant_id)
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
-        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
+        region_uri = URIRef(cu.get_uri(region_id))
 
         sparql_query = """
-                       SELECT ?variant ?gene ?position ?transcript
+                       SELECT ?variant ?gene ?region ?transcript
                        WHERE {{
                            ?variant a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
-                               faldo:location ?position ;
+                               faldo:location ?region ;
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_results_in_amino_acid_change "{2}" ;
                                RO:0002205 ?transcript .
@@ -124,7 +124,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                   altered_amino_acid, transcript_id)
 
         # Expected Results
-        expected_results = [[variant_uri, gene_uri, aa_position_uri, transcript_uri]]
+        expected_results = [[variant_uri, gene_uri, region_uri, transcript_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -140,9 +140,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         CGD:VariantID is an instance of OBO:SO_0001583
         CGD:VariantID has the label "ABL1 T315I missense mutation"
         CGD:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
-        CGD:VariantID has location (faldo:location) PositionID1 (amino acid location)
-        CGD:VariantID has location (faldo:location) PositionID2 (location on chromosome)
-        CGD:VariantID has location (faldo:location) PositionID3 (location on gene)
+        CGD:VariantID has location (faldo:location) RegionID
         CGD:VariantID OBO:GENO_reference_amino_acid "T"
         CGD:VariantID OBO:GENO_results_in_amino_acid_change "I"
         CGD:VariantID owl:sameAs dbSNP:rs121913459
@@ -161,10 +159,6 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         NCBIProtein:NP_005148.2  is an instance of OBO:SO_0000104 (polypeptide)
         NCBIProtein:NP_005148.2  has the label "NP_005148.2"
-
-        CGD:PositionID1 (amino acid location) has the label "p.T315I"
-        CGD:PositionID2 (chromosome location) has the label "ABL1 genomic location"
-        CGD:PositionID3 (gene location) has the label "ABL1 cdna location c.944C>T"
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -187,44 +181,34 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         gene_id = self.cgd.gene_map[transcript_gene]
         ref_amino_acid = "T"
         altered_amino_acid = "I"
-        variant_position_label = '{0} genomic location'.format(variant_gene)
-
-        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
-        transcript = "CCDS:35166.1"
-        aa_position_id = self.cgd.make_cgd_id('aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
-        variant_position_id = self.cgd.make_cgd_id(
-            'var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
-        gene_position_id = self.cgd.make_cgd_id(
-            'transcript-pos{0}{1}'.format(variant_key, transcript_id))
-        gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
         db_snp_curie = "dbSNP:121913459"
         cosmic_curie = "COSMIC:12560"
         uniprot_curie = "UniProtKB:P00519#P00519-1"
         refseq_curie = "NCBIProtein:NP_005148.2"
+        transcript_curie = "CCDS:35166.1"
+
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
+        region_id = ":_{0}Region".format(variant_id)
+
         variant_uri = URIRef(cu.get_uri(variant_id))
-        transcript_uri = URIRef(cu.get_uri(transcript))
+        transcript_uri = URIRef(cu.get_uri(transcript_curie))
         gene_uri = URIRef(cu.get_uri(gene_id))
-        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
         db_snp_uri = URIRef(cu.get_uri(db_snp_curie))
         cosmic_uri = URIRef(cu.get_uri(cosmic_curie))
-        chr_position_uri = URIRef(cu.get_uri(variant_position_id))
-        gene_position_uri = URIRef(cu.get_uri(gene_position_id))
         uniprot_uri = URIRef(cu.get_uri(uniprot_curie))
+        region_uri = URIRef(cu.get_uri(region_id))
         refseq_uri = URIRef(cu.get_uri(refseq_curie))
 
 
         sparql_query = """
-                       SELECT ?variant ?gene ?aaPosition ?chrPosition
-                              ?genePosition ?dbSNP ?cosmic ?transcript
+                       SELECT ?variant ?gene ?region ?dbSNP ?cosmic ?transcript
                               ?uniprot ?refseq
                        WHERE {{
                            ?variant a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
-                               faldo:location ?aaPosition ;
-                               faldo:location ?chrPosition ;
-                               faldo:location ?genePosition ;
+                               faldo:location ?region ;
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_reference_nucleotide "{2}" ;
                                OBO:GENO_altered_nucleotide "{3}" ;
@@ -248,22 +232,15 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
                            ?refseq owl:sameAs ?uniprot .
 
-                           ?aaPosition rdfs:label "{6}" .
-                           ?chrPosition rdfs:label "{7}" .
-                           ?genePosition rdfs:label "{8}" .
-
-                           ?dbSNP rdfs:label "{9}" .
-                           ?cosmic rdfs:label "{10}" .
+                           ?dbSNP rdfs:label "{6}" .
+                           ?cosmic rdfs:label "{7}" .
                        }}
                        """.format(variant_label, ref_amino_acid, ref_base,
                                   variant_base, altered_amino_acid,
-                                  transcript_id, amino_acid_variant,
-                                  variant_position_label, gene_position_label,
-                                  db_snp_id, cosmic_id)
+                                  transcript_id, db_snp_id, cosmic_id)
 
         # Expected Results
-        expected_results = [[variant_uri, gene_uri, aa_position_uri,
-                             chr_position_uri, gene_position_uri,
+        expected_results = [[variant_uri, gene_uri, region_uri,
                              db_snp_uri, cosmic_uri, transcript_uri,
                              uniprot_uri, refseq_uri]]
         # Query graph
@@ -276,10 +253,6 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Test modelling of amino acid positions
         Using test data set 1, and the function add_variant_info_to_graph()
         We want to test the following triples:
-
-        CGD:PositionID is an instance of faldo:Position
-        CGD:PositionID rdfs:label "p.Q741X"
-        CGD:PositionID faldo:location CGD:RegionID
 
         CGD:RegionID is an instance of faldo:Region
         CGD:RegionID faldo:begin BothStrandPositionID
@@ -304,37 +277,32 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
          protein_variant_source) = self.test_set_1[0][0:11]
 
         position = 741
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
         uniprot_curie = "UniProtKB:Q99062#Q99062-1"
-        aa_position_id = self.cgd.make_cgd_id('aa-pos{0}{1}'.format(variant_key, amino_acid_variant))
-        region_id = ":_{0}Region".format(aa_position_id)
+        region_id = ":_{0}Region".format(variant_id)
         both_strand_id = ":_{0}-{1}".format(uniprot_curie, position)
 
-        aa_position_uri = URIRef(cu.get_uri(aa_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
         uniprot_uri = URIRef(cu.get_uri(uniprot_curie))
 
         sparql_query = """
-                       SELECT ?position ?region ?bsPosition ?protein
+                       SELECT ?region ?bsPosition ?protein
                        WHERE {{
-                           ?position a faldo:Position ;
-                               rdfs:label "{0}" ;
-                               faldo:location ?region .
-
                            ?region a faldo:Region ;
                                faldo:begin ?bsPosition ;
                                faldo:end ?bsPosition .
 
                            ?bsPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
-                               faldo:position {1} ;
+                               faldo:position {0} ;
                                faldo:reference ?protein .
                        }}
-                       """.format(amino_acid_variant, position)
+                       """.format(position)
 
         # Expected Results
-        expected_results = [[aa_position_uri, region_uri, both_strand_uri, uniprot_uri]]
+        expected_results = [[region_uri, both_strand_uri, uniprot_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
@@ -346,10 +314,6 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Test modelling of variant positions on a transcript
         Using test data set 2, and the function add_variant_info_to_graph()
         We want to test the following triples:
-
-        CGD:PositionID is an instance of faldo:Position
-        CGD:PositionID rdfs:label "c.944C>T"
-        CGD:PositionID faldo:location CGD:RegionID
 
         CGD:RegionID is an instance of faldo:Region
         CGD:RegionID faldo:begin BothStrandPositionID
@@ -378,38 +342,31 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
          genome_build, build_version, build_date) = self.test_set_2[0]
 
         transcript_curie = self.cgd._make_transcript_curie(transcript_id)
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
-        gene_position_id = self.cgd.make_cgd_id(
-            'transcript-pos{0}{1}'.format(variant_key, transcript_id))
-        gene_position_label = '{0} cdna location {1}'.format(variant_gene, transcript_id)
-        region_id = ":_{0}Region".format(gene_position_id)
+        region_id = ":_{0}Region".format(variant_id)
         both_strand_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
 
-        gene_position_uri = URIRef(cu.get_uri(gene_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
         ccds_uri = URIRef(cu.get_uri(transcript_curie))
 
         sparql_query = """
-                       SELECT ?position ?region ?bsPosition ?transcript
+                       SELECT ?region ?bsPosition ?transcript
                        WHERE {{
-                           ?position a faldo:Position ;
-                               rdfs:label "{0}" ;
-                               faldo:location ?region .
-
                            ?region a faldo:Region ;
                                faldo:begin ?bsPosition ;
                                faldo:end ?bsPosition .
 
                            ?bsPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
-                               faldo:position {1} ;
+                               faldo:position {0} ;
                                faldo:reference ?transcript .
                        }}
-                       """.format(gene_position_label, bp_pos)
+                       """.format(bp_pos)
 
         # Expected Results
-        expected_results = [[gene_position_uri, region_uri, both_strand_uri, ccds_uri]]
+        expected_results = [[region_uri, both_strand_uri, ccds_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
@@ -501,46 +458,39 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
          primary_transcript_variant_sub_types, variant_type, chromosome,
          genome_build, build_version, build_date) = self.test_set_2[0]
 
+        variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
+
         chromosome = ":hg19chr9"
-        variant_position_id = self.cgd.make_cgd_id(
-            'var-pos{0}{1}{2}'.format(variant_key, genome_pos_start, genome_pos_end))
-        variant_position_label = '{0} genomic location'.format(variant_gene)
-        region_id = ":_{0}Region".format(variant_position_id)
+        region_id = ":_{0}Region".format(variant_id)
         start_id = ":_{0}-{1}".format(chromosome, genome_pos_start)
         end_id = ":_{0}-{1}".format(chromosome, genome_pos_end)
 
-        position_uri = URIRef(cu.get_uri(variant_position_id))
         region_uri = URIRef(cu.get_uri(region_id))
         start_uri = URIRef(cu.get_uri(start_id))
         end_uri = URIRef(cu.get_uri(end_id))
         chromosome_uri = URIRef(cu.get_uri(chromosome))
 
         sparql_query = """
-                       SELECT ?position ?region ?startPosition ?endPosition ?chromosome
+                       SELECT ?region ?startPosition ?endPosition ?chromosome
                        WHERE {{
-                           ?position a faldo:Position ;
-                               rdfs:label "{0}" ;
-                               faldo:location ?region .
-
                            ?region a faldo:Region ;
                                faldo:begin ?startPosition ;
                                faldo:end ?endPosition .
 
                            ?startPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
-                               faldo:position {1} ;
+                               faldo:position {0} ;
                                faldo:reference ?chromosome .
 
                            ?endPosition a faldo:BothStrandPosition ;
                                a faldo:Position ;
-                               faldo:position {2} ;
+                               faldo:position {1} ;
                                faldo:reference ?chromosome .
                        }}
-                       """.format(variant_position_label, genome_pos_start,
-                                  genome_pos_end,)
+                       """.format(genome_pos_start, genome_pos_end,)
 
         # Expected Results
-        expected_results = [[position_uri, region_uri, start_uri, end_uri, chromosome_uri]]
+        expected_results = [[region_uri, start_uri, end_uri, chromosome_uri]]
 
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
