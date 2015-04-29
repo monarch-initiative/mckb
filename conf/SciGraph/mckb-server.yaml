@@ -365,7 +365,7 @@ cypherResources:
     - path: /dynamic/chemical/{chemical_id}/phenotypes
       query: |
               START drug=node:node_auto_index(fragment={chemical_id})
-              MATCH (drug:drug)<-[rel]-(assoc)-[MONARCH_hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
+              MATCH (drug:drug)<-[rel]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
               RETURN DISTINCT drug, rel, assoc, variant, phenotype, hasP
       operations:
         - summary: Get phenotypes for a chemical
@@ -376,13 +376,37 @@ cypherResources:
     ## Phenotypes from drug relationship
     - path: /dynamic/relationships/{relationship_id}/phenotypes
       query: |
-              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[MONARCH_hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
+              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
               RETURN DISTINCT drug, rel, assoc, variant, hasP, phenotype
       operations:
         - summary: Get phenotypes for a relationship
           parameters:
             - name: relationship_id
               description: The ID of the relationship
+
+     ## Phenotypes from genomic position
+    - path: /dynamic/position/phenotypes
+      query: |
+              START start_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${end}")
+              MATCH (start_pos)<-[:begin]-(region)<-[:location]-(position)<-[:location]-(variant)
+              MATCH (end_pos)<-[:end]-(region)<-[:location]-(position)<-[:location]-(variant)
+              RETURN DISTINCT start_pos, end_pos, variant
+      operations:
+        - summary: Get phenotypes for a relationship
+          parameters:
+            - name: start
+              description: The starting genomic coordinate
+              paramType: query
+            - name: end
+              description: The ending genomic coordinate
+              paramType: query
+            - name: chromosome
+              description: The alphanumeric chromosomal ID (1-22,X,Y)
+              paramType: query
+            - name: genome_build
+              description: The genome build (ex hg19)
+              paramType: query
     
     ## Genotypes from feature
     - path: /dynamic/features/{feature_id}/genotypes
