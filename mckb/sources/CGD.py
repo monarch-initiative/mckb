@@ -313,11 +313,13 @@ class CGD(MySQLSource):
             cosmic_id_list = cosmic_id.split(', ')
             for c_id in cosmic_id_list:
                 cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
-                gu.addIndividualToGraph(self.graph, cosmic_curie, c_id)
+                gu.addIndividualToGraph(self.graph, cosmic_curie, c_id,
+                                        geno.genoparts['missense_variant'])
                 gu.addSameIndividual(self.graph, variant_id, cosmic_curie)
         if db_snp_id is not None:
             db_snp_curie = re.sub(r'rs(\d+)', r'dbSNP:\1', db_snp_id)
-            gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id)
+            gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id,
+                                    geno.genoparts['missense_variant'])
             gu.addSameIndividual(self.graph, variant_id, db_snp_curie)
 
         if (db_snp_id is not None) and (cosmic_id is not None):
