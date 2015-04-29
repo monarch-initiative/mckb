@@ -462,10 +462,10 @@ cypherResources:
     - path: /dynamic/chemical/{chemical_id}/g2p
       query: |
               START drug=node:node_auto_index(fragment={chemical_id})
-              MATCH (drug:drug)<-[rel]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
-              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
-              RETURN DISTINCT drug, rel, assoc, variant, phenotype, hasP, gene, feature, ref, e, hasP
+              MATCH (drug:drug)<-[rel]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP2:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP3:RO_0002200]->(phenotype:Phenotype)
+              RETURN DISTINCT drug, rel, assoc, variant, phenotype, hasP, gene, feature, ref, e, hasP2, hasP3
       operations:
         - summary: Get phenotypes for a chemical
           parameters:
@@ -475,10 +475,10 @@ cypherResources:
     ## Phenotypes from drug relationship
     - path: /dynamic/relationships/{relationship_id}/g2p
       query: |
-              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
-              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP2:RO_0002200]->(phenotype:Phenotype)
-              RETURN DISTINCT drug, rel, assoc, variant, hasP, phenotype, gene, feature, ref, e, hasP, hasP2
+              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (gene)<-[ref:GENO_0000408]-(variant)-[hasP2:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP3:RO_0002200]->(phenotype:Phenotype)
+              RETURN DISTINCT drug, rel, assoc, variant, hasP, phenotype, gene, feature, ref, e, hasP2, hasP3
       operations:
         - summary: Get phenotypes for a relationship
           parameters:
@@ -492,9 +492,9 @@ cypherResources:
                     end_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${end}")
               MATCH (start_pos)<-[:begin]-(region)<-[:location]-(position)<-[:location]-(variant)
               MATCH (end_pos)<-[:end]-(region)<-[:location]-(position)<-[:location]-(variant)
-              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
-              RETURN DISTINCT start_pos, end_pos, variant, gene, feature, ref, e, hasP
+              OPTIONAL MATCH (gene)<-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP2:RO_0002200]->(phenotype:Phenotype)
+              RETURN DISTINCT start_pos, end_pos, variant, gene, feature, ref, e, hasP, hasP2
       operations:
         - summary: Get phenotypes for a relationship
           parameters:
