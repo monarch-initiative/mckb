@@ -334,14 +334,13 @@ cypherResources:
               START f=node:node_auto_index(fragment={feature_id})
               MATCH (f)<-[seqVar:GENO_0000408*0..1]-(feature)
               OPTIONAL MATCH (feature)-[hasP1:RO_0002200*]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[e:sameAs*]->(genotype)-[hasP2:RO_0002200*]->(phenotype2:Phenotype)
-              OPTIONAL MATCH (feature)<-[e2:sameAs*]-(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
-              OPTIONAL MATCH (feature)-[ref:GENO_0000408*]->(genotype3)-[hasP4:RO_0002200*]->(phenotype4:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart:BFO_0000051!*]-(genotype4)-[hasP5:RO_0002200*]->(phenotype5:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart2:BFO_0000051!*]-(genotype5)<-[hasGenotype:GENO_0000222]-(person)-[hasP6:RO_0002200*]->(phenotype6:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(genotype)-[hasP2:RO_0002200*]->(phenotype2:Phenotype)
+              OPTIONAL MATCH (feature)-[ref:GENO_0000408]-(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
+              OPTIONAL MATCH (feature)<-[hasPart:BFO_0000051!*]-(genotype3)-[hasP4:RO_0002200*]->(phenotype4:Phenotype)
+              OPTIONAL MATCH (feature)<-[hasPart2:BFO_0000051!*]-(genotype4)<-[hasGenotype:GENO_0000222]-(person)-[hasP5:RO_0002200*]->(phenotype5:Phenotype)
               RETURN DISTINCT f, seqVar, feature, hasP1, phenotype, e, genotype, hasP2, phenotype2, ref, genotype2, hasP3, phenotype3,
-                              hasPart, genotype3, hasP4, phenotype4, hasPart2, genotype4, hasGenotype, person, hasP5, phenotype5,
-                              e2, genotype5, hasP6, phenotype6
+                              hasPart, genotype3, hasP4, phenotype4, hasPart2, genotype4, hasGenotype, person, hasP5, phenotype5
+
       operations:
         - summary: Get phenotypes for a feature
           parameters:
@@ -453,5 +452,62 @@ cypherResources:
               description: The object of the evidence # HP_0002060
             - name: evidence_code
               description: The type of evidence to include # ECO_0000501
+              paramType: query
+
+    ##################
+    ### G2P
+    ##################
+
+        ## Phenotypes from drug
+    - path: /dynamic/chemical/{chemical_id}/g2p
+      query: |
+              START drug=node:node_auto_index(fragment={chemical_id})
+              MATCH (drug:drug)<-[rel]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
+              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              RETURN DISTINCT drug, rel, assoc, variant, phenotype, hasP, gene, feature, ref, e, hasP
+      operations:
+        - summary: Get phenotypes for a chemical
+          parameters:
+            - name: chemical_id
+              description: The ID of the chemical
+
+    ## Phenotypes from drug relationship
+    - path: /dynamic/relationships/{relationship_id}/g2p
+      query: |
+              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[:hasSubject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
+              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP2:RO_0002200]->(phenotype:Phenotype)
+              RETURN DISTINCT drug, rel, assoc, variant, hasP, phenotype, gene, feature, ref, e, hasP, hasP2
+      operations:
+        - summary: Get phenotypes for a relationship
+          parameters:
+            - name: relationship_id
+              description: The ID of the relationship
+
+     ## Phenotypes from genomic position
+    - path: /dynamic/position/g2p
+      query: |
+              START start_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${end}")
+              MATCH (start_pos)<-[:begin]-(region)<-[:location]-(position)<-[:location]-(variant)
+              MATCH (end_pos)<-[:end]-(region)<-[:location]-(position)<-[:location]-(variant)
+              OPTIONAL MATCH (gene)-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
+              RETURN DISTINCT start_pos, end_pos, variant, gene, feature, ref, e, hasP
+      operations:
+        - summary: Get phenotypes for a relationship
+          parameters:
+            - name: start
+              description: The starting genomic coordinate
+              paramType: query
+            - name: end
+              description: The ending genomic coordinate
+              paramType: query
+            - name: chromosome
+              description: The alphanumeric chromosomal ID (1-22,X,Y)
+              paramType: query
+            - name: genome_build
+              description: The genome build (ex hg19)
               paramType: query
 
