@@ -75,6 +75,7 @@ categories:
     http://purl.obolibrary.org/obo/GO_0005575 : cellular component
     http://purl.obolibrary.org/obo/SO_0000704 : gene
     http://purl.obolibrary.org/obo/SO_0001059 : gene
+    http://purl.obolibrary.org/obo/SO_0001060 : gene
 
 mappedProperties:
   - name: label
