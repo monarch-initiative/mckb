@@ -96,10 +96,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         gene_id = self.cgd.gene_map[transcript_gene]
         ref_amino_acid = "Q"
         altered_amino_acid = "X"
+        uniprot_curie = "UniProtKB:Q99062#Q99062-1"
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         transcript = "CCDS:413.1"
-        region_id = ":_{0}Region".format(variant_id)
+        region_id = ":_{0}{1}Region".format(variant_id, uniprot_curie)
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
@@ -140,7 +141,9 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         CGD:VariantID is an instance of OBO:SO_0001583
         CGD:VariantID has the label "ABL1 T315I missense mutation"
         CGD:VariantID is_sequence_variant_instance_of (OBO:GENO_0000408) NCBIGene:25
-        CGD:VariantID has location (faldo:location) RegionID
+        CGD:VariantID has location (faldo:location) AminoAcidRegionID
+        CGD:VariantID has location (faldo:location) CDNARegionID
+        CGD:VariantID has location (faldo:location) ChromosomalRegionID
         CGD:VariantID OBO:GENO_reference_amino_acid "T"
         CGD:VariantID OBO:GENO_results_in_amino_acid_change "I"
         CGD:VariantID owl:sameAs dbSNP:rs121913459
@@ -154,11 +157,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         UniProtKB:P00519#P00519-1 owl:sameAs NCBIProtein:NP_005148.2
 
-        UniProtKB:P00519#P00519-1  is an instance of OBO:SO_0000104 (polypeptide)
-        UniProtKB:P00519#P00519-1  has the label "P00519#P00519-1"
+        UniProtKB:P00519#P00519-1 is an instance of OBO:SO_0000104 (polypeptide)
+        UniProtKB:P00519#P00519-1 has the label "P00519#P00519-1"
 
-        NCBIProtein:NP_005148.2  is an instance of OBO:SO_0000104 (polypeptide)
-        NCBIProtein:NP_005148.2  has the label "NP_005148.2"
+        NCBIProtein:NP_005148.2 is an instance of OBO:SO_0000104 (polypeptide)
+        NCBIProtein:NP_005148.2 has the label "NP_005148.2"
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -186,9 +189,17 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         uniprot_curie = "UniProtKB:P00519#P00519-1"
         refseq_curie = "NCBIProtein:NP_005148.2"
         transcript_curie = "CCDS:35166.1"
+        position = 315
+        chromosome_curie = ":hg19chr9"
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
-        region_id = ":_{0}Region".format(variant_id)
+        aa_region_id = ":_{0}{1}Region".format(variant_id, uniprot_curie)
+        cdna_region_id = ":_{0}{1}Region".format(variant_id, transcript_curie)
+        chr_region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
+                                                   chromosome)
+        aa_coord_id = ":_{0}-{1}".format(uniprot_curie, position)
+        cdna_coord_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
+        chr_coord_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_start)
 
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript_curie))
@@ -196,19 +207,27 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         db_snp_uri = URIRef(cu.get_uri(db_snp_curie))
         cosmic_uri = URIRef(cu.get_uri(cosmic_curie))
         uniprot_uri = URIRef(cu.get_uri(uniprot_curie))
-        region_uri = URIRef(cu.get_uri(region_id))
         refseq_uri = URIRef(cu.get_uri(refseq_curie))
+        aa_region_uri = URIRef(cu.get_uri(aa_region_id))
+        cdna_region_uri = URIRef(cu.get_uri(cdna_region_id))
+        chr_region_uri = URIRef(cu.get_uri(chr_region_id))
+        aa_coord_uri = URIRef(cu.get_uri(aa_coord_id))
+        cdna_coord_uri = URIRef(cu.get_uri(cdna_coord_id))
+        chr_coord_uri = URIRef(cu.get_uri(chr_coord_id))
 
 
         sparql_query = """
-                       SELECT ?variant ?gene ?region ?dbSNP ?cosmic ?transcript
-                              ?uniprot ?refseq
+                       SELECT ?variant ?gene ?aaRegion ?cdnaRegion ?chrRegion
+                              ?dbSNP ?cosmic ?transcript ?uniprot ?refseq
+                              ?aaCoord ?cdnaCoord ?chrCoord
                        WHERE {{
                            ?variant a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
                                rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
-                               faldo:location ?region ;
+                               faldo:location ?aaRegion ;
+                               faldo:location ?cdnaRegion ;
+                               faldo:location ?chrRegion ;
                                OBO:GENO_reference_amino_acid "{1}" ;
                                OBO:GENO_reference_nucleotide "{2}" ;
                                OBO:GENO_altered_nucleotide "{3}" ;
@@ -232,17 +251,28 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
                            ?refseq owl:sameAs ?uniprot .
 
-                           ?dbSNP rdfs:label "{6}" .
-                           ?cosmic rdfs:label "{7}" .
+                           ?aaRegion faldo:begin ?aaCoord .
+                           ?cdnaRegion faldo:begin ?cdnaCoord .
+                           ?chrRegion faldo:begin ?chrCoord .
+
+                           ?aaCoord faldo:position {6} .
+                           ?cdnaCoord faldo:position {7} .
+                           ?chrCoord faldo:position {8} .
+
+                           ?dbSNP rdfs:label "{9}" .
+                           ?cosmic rdfs:label "{10}" .
                        }}
                        """.format(variant_label, ref_amino_acid, ref_base,
                                   variant_base, altered_amino_acid,
-                                  transcript_id, db_snp_id, cosmic_id)
+                                  transcript_id, position, bp_pos,
+                                  genome_pos_start, db_snp_id, cosmic_id)
 
         # Expected Results
-        expected_results = [[variant_uri, gene_uri, region_uri,
-                             db_snp_uri, cosmic_uri, transcript_uri,
-                             uniprot_uri, refseq_uri]]
+        expected_results = [[variant_uri, gene_uri, aa_region_uri,
+                             cdna_region_uri, chr_region_uri, db_snp_uri,
+                             cosmic_uri, transcript_uri,uniprot_uri,
+                             refseq_uri, aa_coord_uri, cdna_coord_uri,
+                             chr_coord_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -280,7 +310,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
         uniprot_curie = "UniProtKB:Q99062#Q99062-1"
-        region_id = ":_{0}Region".format(variant_id)
+        region_id = ":_{0}{1}Region".format(variant_id, uniprot_curie)
         both_strand_id = ":_{0}-{1}".format(uniprot_curie, position)
 
         region_uri = URIRef(cu.get_uri(region_id))
@@ -344,7 +374,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         transcript_curie = self.cgd._make_transcript_curie(transcript_id)
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
-        region_id = ":_{0}Region".format(variant_id)
+        region_id = ":_{0}{1}Region".format(variant_id, transcript_curie)
         both_strand_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
 
         region_uri = URIRef(cu.get_uri(region_id))
@@ -460,15 +490,16 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
-        chromosome = ":hg19chr9"
-        region_id = ":_{0}Region".format(variant_id)
-        start_id = ":_{0}-{1}".format(chromosome, genome_pos_start)
-        end_id = ":_{0}-{1}".format(chromosome, genome_pos_end)
+        chromosome_curie = ":hg19chr9"
+        region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
+                                               chromosome)
+        start_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_start)
+        end_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_end)
 
         region_uri = URIRef(cu.get_uri(region_id))
         start_uri = URIRef(cu.get_uri(start_id))
         end_uri = URIRef(cu.get_uri(end_id))
-        chromosome_uri = URIRef(cu.get_uri(chromosome))
+        chromosome_uri = URIRef(cu.get_uri(chromosome_curie))
 
         sparql_query = """
                        SELECT ?region ?startPosition ?endPosition ?chromosome

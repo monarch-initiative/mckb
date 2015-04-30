@@ -223,8 +223,9 @@ class CGD(MySQLSource):
                          geno.properties['results_in_amino_acid_change'],
                          altered_amino_acid, is_literal)
 
+            aa_region_id = ":_{0}{1}Region".format(variant_id, aa_seq_id)
             self._add_feature_with_coords(variant_id, position,
-                                          position, aa_seq_id)
+                                          position, aa_seq_id, aa_region_id)
 
         return
 
@@ -258,6 +259,11 @@ class CGD(MySQLSource):
         # Transcript reference for nucleotide position
         transcript_curie = self._make_transcript_curie(transcript_id)
 
+        # Make region IDs
+        cdna_region_id = ":_{0}{1}Region".format(variant_id, transcript_curie)
+        chrom_region_id = ":_{0}{1}{2}Region".format(variant_id,genome_build,
+                                                     chromosome)
+
         # Add the genome build
         genome_label = "Human"
         build_id = "UCSC:{0}".format(genome_build)
@@ -272,11 +278,11 @@ class CGD(MySQLSource):
 
         # Add variant coordinates in reference to chromosome
         self._add_feature_with_coords(variant_id,genome_pos_start,
-                                      genome_pos_end, chromosome_id)
+                                      genome_pos_end, chromosome_id, chrom_region_id)
 
         # Add mutation coordinates in reference to gene
         self._add_feature_with_coords(variant_id, bp_pos,
-                                      bp_pos, transcript_curie)
+                                      bp_pos, transcript_curie, cdna_region_id)
 
         # Add nucleotide mutation
         gu.addTriple(self.graph, variant_id,
@@ -308,7 +314,7 @@ class CGD(MySQLSource):
 
         return
 
-    def _add_feature_with_coords(self, feature_id, start_pos, end_pos, reference):
+    def _add_feature_with_coords(self, feature_id, start_pos, end_pos, reference, region_id):
         """
         :param feature_id: URIRef or Curie - instance of faldo:Position
         :param feature_label: String
@@ -321,7 +327,7 @@ class CGD(MySQLSource):
         feature = Feature(feature_id, None, None)
         feature.addFeatureStartLocation(start_pos, reference)
         feature.addFeatureEndLocation(end_pos, reference)
-        feature.addFeatureToGraph(self.graph)
+        feature.addFeatureToGraph(self.graph, region_id)
         return
 
     def _add_variant_gene_relationship(self, variant_id, hgnc_symbol):
