@@ -15,7 +15,7 @@ class CGDTestCase(unittest.TestCase):
         database = 'cgd_test'
         user = 'travis'
         self.cgd_test = CGD(database, user)
-        self.cursor, self.connection = self.cgd_test._connect_to_database()
+        self.connection, self.cursor = self.cgd_test._connect_to_database()
         return
 
     def tearDown(self):
