@@ -36,7 +36,7 @@ class CGD(MySQLSource):
         }
     }
 
-    def __init__(self, database, username, password, host=None):
+    def __init__(self, database, username, password=None, host=None):
         super().__init__('cgd', database, username, password, host)
         self.dataset = Dataset('cgd', 'cgd', 'http://ga4gh.org')
         self.gene_map = {}

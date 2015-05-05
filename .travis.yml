@@ -8,6 +8,12 @@ install:
   - "pip install -r requirements.txt"
   - "pip install python-coveralls"
   - "pip install ."
+
+before_script:
+  - mysql -e 'create database cgd_test;'
+  - gzip -d resources/g2p.sql.gz
+  - mysql -u travis -D cgd_test < resources/g2p.sql
+
 # command to run tests
 script: nosetests --with-coverage --cover-package=mckb
 
