@@ -261,7 +261,7 @@ class CGD(MySQLSource):
 
         # Make region IDs
         cdna_region_id = ":_{0}{1}Region".format(variant_id, transcript_curie)
-        chrom_region_id = ":_{0}{1}{2}Region".format(variant_id,genome_build,
+        chrom_region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
                                                      chromosome)
 
         # Add the genome build
@@ -324,10 +324,11 @@ class CGD(MySQLSource):
         :param reference: URIRef or Curie - reference Node (gene, transcript, genome)
         :return: None
         """
+        add_region = True
         feature = Feature(feature_id, None, None)
         feature.addFeatureStartLocation(start_pos, reference)
         feature.addFeatureEndLocation(end_pos, reference)
-        feature.addFeatureToGraph(self.graph, region_id)
+        feature.addFeatureToGraph(self.graph, add_region, region_id)
         return
 
     def _add_variant_gene_relationship(self, variant_id, hgnc_symbol):

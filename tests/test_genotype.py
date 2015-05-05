@@ -199,7 +199,8 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                                    chromosome)
         aa_coord_id = ":_{0}-{1}".format(uniprot_curie, position)
         cdna_coord_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
-        chr_coord_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_start)
+        # chr_coord_id = "CHR:{0}-{1}".format(chromosome_curie, genome_pos_start)
+        chr_coord_id = ":_CHR{0}-{1}".format(chromosome_curie, genome_pos_start)
 
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript_curie))
@@ -418,18 +419,18 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         genome = ":9606genome"
         genome_label = "Human genome"
-        chromosome = ":9606chr9"
+        chromosome = "CHR:9606chr9"
         chromosome_label = "chr9 (Human)"
         build_curie = "UCSC:hg19"
         build_label = "hg19"
-        chrom_on_build = ":hg19chr9"
+        chrom_on_build = "CHR:hg19chr9"
         chrom_build_label = "chr9 (hg19)"
 
         genome_uri = URIRef(cu.get_uri(genome))
         chromosome_uri = URIRef(cu.get_uri(chromosome))
         build_uri = URIRef(cu.get_uri(build_curie))
         chrom_on_build_uri = URIRef(cu.get_uri(chrom_on_build))
-
+        '''
         sparql_query = """
                        SELECT ?genome ?chromosome ?build ?chromOnBuild
                        WHERE {{
@@ -449,6 +450,31 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                rdfs:label "{2}" ;
                                OBO:RO_0002351 ?chromOnBuild ;
                                rdfs:subClassOf ?genome .
+
+                           ?chromOnBuild a ?chromosome ;
+                               rdfs:label "{3}" ;
+                               OBO:RO_0002350 ?build .
+                       }}
+                       """.format(genome_label, chromosome_label,
+                                  build_label, chrom_build_label)
+        '''
+        sparql_query = """
+                       SELECT ?genome ?chromosome ?build ?chromOnBuild
+                       WHERE {{
+                           ?genome a owl:Class ;
+                               rdfs:label "{0}" ;
+                               OBO:RO_0002162 OBO:NCBITaxon_9606 ;
+                               rdfs:subClassOf OBO:SO_0001026 .
+
+                           ?chromosome a owl:Class ;
+                               rdfs:label "{1}" ;
+                               rdfs:subClassOf OBO:SO_0000340 .
+
+                           ?build a OBO:SO_0001505 ;
+                               a ?genome ;
+                               rdfs:label "{2}" ;
+                               OBO:RO_0002162 OBO:NCBITaxon_9606 ;
+                               OBO:RO_0002351 ?chromOnBuild .
 
                            ?chromOnBuild a ?chromosome ;
                                rdfs:label "{3}" ;
@@ -490,11 +516,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
-        chromosome_curie = ":hg19chr9"
+        chromosome_curie = "CHR:hg19chr9"
         region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
                                                chromosome)
-        start_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_start)
-        end_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_end)
+        start_id = ":_CHR:hg19chr9-{0}".format(genome_pos_start)
+        end_id = ":_CHR:hg19chr9-{0}".format(genome_pos_end)
 
         region_uri = URIRef(cu.get_uri(region_id))
         start_uri = URIRef(cu.get_uri(start_id))
