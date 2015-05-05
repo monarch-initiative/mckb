@@ -37,5 +37,23 @@ class CGDTestCase(unittest.TestCase):
         self.cgd_test._get_genotypes_with_no_gene_protein_cdna_mapping(self.cursor)
         return
 
+    def test_fetch(self):
+        """
+        Just checking that we can fetch sources without errors
+        :return:
+        """
+        self.cgd_test.fetch()
+        return
+
+    def test_parse(self):
+        """
+        Just checking that we can parse sources without errors
+        :return:
+        """
+        self.cgd_test.parse()
+        return
+
+
+
 if __name__ == '__main__':
     unittest.main()
