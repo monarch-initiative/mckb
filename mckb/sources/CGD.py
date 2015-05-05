@@ -44,7 +44,7 @@ class CGD(MySQLSource):
         self.drug_map = {}
         self.transcript_xrefs = {'RefSeq': {}, 'UniProt': {}}
 
-    def fetch(self, is_dl_forced):
+    def fetch(self, is_dl_forced=False):
         """
         Override Source.fetch()
         Fetches resources from CTD using the CTD.files dictionary
