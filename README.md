@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/monarch-initiative/mckb.svg?branch=master)](https://travis-ci.org/monarch-initiative/mckb)
-
 [![Coverage Status](https://coveralls.io/repos/monarch-initiative/mckb/badge.svg)](https://coveralls.io/r/monarch-initiative/mckb)
 
 * Required python packages:
