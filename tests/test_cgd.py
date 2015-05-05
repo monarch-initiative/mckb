@@ -6,11 +6,9 @@ logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-class MySQLSourceTestCase(unittest.TestCase):
+class CGDTestCase(unittest.TestCase):
     """
-    Test triples created from add_disease_drug_variant_to_graph()
-    Sample data for testing should resemble output from
-    _get_disease_drug_variant_relationship()
+    Test connection, loading, and querying of CGD snapshot
     """
 
     def setUp(self):
@@ -25,8 +23,19 @@ class MySQLSourceTestCase(unittest.TestCase):
         self.cgd_test = None
         return
 
-    def test_connection(self):
-        self.assertTrue(True)
+    def test_queries(self):
+        """
+        Just checking that these run without errors, probably needs
+        do so some actual checking of things
+        :return:
+        """
+        self.cgd_test.check_if_db_is_empty(self.cursor)
+        self.cgd_test._get_disease_drug_variant_relationship(self.cursor)
+        self.cgd_test._get_variant_protein_info(self.cursor)
+        self.cgd_test._get_variant_cdna_info(self.cursor)
+        self.cgd_test._get_fusion_copy_any_mutation_genotypes(self.cursor)
+        self.cgd_test._get_genotypes_with_no_gene_protein_cdna_mapping(self.cursor)
+        return
 
 if __name__ == '__main__':
     unittest.main()
