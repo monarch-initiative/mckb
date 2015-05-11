@@ -664,6 +664,7 @@ class CGD(MySQLSource):
         Get genotypes with a gene mapping but no protein variant mapping
         Typically, this will capture fusion genes and copy/gain loss
         along with mutations labelled "any" (any mutation of gene X)
+        Note: We can get more information by matching protein_variant on protein start and end
         :param: PyMySQL Cursor object generated
                 from self._connect_to_database()
         :return: tuple of query results
