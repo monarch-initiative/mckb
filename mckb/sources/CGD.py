@@ -24,7 +24,7 @@ class CGD(MySQLSource):
     files = {
         'transcript_xrefs': {
             'file': 'CCDS2UniProtKB.current.txt',
-            'url': 'ftp://ftp.ncbi.nlm.nih.gov/pub/CCDS/current_human/CCDS2UniProtKB.current.txt'
+            'url': 'ftp://ftp.ncbi.nlm.nih.gov/pub/CCDS/current_human/CCDS2UniProtKB.20150512.txt'
         }
     }
     static_files = {
