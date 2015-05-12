@@ -1,6 +1,7 @@
 graphConfiguration:
     location: target/mckbGraph
     indexedNodeProperties:
+      - category
       - label
       - fragment
     exactNodeProperties:
