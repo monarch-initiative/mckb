@@ -386,8 +386,8 @@ cypherResources:
      ## Phenotypes from genomic position
     - path: /dynamic/position/phenotypes
       query: |
-              START start_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${start}"),
-                    end_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${end}")
+              START start_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${end}")
               MATCH (start_pos)<-[:begin]-(region)<-[:location]-(variant)
               MATCH (end_pos)<-[:end]-(region)<-[:location]-(variant)
               RETURN DISTINCT start_pos, end_pos, variant
@@ -488,8 +488,8 @@ cypherResources:
      ## Phenotypes from genomic position
     - path: /dynamic/position/g2p
       query: |
-              START start_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${start}"),
-                    end_pos=node:node_auto_index(fragment="_:${genome_build}chr${chromosome}-${end}")
+              START start_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${end}")
               MATCH (start_pos)<-[:begin]-(region)<-[:location]-(variant)
               MATCH (end_pos)<-[:end]-(region)<-[:location]-(variant)
               OPTIONAL MATCH (gene)<-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
@@ -511,3 +511,20 @@ cypherResources:
               description: The genome build (ex hg19)
               paramType: query
 
+    ##################
+    ### Get All Nodes
+    ##################
+
+        ## Phenotypes from drug
+    - path: /dynamic/all/{category}
+      query: |
+              MATCH (node:${category})
+              RETURN DISTINCT node
+      operations:
+        - summary: Get all nodes in category
+          parameters:
+            - name: category
+              description: Get all nodes in category (ex. gene,  disease, chemical, Phenotype, variant)
+            - name: prefix
+              description: The starting genomic coordinate
+              paramType: prefix
