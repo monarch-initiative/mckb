@@ -59,7 +59,7 @@ categories:
     http://purl.obolibrary.org/obo/WBbt_0007833 : organism
     http://purl.obolibrary.org/obo/WBbt_0004017 : Cell
     http://purl.obolibrary.org/obo/DOID_4 : disease
-    http://purl.obolibrary.org/obo/DOID_14566 : Phenotype
+    http://purl.obolibrary.org/obo/DOID_4 : Phenotype
     http://purl.obolibrary.org/obo/PATO_0000003 : assay
     http://purl.obolibrary.org/obo/PATO_0000006 : process
     http://purl.obolibrary.org/obo/PATO_0000011 : age
