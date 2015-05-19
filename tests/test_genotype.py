@@ -187,20 +187,22 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         db_snp_curie = "dbSNP:121913459"
         cosmic_curie = "COSMIC:12560"
         uniprot_curie = "UniProtKB:P00519#P00519-1"
+        uniprot_id = "P00519#P00519-1"
         refseq_curie = "NCBIProtein:NP_005148.2"
         transcript_curie = "CCDS:35166.1"
+        ccds_id = "35166.1"
         position = 315
-        chromosome_curie = ":hg19chr9"
+        chromosome_curie = "hg19chr9"
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         aa_region_id = ":_{0}{1}Region".format(variant_id, uniprot_curie)
         cdna_region_id = ":_{0}{1}Region".format(variant_id, transcript_curie)
         chr_region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
                                                    chromosome)
-        aa_coord_id = ":_{0}-{1}".format(uniprot_curie, position)
-        cdna_coord_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
+        aa_coord_id = ":_{0}-{1}".format(uniprot_id, position)
+        cdna_coord_id = ":_{0}-{1}".format(ccds_id, bp_pos)
         # chr_coord_id = "CHR:{0}-{1}".format(chromosome_curie, genome_pos_start)
-        chr_coord_id = ":_CHR{0}-{1}".format(chromosome_curie, genome_pos_start)
+        chr_coord_id = ":_{0}-{1}".format(chromosome_curie, genome_pos_start)
 
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript_curie))
@@ -311,8 +313,9 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
         uniprot_curie = "UniProtKB:Q99062#Q99062-1"
+        uniprot_id = "Q99062#Q99062-1"
         region_id = ":_{0}{1}Region".format(variant_id, uniprot_curie)
-        both_strand_id = ":_{0}-{1}".format(uniprot_curie, position)
+        both_strand_id = ":_{0}-{1}".format(uniprot_id, position)
 
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
@@ -373,10 +376,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
          genome_build, build_version, build_date) = self.test_set_2[0]
 
         transcript_curie = self.cgd._make_transcript_curie(transcript_id)
+        ccds_id = "35166.1"
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
         region_id = ":_{0}{1}Region".format(variant_id, transcript_curie)
-        both_strand_id = ":_{0}-{1}".format(transcript_curie, bp_pos)
+        both_strand_id = ":_{0}-{1}".format(ccds_id, bp_pos)
 
         region_uri = URIRef(cu.get_uri(region_id))
         both_strand_uri = URIRef(cu.get_uri(both_strand_id))
@@ -519,8 +523,8 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         chromosome_curie = "CHR:hg19chr9"
         region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
                                                chromosome)
-        start_id = ":_CHR:hg19chr9-{0}".format(genome_pos_start)
-        end_id = ":_CHR:hg19chr9-{0}".format(genome_pos_end)
+        start_id = ":_hg19chr9-{0}".format(genome_pos_start)
+        end_id = ":_hg19chr9-{0}".format(genome_pos_end)
 
         region_uri = URIRef(cu.get_uri(region_id))
         start_uri = URIRef(cu.get_uri(start_id))
