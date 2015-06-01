@@ -16,7 +16,7 @@ ontologies:
       addDirectInferredEdges: true
       addInferredEquivalences: true
       removeUnsatisfiableClasses: true
-  - url: ../../mckb/out/cgd.ttl
+  - url: http://nif-crawler.neuinfo.org/monarch/ttl/cgd.ttl
     reasonerConfiguration:
       factory: org.semanticweb.elk.owlapi.ElkReasonerFactory
       addDirectInferredEdges: true
