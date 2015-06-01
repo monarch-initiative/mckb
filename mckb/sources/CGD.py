@@ -767,7 +767,10 @@ class CGD(MySQLSource):
         :param file: file path containing sql dump file
         :return: None
         """
-        gz_file = gzip.open(file, 'rb')
+        # Should add try/except here
+        if os.path.exists(os.path.join(os.path.dirname(__file__), file)):
+            gz_file = gzip.open(os.path.join(os.path.dirname(__file__), file), 'rb')
+
         with tempfile.NamedTemporaryFile(mode='w+b') as f:
             f.write(gz_file.read())
             gz_file.close()
