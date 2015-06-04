@@ -79,7 +79,7 @@ http://neville.monarchinitiative.org:9000/scigraph/dynamic/chemical/DrugBank:DB0
 
 #####Get variant disease associations given genomic coordinates
 
-http://neville.monarchinitiative.org:9000/scigraph/dynamic/position/g2p?start=55152093&end=55152093&chromosome=4&genome_build=hg19
+http://neville.monarchinitiative.org:9000/scigraph/dynamic/position/g2p.json?start=55152093&end=55152093&chromosome=4&genome_build=hg19
 
 
 ###GA4GH Compliant Server

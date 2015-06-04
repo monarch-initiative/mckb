@@ -345,7 +345,7 @@ cypherResources:
         - summary: Get phenotypes for a feature
           parameters:
             - name: feature_id
-              description: The ID of the feature
+              description: The ID of the feature as a URI or Curie (ex COSMIC:21683)
     - path: /dynamic/features/{feature_id}/phenotypes/targets
       query: |
               START f=node:node_auto_index(fragment={feature_id})
@@ -358,7 +358,7 @@ cypherResources:
         - summary: Get phenotypes for a feature
           parameters:
             - name: feature_id
-              description: The ID of the feature
+              description: The ID of the feature as a URI or Curie (ex COSMIC:21683)
 
     ## Phenotypes from drug
     - path: /dynamic/chemical/{chemical_id}/phenotypes
@@ -370,7 +370,7 @@ cypherResources:
         - summary: Get phenotypes for a chemical
           parameters:
             - name: chemical_id
-              description: The ID of the chemical
+              description: The ID of the chemical as a URI or Curie (ex DrugBank:DB00317)
 
     ## Phenotypes from drug relationship
     - path: /dynamic/relationships/{relationship_id}/phenotypes
@@ -381,13 +381,13 @@ cypherResources:
         - summary: Get phenotypes for a relationship
           parameters:
             - name: relationship_id
-              description: The ID of the relationship
+              description: The ID of the relationship as a URI or Curie (ex RO:sensitivity)
 
      ## Phenotypes from genomic position
     - path: /dynamic/position/phenotypes
       query: |
-              START start_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${start}"),
-                    end_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${end}")
+              START start_pos=node:node_auto_index(fragment=":_${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(fragment=":_${genome_build}chr${chromosome}-${end}")
               MATCH (start_pos)<-[:begin]-(region)<-[:location]-(variant)
               MATCH (end_pos)<-[:end]-(region)<-[:location]-(variant)
               RETURN DISTINCT start_pos, end_pos, variant
@@ -395,13 +395,13 @@ cypherResources:
         - summary: Get phenotypes for a relationship
           parameters:
             - name: start
-              description: The starting genomic coordinate
+              description: The starting genomic coordinate (ex 55152093)
               paramType: query
             - name: end
-              description: The ending genomic coordinate
+              description: The ending genomic coordinate (ex 55152093)
               paramType: query
             - name: chromosome
-              description: The alphanumeric chromosomal ID (1-22,X,Y)
+              description: The alphanumeric chromosomal ID (1-22,X,Y) (ex 15)
               paramType: query
             - name: genome_build
               description: The genome build (ex hg19)
@@ -470,7 +470,7 @@ cypherResources:
         - summary: Get phenotypes for a chemical
           parameters:
             - name: chemical_id
-              description: The ID of the chemical
+              description: The ID of the chemical as a URI or Curie (ex DrugBank:DB00317)
 
     ## Phenotypes from drug relationship
     - path: /dynamic/relationships/{relationship_id}/g2p
@@ -483,13 +483,13 @@ cypherResources:
         - summary: Get phenotypes for a relationship
           parameters:
             - name: relationship_id
-              description: The ID of the relationship
+              description: The ID of the relationship as a URI or Curie (ex RO:sensitivity)
 
      ## Phenotypes from genomic position
     - path: /dynamic/position/g2p
       query: |
-              START start_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${start}"),
-                    end_pos=node:node_auto_index(fragment="_CHR:${genome_build}chr${chromosome}-${end}")
+              START start_pos=node:node_auto_index(fragment=":_${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(fragment=":_${genome_build}chr${chromosome}-${end}")
               MATCH (start_pos)<-[:begin]-(region)<-[:location]-(variant)
               MATCH (end_pos)<-[:end]-(region)<-[:location]-(variant)
               OPTIONAL MATCH (gene)<-[ref:GENO_0000408]-(variant)-[hasP:RO_0002200]->(phenotype:Phenotype)
@@ -499,13 +499,13 @@ cypherResources:
         - summary: Get phenotypes for a relationship
           parameters:
             - name: start
-              description: The starting genomic coordinate
+              description: The starting genomic coordinate (ex 55152093)
               paramType: query
             - name: end
-              description: The ending genomic coordinate
+              description: The ending genomic coordinate (ex 55152093)
               paramType: query
             - name: chromosome
-              description: The alphanumeric chromosomal ID (1-22,X,Y)
+              description: The alphanumeric chromosomal ID (1-22,X,Y) (ex 15)
               paramType: query
             - name: genome_build
               description: The genome build (ex hg19)
@@ -526,5 +526,5 @@ cypherResources:
             - name: category
               description: Get all nodes in category (ex. gene,  disease, chemical, Phenotype, variant)
             - name: prefix
-              description: The starting genomic coordinate
+              description: The category of the node
               paramType: prefix
