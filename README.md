@@ -1,5 +1,5 @@
 ##Monarch Cancer Knowledge Base
-MCKB is a pure python application to extract and transform clinically actionable cancer variants and metadata into a directed graph.
+MCKB is a pure python application to extract and transform clinically actionable cancer linked variants and metadata into a directed graph.
 
 [![Build Status](https://travis-ci.org/monarch-initiative/mckb.svg?branch=master)](https://travis-ci.org/monarch-initiative/mckb)
 [![Coverage Status](https://coveralls.io/repos/monarch-initiative/mckb/badge.svg)](https://coveralls.io/r/monarch-initiative/mckb)
