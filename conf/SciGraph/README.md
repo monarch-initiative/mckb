@@ -1,7 +1,7 @@
 ##SciGraph Configuration
 Here we provide configuration files to insert data into a Neo4J graph database using the [SciGraph](https://github.com/SciGraph/SciGraph) application.  These files also contain extensions to the default REST services that include queries specific to cancer use cases using the Cypher query language and SciGraph query expansion.
 
-####Note: We have created public servers for demonstration purposes.  While the servers contain basic REST API documentation, these are not intended to serve as a user interface and require knowledge of the underlying dataset.  We are the in the process of improving documentation of these pages, see the conversation [here](https://github.com/SciGraph/SciGraph/issues/93).
+#####Note: We have created public servers for demonstration purposes.  While the servers contain basic REST API documentation, these are not intended to serve as a user interface and require knowledge of the underlying dataset.  We are the in the process of improving documentation of these pages, see the conversation [here](https://github.com/SciGraph/SciGraph/issues/93).
 
 ###Test servers
 Data and Ontologies Alpha Server: http://neville.monarchinitiative.org:9000/scigraph/docs/
@@ -9,7 +9,7 @@ Data and Ontologies Alpha Server: http://neville.monarchinitiative.org:9000/scig
 Ontology Only Alpha Server: http://geoffrey.crbs.ucsd.edu:9000/scigraph/docs/
 
 ###Input
-Identifiers are stored as URIs but we recommend searching using the [CURIE](http://www.w3.org/TR/curie/) syntax; for example, DOID:1781 is equivalent to http://purl.obolibrary.org/obo/DOID_1781.  Our Curie configuration can be found [here](https://github.com/monarch-initiative/dipper/blob/master/dipper/curie_map.yaml)
+Identifiers are stored as URIs but we recommend searching using the [CURIE](http://www.w3.org/TR/curie/) syntax; for example, DOID:1781 is equivalent to http://purl.obolibrary.org/obo/DOID_1781.  Our Curie configuration can be found [here](https://github.com/monarch-initiative/dipper/blob/master/dipper/curie_map.yaml).
 
 ###Graph Output
 Graph queries where JSON is the specified format are outputted in the BBOP Graph Format, for example (with metadata removed):
