@@ -30,5 +30,5 @@ While the output data files can be stored in various databases, we also provide 
 
 ###Output
 Example output can be found here:
-http://nif-crawler.neuinfo.org/monarch/ttl/ctd.ttl
+http://nif-crawler.neuinfo.org/monarch/ttl/cgd.ttl
 
