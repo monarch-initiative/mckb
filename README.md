@@ -5,7 +5,7 @@ MCKB is a pure python application to extract and transform clinically actionable
 [![Coverage Status](https://coveralls.io/repos/monarch-initiative/mckb/badge.svg)](https://coveralls.io/r/monarch-initiative/mckb)
 
 ###Motivation
-Represent cancer data using controlled vocabularies (ontologies) and output as a directed graph serialized as RDF triples.  MCKB is currently a proof of concept to explore the benefits and challenges of mapping cancer data to available ontologies and storing both the output data and ontologies in a single datastore.  MCKB is using a subset of the Clinical Genomics Database as a test dataset.
+Represent cancer data using controlled vocabularies (ontologies) and output as a directed graph serialized as RDF triples.  MCKB is currently a proof of concept to explore the benefits and challenges of mapping cancer data to available ontologies and storing both the output data and ontologies in a single datastore.  MCKB is using a subset of the Clinical Genomics Database as a test dataset.  
 
 #####Note: MCKB is in the pre-alpha stage of development.  Data models and any output should be considered unstable.  We will indicate here when models have stabilized.
 
