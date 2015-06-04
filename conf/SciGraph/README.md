@@ -82,3 +82,5 @@ http://neville.monarchinitiative.org:9000/scigraph/dynamic/chemical/DrugBank:DB0
 http://neville.monarchinitiative.org:9000/scigraph/dynamic/position/g2p?start=55152093&end=55152093&chromosome=4&genome_build=hg19
 
 
+###GA4GH Compliant Server
+SciGraph output can be converted to GA4GH compliant data by using the [test server](https://github.com/monarch-initiative/ga4gh-server) that is designed to work with SciGraph.  To run, clone the repository and update the server URL in the [application class](https://github.com/monarch-initiative/ga4gh-server/blob/master/app/controllers/Application.scala) to point to the MCKB data server above.  That said, the G2P schema does not specify the handling of drug response phenotypes.  Therefore the output in this server is incomplete as it will not contain drug or drug responses in the output.  See the conversation [here](https://github.com/ga4gh/schemas/pull/298).
