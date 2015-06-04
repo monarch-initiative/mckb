@@ -12,7 +12,7 @@ Represent cancer data using controlled vocabularies (ontologies) and output as a
 ###Applications
 
 #####[SciGraph Implementation](https://github.com/monarch-initiative/mckb/tree/master/conf/SciGraph)
-While the output data files can be stored in various databases, we also provide [configuration files] (https://github.com/monarch-initiative/mckb/tree/master/conf/SciGraph) to insert data into a Neo4J graph database using the [SciGraph](https://github.com/SciGraph/SciGraph) application.  [Click here](https://github.com/monarch-initiative/mckb/tree/master/conf/SciGraph) for more documentation and links to the public SciGraph servers.  These files also contain extensions to the default REST services that include queries specific to cancer use cases using the Cypher query language and SciGraph query expansion.
+While the output data files can be stored in various databases, we also provide [configuration files] (https://github.com/monarch-initiative/mckb/tree/master/conf/SciGraph) to insert data into a Neo4J graph database using the [SciGraph](https://github.com/SciGraph/SciGraph) application.  These files also contain extensions to the default REST services that include queries specific to cancer use cases using the Cypher query language and SciGraph query expansion.
 
 ###Requirements
 * MCKB requires Python 3 and the following packages:
