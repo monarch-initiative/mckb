@@ -1,5 +1,5 @@
 ##Monarch Cancer Knowledge Base
-MCKB is a pure python application to extract and transform clinically actionable cancer variants and metadata.
+MCKB is a pure python application to extract and transform clinically actionable cancer variants and metadata into a directed graph.
 
 [![Build Status](https://travis-ci.org/monarch-initiative/mckb.svg?branch=master)](https://travis-ci.org/monarch-initiative/mckb)
 [![Coverage Status](https://coveralls.io/repos/monarch-initiative/mckb/badge.svg)](https://coveralls.io/r/monarch-initiative/mckb)
@@ -7,7 +7,7 @@ MCKB is a pure python application to extract and transform clinically actionable
 ###Motivation
 Represent cancer data using controlled vocabularies (ontologies) and output as a directed graph serialized as RDF triples.  MCKB is currently a proof of concept to explore the benefits and challenges of mapping cancer data to available ontologies and storing both the output data and ontologies in a single datastore.  MCKB is using a subset of the Clinical Genomics Database as a test dataset.
 
-#####Note: MCKB is in the pre-alpha stage of development.  Data models and any output should be considered unstable.  We will indicate here when models have stabalized.
+#####Note: MCKB is in the pre-alpha stage of development.  Data models and any output should be considered unstable.  We will indicate here when models have stabilized.
 
 ###Applications
 While the output data files can be stored in various databases, we also provide [configuration files] (https://github.com/monarch-initiative/mckb/tree/master/conf/SciGraph) to insert data into a Neo4J graph database using the [SciGraph](https://github.com/SciGraph/SciGraph) application.  These files also contain extensions to the default REST services that include queries specific to cancer use cases using the Cypher query language and SciGraph query expansion.
