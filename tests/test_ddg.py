@@ -98,7 +98,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                rdfs:subClassOf CHEBI:23888 ;
                                rdfs:label "{1}" .
                            <{2}> a owl:ObjectProperty .
-                           ?source a owl:NamedIndividual .
+                           ?source a IAO:0000013 .
                        }}
                        """.format(self.disease_label,
                                   self.drug_label, self.relationship_uri)
@@ -136,13 +136,13 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                        WHERE {{
                            ?variant OBO:RO_0002200 ?diseaseInd .
 
-                           ?vdannot a Annotation: ;
-                               dc:evidence ?evidence ;
+                           ?vdannot a OBAN:association ;
+                               OBO:RO_0002558 ?evidence ;
                                dc:source ?source ;
                                <{0}> ?drug ;
-                               :hasObject ?diseaseInd ;
-                               :hasPredicate OBO:RO_0002200 ;
-                               :hasSubject ?variant .
+                               OBAN:association_has_object ?diseaseInd ;
+                               OBAN:association_has_object_property OBO:RO_0002200 ;
+                               OBAN:association_has_subject ?variant .
                        }}
                        """.format(self.relationship_uri)
 
@@ -152,6 +152,10 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                              self.source_uri, evidence_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
+
+        print(expected_results)
+        print(sparql_output)
+        self.cgd.write(format='turtle')
 
         self.assertEqual(expected_results, sparql_output)
 

@@ -3,7 +3,8 @@ from mckb.sources.CGDOntologyMap import CGDOntologyMap
 from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
-from dipper.models.G2PAssoc import G2PAssoc
+from dipper.models.assoc.G2PAssoc import G2PAssoc
+from dipper.models.Reference import Reference
 from dipper.models.GenomicFeature import Feature, makeChromID
 from dipper import curie_map
 import tempfile
@@ -272,13 +273,22 @@ class CGD(MySQLSource):
         geno.addReferenceGenome(build_id, genome_build, taxon_id)
 
         # Add chromosome
-        chromosome_id = makeChromID(chromosome, genome_build)
-        geno.addChromosome(chromosome, taxon_id, genome_label,
-                           build_id, genome_build)
+        chromosome_id = makeChromID(chromosome, genome_build, 'CHR')
+        #geno.addChromosome(chromosome, taxon_id, genome_label,
+                          # build_id, genome_build)
+
+        chrom_class_id = makeChromID(chromosome, '9606', 'CHR')  # the chrom class (generic) id
+        chrom_instance_id = makeChromID(chromosome, build_id, 'MONARCH')
+
+        # first, add the chromosome class (in the taxon)
+        geno.addChromosomeClass(chromosome, taxon_id, 'Human')
+
+        # then, add the chromosome instance (from the given build)
+        geno.addChromosomeInstance(chromosome, build_id, genome_build, chrom_class_id)
 
         # Add variant coordinates in reference to chromosome
         self._add_feature_with_coords(variant_id,genome_pos_start,
-                                      genome_pos_end, chromosome_id, chrom_region_id)
+                                      genome_pos_end, chrom_instance_id, chrom_region_id)
 
         # Add mutation coordinates in reference to gene
         self._add_feature_with_coords(variant_id, bp_pos,
@@ -409,16 +419,27 @@ class CGD(MySQLSource):
 
             if pubmed_id is not None:
                 source_id = "PMID:{0}".format(pubmed_id)
+                ref = Reference(source_id, Reference.ref_types['journal_article'])
+                ref.addRefToGraph(self.graph)
                 evidence = 'ECO:0000033'
             else:
                 source_id = None
                 evidence = None
 
-            variant_phenotype_assoc = G2PAssoc(variant_disease_annot,
+            rel_id = gu.object_properties['has_phenotype']
+            variant_phenotype_assoc = G2PAssoc(self.name,
                                                variant_id,
                                                disease_id,
-                                               source_id, evidence)
-            variant_phenotype_assoc.addAssociationToGraph(self.graph)
+                                               rel_id)
+
+            variant_phenotype_assoc.set_association_id(variant_disease_annot)
+            if evidence:
+                variant_phenotype_assoc.add_evidence(evidence)
+
+            if source_id:
+                variant_phenotype_assoc.add_source(source_id)
+
+            variant_phenotype_assoc.add_association_to_graph(self.graph)
             gu.addTriple(self.graph, variant_disease_annot, relationship_id, drug_id)
 
         return

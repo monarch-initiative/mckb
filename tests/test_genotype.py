@@ -328,8 +328,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                faldo:begin ?bsPosition ;
                                faldo:end ?bsPosition .
 
-                           ?bsPosition a faldo:BothStrandPosition ;
-                               a faldo:Position ;
+                           ?bsPosition a faldo:Position ;
                                faldo:position {0} ;
                                faldo:reference ?protein .
                        }}
@@ -393,8 +392,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                faldo:begin ?bsPosition ;
                                faldo:end ?bsPosition .
 
-                           ?bsPosition a faldo:BothStrandPosition ;
-                               a faldo:Position ;
+                           ?bsPosition a faldo:Position ;
                                faldo:position {0} ;
                                faldo:reference ?transcript .
                        }}
@@ -427,7 +425,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         chromosome_label = "chr9 (Human)"
         build_curie = "UCSC:hg19"
         build_label = "hg19"
-        chrom_on_build = "CHR:hg19chr9"
+        chrom_on_build = ":MONARCH_hg19chr9"
         chrom_build_label = "chr9 (hg19)"
 
         genome_uri = URIRef(cu.get_uri(genome))
@@ -467,7 +465,6 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                        WHERE {{
                            ?genome a owl:Class ;
                                rdfs:label "{0}" ;
-                               OBO:RO_0002162 OBO:NCBITaxon_9606 ;
                                rdfs:subClassOf OBO:SO_0001026 .
 
                            ?chromosome a owl:Class ;
@@ -481,6 +478,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                OBO:RO_0002351 ?chromOnBuild .
 
                            ?chromOnBuild a ?chromosome ;
+                               a OBO:SO_0000340 ;
                                rdfs:label "{3}" ;
                                OBO:RO_0002350 ?build .
                        }}
@@ -520,7 +518,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
-        chromosome_curie = "CHR:hg19chr9"
+        chromosome_curie = ":MONARCH_hg19chr9"
         region_id = ":_{0}{1}{2}Region".format(variant_id, genome_build,
                                                chromosome)
         start_id = ":_hg19chr9-{0}".format(genome_pos_start)
@@ -538,13 +536,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                                faldo:begin ?startPosition ;
                                faldo:end ?endPosition .
 
-                           ?startPosition a faldo:BothStrandPosition ;
-                               a faldo:Position ;
+                           ?startPosition a faldo:Position ;
                                faldo:position {0} ;
                                faldo:reference ?chromosome .
 
-                           ?endPosition a faldo:BothStrandPosition ;
-                               a faldo:Position ;
+                           ?endPosition a faldo:Position ;
                                faldo:position {1} ;
                                faldo:reference ?chromosome .
                        }}
