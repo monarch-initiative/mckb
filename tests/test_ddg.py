@@ -39,7 +39,9 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         disease_id = self.cgd.make_cgd_id('disease{0}{1}'.format(diagnoses_key,
                                                                  diagnoses))
-        relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
+        relationship_id = "RO:has_environment"
+        disease_quality = ("CGD:{0}".format(relationship)).replace(" ", "_")
+        has_quality_property = "BFO:0000159"
         drug_id = self.cgd.make_cgd_id('drug{0}'.format(drug_key))
         disease_instance_id = self.cgd.make_cgd_id('disease{0}{1}'.format(
             diagnoses, variant_key))
@@ -54,11 +56,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         self.relationship_uri = URIRef(cu.get_uri(relationship_id))
         self.drug_uri = URIRef(cu.get_uri(drug_id))
         self.vd_annot_uri = URIRef(cu.get_uri(variant_disease_annot))
+        self.disease_quality_uri = URIRef(cu.get_uri(disease_quality))
 
         self.variant_label = variant_label
         self.disease_label = diagnoses
-        self.disease_instance_label = "{0} caused by variant {1}".format(
-            diagnoses, variant_label)
+        self.disease_instance_label = "{0} with response {1} to therapy".format(diagnoses, relationship)
         self.drug_label = drug
 
         return
@@ -89,22 +91,27 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         self.cgd.load_bindings()
 
         sparql_query = """
-                       SELECT ?disease ?drug ?source
+                       SELECT ?disease ?diseaseInd ?diseaseQual ?drug ?source
                        WHERE {{
                            ?disease a owl:Class ;
                                rdfs:subClassOf DOID:4 ;
                                rdfs:label "{0}" .
+                           ?diseaseInd a ?disease ;
+                               rdfs:label "{1}" ;
+                               BFO:0000159 ?diseaseQual .
                            ?drug a owl:Class ;
                                rdfs:subClassOf CHEBI:23888 ;
-                               rdfs:label "{1}" .
-                           <{2}> a owl:ObjectProperty .
+                               rdfs:label "{2}" .
+                           <{3}> a owl:ObjectProperty .
                            ?source a IAO:0000013 .
                        }}
-                       """.format(self.disease_label,
+                       """.format(self.disease_label, self.disease_instance_label,
                                   self.drug_label, self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.disease_uri, self.drug_uri, self.source_uri]]
+        expected_results = [[self.disease_uri, self.disease_ind_uri,
+                             self.disease_quality_uri, self.drug_uri,
+                             self.source_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
 
@@ -147,15 +154,11 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                        """.format(self.relationship_uri)
 
         # Expected Results
-        expected_results = [[self.disease_uri, self.variant_uri, self.drug_uri,
+        expected_results = [[self.disease_ind_uri, self.variant_uri, self.drug_uri,
                              self.vd_annot_uri,
                              self.source_uri, evidence_uri]]
         # Query graph
         sparql_output = test_env.query_graph(sparql_query)
-
-        print(expected_results)
-        print(sparql_output)
-        self.cgd.write(format='turtle')
 
         self.assertEqual(expected_results, sparql_output)
 

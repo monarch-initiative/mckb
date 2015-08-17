@@ -390,7 +390,9 @@ class CGD(MySQLSource):
             # Arbitrary IDs to be replaced by ontology mappings
             variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
             disease_id = self._get_disease_id(diagnoses_key, diagnoses_label)
-            relationship_id = ("RO:{0}".format(relationship)).replace(" ", "_")
+            relationship_id = "RO:has_environment"
+            disease_quality = ("CGD:{0}".format(relationship)).replace(" ", "_")
+            has_quality_property = "BFO:0000159"
             drug_id = self._get_drug_id(drug_key, drug_label)
 
             """
@@ -402,9 +404,9 @@ class CGD(MySQLSource):
             scigraph layer
             """
 
-            # disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
-            #    diagnoses_label, variant_key))
-            # disease_instance_label = "{0} linked to variant {1}".format(diagnoses_label, variant_label)
+            disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
+                                                   diagnoses_label, variant_key))
+            disease_instance_label = "{0} with response {1} to therapy".format(diagnoses_label, relationship)
 
             # Reified association for disease caused_by genotype
             variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
@@ -413,8 +415,8 @@ class CGD(MySQLSource):
             gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
 
             gu.addClassToGraph(self.graph, drug_id, drug_label, 'CHEBI:23888')
-            #gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
-            #                        disease_id)
+            gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
+                                    disease_id)
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})
 
             if pubmed_id is not None:
@@ -429,7 +431,7 @@ class CGD(MySQLSource):
             rel_id = gu.object_properties['has_phenotype']
             variant_phenotype_assoc = G2PAssoc(self.name,
                                                variant_id,
-                                               disease_id,
+                                               disease_instance_id,
                                                rel_id)
 
             variant_phenotype_assoc.set_association_id(variant_disease_annot)
@@ -441,6 +443,7 @@ class CGD(MySQLSource):
 
             variant_phenotype_assoc.add_association_to_graph(self.graph)
             gu.addTriple(self.graph, variant_disease_annot, relationship_id, drug_id)
+            gu.addTriple(self.graph, disease_instance_id, has_quality_property, disease_quality)
 
         return
 
