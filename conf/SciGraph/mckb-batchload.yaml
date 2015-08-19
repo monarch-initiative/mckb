@@ -3,11 +3,10 @@ graphConfiguration:
     indexedNodeProperties:
       - category
       - label
-      - fragment
     exactNodeProperties:
       - label
       - synonym
-      curies:
+    curies:
         # base
         '': 'http://www.monarchinitiative.org/'
         'MONARCH': 'http://www.monarchinitiative.org/MONARCH_'
@@ -64,7 +63,6 @@ graphConfiguration:
         'ZFS': 'http://purl.obolibrary.org/obo/ZFS_'
         'ZP': 'http://purl.obolibrary.org/obo/ZP_'
         'OBAN': 'http://purl.org/oban/'
-
 
         # publication/reference sources
         'DOI' : 'http://dx.doi.org/'
@@ -143,9 +141,8 @@ graphConfiguration:
         'UniProtKB' : 'http://identifiers.org/uniprot/'
 
         #chemicals
-        CID' : 'http://pubchem.ncbi.nlm.nih.gov/compound/'
-        'DruBank' : 'http://www.drugbank.ca/drugs/'
-
+        'CID' : 'http://pubchem.ncbi.nlm.nih.gov/compound/'
+        'DrugBank' : 'http://www.drugbank.ca/drugs/'
 
 ontologies:
   - url: http://purl.obolibrary.org/obo/upheno/monarch.owl

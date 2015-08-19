@@ -220,29 +220,27 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
 
         sparql_query = """
-                       SELECT ?variant ?gene ?aaRegion ?cdnaRegion ?chrRegion
-                              ?dbSNP ?cosmic ?transcript ?uniprot ?refseq
+                       SELECT ?cosmic ?gene ?aaRegion ?cdnaRegion ?chrRegion
+                              ?dbSNP ?transcript ?uniprot ?refseq
                               ?aaCoord ?cdnaCoord ?chrCoord
                        WHERE {{
-                           ?variant a OBO:SO_0001059;
+                           ?cosmic a OBO:SO_0001059;
                                a OBO:SO_0001583 ;
-                               rdfs:label "{0}" ;
                                OBO:GENO_0000408 ?gene ;
                                faldo:location ?aaRegion ;
                                faldo:location ?cdnaRegion ;
                                faldo:location ?chrRegion ;
-                               OBO:GENO_reference_amino_acid "{1}" ;
-                               OBO:GENO_reference_nucleotide "{2}" ;
-                               OBO:GENO_altered_nucleotide "{3}" ;
-                               OBO:GENO_results_in_amino_acid_change "{4}" ;
+                               OBO:GENO_reference_amino_acid "{0}" ;
+                               OBO:GENO_reference_nucleotide "{1}" ;
+                               OBO:GENO_altered_nucleotide "{2}" ;
+                               OBO:GENO_results_in_amino_acid_change "{3}" ;
                                owl:sameAs ?dbSNP ;
-                               owl:sameAs ?cosmic ;
                                RO:0002205 ?transcript .
 
                            ?cosmic owl:sameAs ?dbSNP .
 
                            ?transcript a OBO:SO_0000233 ;
-                               rdfs:label "{5}" ;
+                               rdfs:label "{4}" ;
                                OBO:RO_0002513 ?uniprot ;
                                OBO:RO_0002513 ?refseq .
 
@@ -258,22 +256,21 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
                            ?cdnaRegion faldo:begin ?cdnaCoord .
                            ?chrRegion faldo:begin ?chrCoord .
 
-                           ?aaCoord faldo:position {6} .
-                           ?cdnaCoord faldo:position {7} .
-                           ?chrCoord faldo:position {8} .
+                           ?aaCoord faldo:position {5} .
+                           ?cdnaCoord faldo:position {6} .
+                           ?chrCoord faldo:position {7} .
 
-                           ?dbSNP rdfs:label "{9}" .
-                           ?cosmic rdfs:label "{10}" .
+                           ?dbSNP rdfs:label "{8}" .
                        }}
-                       """.format(variant_label, ref_amino_acid, ref_base,
+                       """.format(ref_amino_acid, ref_base,
                                   variant_base, altered_amino_acid,
                                   transcript_id, position, bp_pos,
-                                  genome_pos_start, db_snp_id, cosmic_id)
+                                  genome_pos_start, db_snp_id)
 
         # Expected Results
-        expected_results = [[variant_uri, gene_uri, aa_region_uri,
+        expected_results = [[cosmic_uri, gene_uri, aa_region_uri,
                              cdna_region_uri, chr_region_uri, db_snp_uri,
-                             cosmic_uri, transcript_uri,uniprot_uri,
+                             transcript_uri, uniprot_uri,
                              refseq_uri, aa_coord_uri, cdna_coord_uri,
                              chr_coord_uri]]
         # Query graph

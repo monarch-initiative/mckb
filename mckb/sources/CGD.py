@@ -7,6 +7,8 @@ from dipper.models.assoc.G2PAssoc import G2PAssoc
 from dipper.models.Reference import Reference
 from dipper.models.GenomicFeature import Feature, makeChromID
 from dipper import curie_map
+from rdflib import Namespace, URIRef
+from dipper.utils.CurieUtil import CurieUtil
 import tempfile
 import gzip
 import logging
@@ -44,6 +46,10 @@ class CGD(MySQLSource):
         self.disease_map = {}
         self.drug_map = {}
         self.transcript_xrefs = {'RefSeq': {}, 'UniProt': {}}
+        self.bindings = {}
+        for k in curie_map.get().keys():
+            v = curie_map.get()[k]
+            self.bindings[k] = Namespace(v)
 
     def fetch(self, is_dl_forced=False):
         """
@@ -64,6 +70,7 @@ class CGD(MySQLSource):
         :return None
         """
         (connection, cursor) = self._connect_to_database()
+        self.load_bindings()
 
         logger.info("Checking if database is empty")
         is_db_empty = self.check_if_db_is_empty(cursor)
@@ -86,15 +93,14 @@ class CGD(MySQLSource):
 
         self.set_transcript_xrefs(ccds_xref_file)
 
+        disease_drug_geno_list = self._get_disease_drug_variant_relationship(cursor)
+        self.add_disease_drug_variant_to_graph(disease_drug_geno_list)
+
         variant_protein_assocs = self. _get_variant_protein_info(cursor)
         self.add_variant_info_to_graph(variant_protein_assocs)
         variant_cdna_assocs = self._get_variant_cdna_info(cursor)
         self.add_variant_info_to_graph(variant_cdna_assocs)
 
-        disease_drug_geno_list = self._get_disease_drug_variant_relationship(cursor)
-        self.add_disease_drug_variant_to_graph(disease_drug_geno_list)
-
-        self.load_bindings()
         self._disconnect_from_database(cursor, connection)
         return
 
@@ -273,9 +279,6 @@ class CGD(MySQLSource):
         geno.addReferenceGenome(build_id, genome_build, taxon_id)
 
         # Add chromosome
-        chromosome_id = makeChromID(chromosome, genome_build, 'CHR')
-        #geno.addChromosome(chromosome, taxon_id, genome_label,
-                          # build_id, genome_build)
 
         chrom_class_id = makeChromID(chromosome, '9606', 'CHR')  # the chrom class (generic) id
         chrom_instance_id = makeChromID(chromosome, build_id, 'MONARCH')
@@ -302,25 +305,39 @@ class CGD(MySQLSource):
                      geno.properties['altered_nucleotide'],
                      variant_base, is_literal)
 
+        """
+        Here we update any internal cgd variant IDS with a cosmic ID
+        or dbSNP ID.  Alternatively we could do this using sql rather
+        than a sparql update which may be safer
+        """
         # Add SNP xrefs
         if cosmic_id is not None:
             cosmic_id_list = cosmic_id.split(', ')
+            cosmic_curie_list = []
             for c_id in cosmic_id_list:
                 cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
+                cosmic_curie_list.append(cosmic_curie)
                 gu.addIndividualToGraph(self.graph, cosmic_curie, c_id,
                                         geno.genoparts['missense_variant'])
-                gu.addSameIndividual(self.graph, variant_id, cosmic_curie)
+
+            # If there are multiple ids set them equivalent to the first
+            for curie in cosmic_curie_list[1:]:
+                gu.addSameIndividual(self.graph, cosmic_curie_list[0], curie)
+
+            self._replace_entity(self.graph, variant_id, cosmic_curie_list[0], self.bindings)
+
         if db_snp_id is not None:
             db_snp_curie = re.sub(r'rs(\d+)', r'dbSNP:\1', db_snp_id)
             gu.addIndividualToGraph(self.graph, db_snp_curie, db_snp_id,
                                     geno.genoparts['missense_variant'])
-            gu.addSameIndividual(self.graph, variant_id, db_snp_curie)
 
-        if (db_snp_id is not None) and (cosmic_id is not None):
-            cosmic_id_list = cosmic_id.split(', ')
-            for c_id in cosmic_id_list:
-                cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
-                gu.addSameIndividual(self.graph, cosmic_curie, db_snp_curie)
+            if cosmic_id is None:
+                self._replace_entity(self.graph, variant_id, db_snp_curie, self.bindings)
+            else:
+                cosmic_id_list = cosmic_id.split(', ')
+                for c_id in cosmic_id_list:
+                    cosmic_curie = re.sub(r'COSM(\d+)', r'COSMIC:\1', c_id)
+                    gu.addSameIndividual(self.graph, cosmic_curie, db_snp_curie)
 
         return
 
@@ -395,18 +412,13 @@ class CGD(MySQLSource):
             has_quality_property = "BFO:0000159"
             drug_id = self._get_drug_id(drug_key, drug_label)
 
-            """
-            Here we can either create an instance of the disease class
-            or link the disease class directly.  For now we will link
-            the class directly as this is easier to query out with the
-            current scigraph services, but down the line this should be
-            added back in along with updating the cypher query in the
-            scigraph layer
-            """
-
             disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
                                                    diagnoses_label, variant_key))
-            disease_instance_label = "{0} with response {1} to therapy".format(diagnoses_label, relationship)
+
+            disease_instance_label = "{0} with {1} to therapy".format(diagnoses_label, relationship)
+            if relationship == "detrimental effect":
+                disease_instance_label = "{0} with therapeutic response {1} to health"\
+                                         .format(diagnoses_label, relationship)
 
             # Reified association for disease caused_by genotype
             variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
@@ -864,5 +876,50 @@ class CGD(MySQLSource):
             drug_id = self.make_cgd_id('drug{0}'.format(drug_key))
 
         return drug_id
+
+    def _replace_entity(self, graph, old_id, new_id, bindings={}, is_property=False):
+        """
+        Replace entity in graph
+        Replace one ID with another
+        :param graph rdflib.graph object
+        :param old_id, String curie,IRI, or literal to be replaced
+        :param new_id, String curie, IRI, or literal to replace the old id
+        :param bindings, Dict, dictionary of namespace prefixes
+        :param is_property, Boolean, is an id a property/predicate rather than
+                                 a class, individual, or literal
+        :return: None
+        """
+        cu = CurieUtil(curie_map.get())
+        old_uri = URIRef(cu.get_uri(old_id))
+        new_uri = URIRef(cu.get_uri(new_id))
+        if is_property is False:
+            sparql_update = \
+                """
+                DELETE {{ <{0}> ?pred ?obj }}
+                INSERT {{ <{1}> ?pred ?obj }}
+                WHERE {{ <{0}> ?pred ?obj }}
+                """.format(old_uri, new_uri)
+
+            graph.update(sparql_update, 'sparql', bindings)
+
+            sparql_update = \
+                """
+                DELETE {{ ?sub ?pred <{0}> }}
+                INSERT {{ ?sub ?pred <{1}> }}
+                WHERE {{ ?sub ?pred <{0}> }}
+                """.format(old_uri, new_uri)
+
+            graph.update(sparql_update, 'sparql', bindings)
+        else:
+            sparql_update = \
+                """
+                DELETE {{ ?sub {0} ?obj }}
+                INSERT {{ ?sub {1} ?obj }}
+                WHERE {{ ?sub {0} {?obj} }}
+                """.format(old_uri, new_uri)
+
+            graph.update(sparql_update, 'sparql', bindings)
+
+        return
 
 

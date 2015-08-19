@@ -27,7 +27,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         self.cgd = CGD(database, user, password)
         test_data = ((387, 'MLH1 any mutation', 13, 'Adenocarcinoma',
-                     None, 'Colon', 'detrimental effect', 1,
+                     None, 'Colon', 'no response', 1,
                      '5FU-based adjuvant therapy', 'late trials', '20498393'),)
         self.cgd.add_disease_drug_variant_to_graph(test_data)
 
@@ -60,7 +60,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         self.variant_label = variant_label
         self.disease_label = diagnoses
-        self.disease_instance_label = "{0} with response {1} to therapy".format(diagnoses, relationship)
+        self.disease_instance_label = "{0} with {1} to therapy".format(diagnoses, relationship)
         self.drug_label = drug
 
         return
@@ -77,12 +77,12 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         A CGD:DiseaseID is a subclass of DOID:4
         A CGD:Disease rdfs:label "Adenocarcinoma"
         A CGD:DiseaseInstance is an individual of CGD:DiseaseID
-        A CGD:DiseaseInstance rdfs:label "Adenocarcinoma caused by variant MLH1 any mutation"
+        A CGD:DiseaseInstance rdfs:label "Adenocarcinoma with response {1} to therapy"
         A CGD:DrugID is an OWL Class
         A CGD:DrugID is a subclass of CHEBI:23888
         A CGD:DrugID rdfs:label "5FU-based adjuvant therapy"
         A CGD:RelationID is an object property
-        PMID:12345 is a named individual
+        PMID:12345 is a IAO:0000013 (journal article)
         """
         from dipper.utils.TestUtils import TestUtils
 
@@ -122,12 +122,12 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         Given the above sample input, produce the following:
         CGD:VariantID has_phenotype(RO:0002200) CGD:DiseaseInstance
 
-        A CGD:AssociationID dc:evidence Traceable Author Statement (ECO:0000033)
+        A CGD:AssociationID OBO:RO_0002558 Traceable Author Statement (ECO:0000033)
         A CGD:AssociationID dc:source PMID:20498393
-        A CGD:AssociationID has_response CGD:DrugID
-        A CGD:AssociationID :hasSubject A CGD:VariantID
-        A CGD:AssociationID :hasPredicate has_phenotype
-        A CGD:AssociationID :hasObject CGD:DiseaseInstance
+        A CGD:AssociationID has_environment CGD:DrugID
+        A CGD:AssociationID OBAN:association_has_subject CGD:VariantID
+        A CGD:AssociationID OBAN:association_has_object_property has_phenotype
+        A CGD:AssociationID OBAN:association_has_object CGD:DiseaseInstance
         """
         from dipper.utils.TestUtils import TestUtils
 
