@@ -43,7 +43,7 @@ def main():
 
     # Parse test source
     cgd = CGD(args.database, args.user, args.password, args.host)
-    cgd.fetch(False)
+    #cgd.fetch(False)
     cgd.parse()
     cgd.write(format='turtle')
     return

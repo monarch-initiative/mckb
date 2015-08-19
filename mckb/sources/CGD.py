@@ -412,6 +412,9 @@ class CGD(MySQLSource):
             has_quality_property = "BFO:0000159"
             drug_id = self._get_drug_id(drug_key, drug_label)
 
+            geno.addGenotype(variant_id, variant_label,
+                             geno.genoparts['sequence_alteration'])
+
             disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
                                                    diagnoses_label, variant_key))
 
@@ -913,9 +916,9 @@ class CGD(MySQLSource):
         else:
             sparql_update = \
                 """
-                DELETE {{ ?sub {0} ?obj }}
-                INSERT {{ ?sub {1} ?obj }}
-                WHERE {{ ?sub {0} {?obj} }}
+                DELETE {{ ?sub <{0}> ?obj }}
+                INSERT {{ ?sub <{1}> ?obj }}
+                WHERE {{ ?sub <{0}> {?obj} }}
                 """.format(old_uri, new_uri)
 
             graph.update(sparql_update, 'sparql', bindings)
