@@ -475,26 +475,44 @@ cypherResources:
         - summary: Get G2P associations for a variant
           parameters:
             - name: variant_id
-              description: The ID of the chemical as a URI or Curie (ex COSMIC:475)
+              description: The ID of the chemical as a URI or Curie (ex COSMIC:476)
 
 
     ## Genotype to Phenotype Associations given a drug relationship
     - path: /dynamic/relationships/{relationship_id}/g2p
       query: |
-              START relationship=node:node_auto_index(iri={{relationship_id})
-              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)-[quality:BFO:0000159]-(relationship)
+              START relationship=node:node_auto_index(iri={relationship_id})
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
-              RETURN DISTINCT drug, variant, hasSubject, hasP, phenotype, gene, ref, hasP2, type, phenotypeClass, quality,
+              RETURN DISTINCT drug, variant, hasSubject, hasP, phenotype, feature, ref, hasP2, type, phenotypeClass, quality,
                               relationship, evidence, source, assoc, rel, hasEvidence, hasSource, equiv
 
       operations:
-        - summary: Get G2P associations for a  relationship
+        - summary: Get G2P associations for a relationship
           parameters:
             - name: relationship_id
-              description: The ID of the relationship as a URI or Curie (ex RO:sensitivity)
+              description: The ID of the relationship as a URI or Curie (ex CGD:sensitivity)
+
+    ## Genotype to Phenotype Associations given a gene
+    - path: /dynamic/gene/{gene_id}/g2p
+      query: |
+              START feature=node:node_auto_index(iri={gene_id})
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
+              MATCH (feature)<-[ref:GENO:0000408]-(equiv)-[:sameAs*0..2]-(variant)-[hasP2:RO:0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT drug, variant, hasSubject, hasP, phenotype, feature, ref, hasP2, type, phenotypeClass,
+                              evidence, source, assoc, rel, hasEvidence, hasSource, equiv
+
+      operations:
+        - summary: Get G2P associations for a gene
+          parameters:
+            - name: gene_id
+              description: The ID of the relationship as a URI or Curie (ex NCBIGene:2261)
 
      ## Genotype to Phenotype Associations given a genomic position(s)
     - path: /dynamic/position/g2p
@@ -509,7 +527,7 @@ cypherResources:
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
               RETURN DISTINCT start_pos, end_pos, variant, feature, ref, hasP, hasP2, type, phenotypeClass,
-                              drug, rel, assoc, hasSubject, hasP, hasEvidence, evidence, hasSource, source, equiv
+                              drug, rel, assoc, hasSubject, hasEvidence, evidence, hasSource, source, equiv
       operations:
         - summary: Get G2P associations given genomic coordinates
           parameters:
