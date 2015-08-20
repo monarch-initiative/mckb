@@ -32,11 +32,11 @@ class CGDTestCase(unittest.TestCase):
         self.cgd_test.check_if_db_is_empty(self.cursor)
 
         # test queries
-        self.cgd_test.execute_query(self.cursor, self.static_files['disease_drug_variant_query']['file'])
-        self.cgd_test.execute_query(self.cursor, self.static_files['variant_protein_query']['file'])
-        self.cgd_test.execute_query(self.cursor, self.static_files['variant_cdna_query']['file'])
-        self.cgd_test.execute_query(self.cursor, self.static_files['genotypes_with_no_protein_cdna_mapping']['file'])
-        self.cgd_test.execute_query(self.cursor, self.static_files['fusion_copy_any_mutation_genotypes']['file'])
+        self.cgd_test.execute_query(self.cursor, self.cgd_test.static_files['disease_drug_variant_query']['file'])
+        self.cgd_test.execute_query(self.cursor, self.cgd_test.static_files['variant_protein_query']['file'])
+        self.cgd_test.execute_query(self.cursor, self.cgd_test.static_files['variant_cdna_query']['file'])
+        self.cgd_test.execute_query(self.cursor, self.cgd_test.static_files['genotypes_with_no_protein_cdna_mapping']['file'])
+        self.cgd_test.execute_query(self.cursor, self.cgd_test.static_files['fusion_copy_any_mutation_genotypes']['file'])
 
         return
 
