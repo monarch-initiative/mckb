@@ -30,15 +30,18 @@ class CGDTestCase(unittest.TestCase):
         :return:
         """
         self.cgd_test.check_if_db_is_empty(self.cursor)
-        self.cgd_test._get_disease_drug_variant_relationship(self.cursor)
-        self.cgd_test._get_variant_protein_info(self.cursor)
-        self.cgd_test._get_variant_cdna_info(self.cursor)
-        self.cgd_test._get_fusion_copy_any_mutation_genotypes(self.cursor)
-        self.cgd_test._get_genotypes_with_no_gene_protein_cdna_mapping(self.cursor)
+
+        # test queries
+        self.cgd_test.execute_query(self.cursor, self.static_files['disease_drug_variant_query']['file'])
+        self.cgd_test.execute_query(self.cursor, self.static_files['variant_protein_query']['file'])
+        self.cgd_test.execute_query(self.cursor, self.static_files['variant_cdna_query']['file'])
+        self.cgd_test.execute_query(self.cursor, self.static_files['genotypes_with_no_protein_cdna_mapping']['file'])
+        self.cgd_test.execute_query(self.cursor, self.static_files['fusion_copy_any_mutation_genotypes']['file'])
+
         return
 
     def test_fetch(self):
-        """
+        """.
         Just checking that we can fetch sources without errors
         :return:
         """
