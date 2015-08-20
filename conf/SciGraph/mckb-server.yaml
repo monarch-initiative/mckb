@@ -319,81 +319,6 @@ cypherResources:
               description: The homolog relationship # RO:HOM0000017
               paramType: query
 
-    ##################
-    ### FEATURES
-    ##################
-
-    ## Phenotypes from feature
-    - path: /dynamic/features/{feature_id}/phenotypes
-      query: |
-              START f=node:node_auto_index(iri={feature_id})
-              MATCH (f)<-[seqVar:GENO:0000408*0..1]-(feature)
-              OPTIONAL MATCH (feature)-[hasP1:RO:0002200*]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[e:sameAs]-(genotype)-[hasP2:RO:0002200*]->(phenotype2:Phenotype)
-              OPTIONAL MATCH (feature)-[ref:GENO:0000408]-(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart:BFO:0000051!*]-(genotype3)-[hasP4:RO:0002200*]->(phenotype4:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart2:BFO:0000051!*]-(genotype4)<-[hasGenotype:GENO:0000222]-(person)-[hasP5:RO:0002200*]->(phenotype5:Phenotype)
-              RETURN DISTINCT f, seqVar, feature, hasP1, phenotype, e, genotype, hasP2, phenotype2, ref, genotype2, hasP3, phenotype3,
-                              hasPart, genotype3, hasP4, phenotype4, hasPart2, genotype4, hasGenotype, person, hasP5, phenotype5
-
-    ## Phenotypes from drug
-    - path: /dynamic/chemical/{chemical_id}/phenotypes
-      query: |
-              START drug=node:node_auto_index(iri={chemical_id})
-              MATCH (drug:drug)<-[rel]-(assoc)-[:OBAN:association_has_subject]->(variant)-[hasP:RO:0002200*]->(phenotype:Phenotype)
-              RETURN DISTINCT drug, rel, assoc, variant, phenotype, hasP
-      operations:
-        - summary: Get phenotypes for a chemical
-          parameters:
-            - name: chemical_id
-              description: The ID of the chemical as a URI or Curie (ex DrugBank:DB00317)
-
-    ## Phenotypes from drug relationship
-    - path: /dynamic/relationships/{relationship_id}/phenotypes
-      query: |
-              MATCH (drug:drug)<-[rel:${relationship_id}!]-(assoc)-[:OBAN:association_has_subject]->(variant)-[hasP:RO_0002200*]->(phenotype:Phenotype)
-              RETURN DISTINCT drug, rel, assoc, variant, hasP, phenotype
-      operations:
-        - summary: Get phenotypes for a relationship
-          parameters:
-            - name: relationship_id
-              description: The ID of the relationship as a URI or Curie (ex RO:sensitivity)
-
-     ## Variants from genomic position
-    - path: /dynamic/position/variants
-      query: |
-              START start_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${start}"),
-                    end_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${end}")
-              MATCH (start_pos)<-[:begin]-(region)<-[:location]-(variant)
-              MATCH (end_pos)<-[:end]-(region)<-[:location]-(variant)
-              RETURN DISTINCT start_pos, end_pos, variant
-      operations:
-        - summary: Get variants given chromosomal coordinates
-          parameters:
-            - name: start
-              description: The starting genomic coordinate (ex 55152093)
-              paramType: query
-            - name: end
-              description: The ending genomic coordinate (ex 55152093)
-              paramType: query
-            - name: chromosome
-              description: The alphanumeric chromosomal ID (1-22,X,Y) (ex 15)
-              paramType: query
-            - name: genome_build
-              description: The genome build (ex hg19)
-              paramType: query
-
-    ## Genotypes from feature
-    - path: /dynamic/features/{feature_id}/genotypes
-      query: |
-              START f=node:node_auto_index(iri={feature_id})
-              MATCH (f)<-[seqVar:GENO:0000408*0..1]-(feature)<-[hasPart:BFO:0000051!*]-(genotype)
-              RETURN DISTINCT f, seqVar, feature, hasPart, genotype
-      operations:
-        - summary: Get genotypes for a feature
-          parameters:
-            - name: feature_id
-              description: The ID of the feature
 
     ##################
     ### EVIDENCE
@@ -433,10 +358,11 @@ cypherResources:
               MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
+              OPTIONAL MATCH (phenotype:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
               RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, hasP2,type,
-                              phenotypeClass, evidence, source, hasEvidence, hasSource, equiv
+                              phenotypeClass, evidence, source, hasEvidence, hasSource, equiv, quality, relationship
       operations:
         - summary: Get G2P associations for a chemical
           parameters:
@@ -448,17 +374,19 @@ cypherResources:
       query: |
               START phenotype=node:node_auto_index(iri={phenotype_id})
               MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
-              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)<-[:subClassOf|equivalentClass*0..]-(phenotype:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
               OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotypeInstance:Phenotype)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
               RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, hasP2,type,
-                              phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub
+                              phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub,
+                              quality, relationship
       operations:
-        - summary: Get G2P associations for a phenotype, also searches for subclasses of phenotype
+        - summary: Get G2P associations for a phenotype,
           parameters:
             - name: phenotype_id
-              description: The ID of the chemical as a URI or Curie (ex DOID:4830)
+              description: The ID of the phenotype or disease as a URI or Curie (ex DOID:4830), will also return subclasses of disease
 
     ## Genotype to Phenotype Associations given a variant
     - path: /dynamic/variant/{variant_id}/g2p
@@ -467,10 +395,11 @@ cypherResources:
               MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
+              OPTIONAL MATCH (phenotype:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
               RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, hasP2,type,
-                              phenotypeClass, evidence, source, hasEvidence, hasSource, equiv
+                              phenotypeClass, evidence, source, hasEvidence, hasSource, equiv, quality, relationship
       operations:
         - summary: Get G2P associations for a variant
           parameters:
@@ -503,10 +432,11 @@ cypherResources:
               MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
               MATCH (feature)<-[ref:GENO:0000408]-(equiv)-[:sameAs*0..2]-(variant)-[hasP2:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
+              OPTIONAL MATCH (phenotype:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
               RETURN DISTINCT drug, variant, hasSubject, hasP, phenotype, feature, ref, hasP2, type, phenotypeClass,
-                              evidence, source, assoc, rel, hasEvidence, hasSource, equiv
+                              evidence, source, assoc, rel, hasEvidence, hasSource, equiv, quality, relationship
 
       operations:
         - summary: Get G2P associations for a gene
@@ -524,13 +454,129 @@ cypherResources:
               OPTIONAL MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
+              OPTIONAL MATCH (phenotype:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
               RETURN DISTINCT start_pos, end_pos, variant, feature, ref, hasP, hasP2, type, phenotypeClass,
-                              drug, rel, assoc, hasSubject, hasEvidence, evidence, hasSource, source, equiv
+                              drug, rel, assoc, hasSubject, hasEvidence, evidence, hasSource, source, equiv, quality, relationship
       operations:
         - summary: Get G2P associations given genomic coordinates
           parameters:
+            - name: start
+              description: The starting genomic coordinate (ex 55152093)
+              paramType: query
+            - name: end
+              description: The ending genomic coordinate (ex 55152093)
+              paramType: query
+            - name: chromosome
+              description: The alphanumeric chromosomal ID (1-22,X,Y) (ex 4)
+              paramType: query
+            - name: genome_build
+              description: The genome build (ex hg19)
+              paramType: query
+
+    ##################
+    ### Extended
+    ##################
+
+    ## Genotype to Phenotype Associations given a drug, disease, and variant
+    - path: /dynamic/g2p
+      query: |
+              PLANNER RULE
+              START drug=node:node_auto_index(iri={chemical}),
+                    phenotype=node:node_auto_index(iri={disease}),
+                    variant=node:node_auto_index(iri={variant})
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotypeInstance:Phenotype)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, hasP2,type,
+                              phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub, quality, relationship
+      operations:
+        - summary: Get G2P associations for a chemical, variant, and disease
+          parameters:
+            - name: chemical
+              description: The ID of the chemical as a URI or Curie (ex DrugBank:DB08881)
+              paramType: query
+            - name: disease
+              description: The ID of the phenotype as a URI or Curie (ex DOID:0070004), will also return subclasses of disease
+              paramType: query
+            - name: variant
+              description: The ID of the variant as a URI or Curie (ex COSMIC:476)
+              paramType: query
+
+    ## Search for drug interactions given a disease and variant
+    - path: /dynamic/{disease_id}/drug
+      query: |
+              PLANNER RULE
+              START phenotype=node:node_auto_index(iri={disease_id}),
+                    variant=node:node_auto_index(iri={variant})
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotypeInstance:Phenotype)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, hasP2,type,
+                              phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub, quality, relationship
+      operations:
+        - summary: Search for drug interactions given a disease and variant
+          parameters:
+            - name: disease_id
+              description: The ID of the phenotype as a URI or Curie (ex DOID:0070004), will also return subclasses of disease
+            - name: variant
+              description: The ID of the variant as a URI or Curie (ex COSMIC:476)
+              paramType: query
+
+
+    ## Search for variants given a drug and disease
+    - path: /dynamic/{disease_id}/variant
+      query: |
+              PLANNER RULE
+              START drug=node:node_auto_index(iri={chemical_id}),
+                    phenotype=node:node_auto_index(iri={disease_id})
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotypeInstance:Phenotype)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, hasP2,type,
+                              phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub, quality, relationship
+      operations:
+        - summary: Search for variants given a drug and disease
+          parameters:
+            - name: disease_id
+              description: The ID of the phenotype as a URI or Curie (ex DOID:0070004), will also return subclasses of disease
+            - name: chemical_id
+              description: The ID of the chemical as a URI or Curie (ex DrugBank:DB08881)
+              paramType: query
+
+     ## Genotype to Phenotype Associations given a genomic position(s) and disease
+    - path: /dynamic/position/g2p/extended
+      query: |
+              PLANNER RULE
+              START start_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${end}"),
+                    phenotype=node:node_auto_index(iri={disease})
+              MATCH (start_pos)<-[:faldo:begin]-(region)<-[:faldo:location]-(variant)
+              MATCH (end_pos)<-[:faldo:end]-(region)<-[:faldo:location]-(variant)
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[:sameAs*0..2]-(equiv)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[ref:GENO:0000408|sameAs*1..3]-(variant)-[hasP2:RO:0002200]->(phenotypeInstance:Phenotype)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT start_pos, end_pos, variant, feature, ref, hasP, hasP2, type, phenotypeInstance, phenotype,
+                              drug, rel, assoc, hasSubject, hasEvidence, evidence, hasSource, source, equiv, equivOrSub, sub, quality, relationship
+      operations:
+        - summary: Get G2P associations given genomic coordinates and a disease
+          parameters:
+            - name: disease
+              description: The ID of the phenotype as a URI or Curie (ex OMIM:606764), will also return subclasses of disease
+              paramType: query
             - name: start
               description: The starting genomic coordinate (ex 55152093)
               paramType: query
