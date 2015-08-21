@@ -492,7 +492,7 @@ cypherResources:
               OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
-              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, type, equiVariant, eq
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, type, equiVariant, eq,
                               phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub, quality, relationship
       operations:
         - summary: Get G2P associations for a chemical, variant, and disease
@@ -519,7 +519,7 @@ cypherResources:
               OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
               OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
               OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
-              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, type, eq, equiVariant
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, type, eq, equiVariant,
                               phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub, quality, relationship
       operations:
         - summary: Search for drug interactions given a disease and variant
