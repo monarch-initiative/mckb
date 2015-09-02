@@ -325,17 +325,19 @@ cypherResources:
     ## Phenotypes from feature
     - path: /dynamic/features/{feature_id}/phenotypes
       query: |
-              START f=node:node_auto_index(iri={feature_id})
-              MATCH (f)<-[seqVar:GENO:0000408*0..1]-(feature)
-              OPTIONAL MATCH (feature)-[:sameAs*0..]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
+              START feature=node:node_auto_index(iri={feature_id})
+              OPTIONAL MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(feature)-[:sameAs*0..]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
               OPTIONAL MATCH (feature)<-[ref:GENO:0000408*0..1]-(equiVariant)-[eq:sameAs*0..]-(variant)-[:sameAs*0..]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[hasP1:RO:0002200*]->(phenotype:Phenotype)
-              OPTIONAL MATCH (feature)-[e:sameAs]-(genotype)-[hasP2:RO:0002200*]->(phenotype2:Phenotype)
-              OPTIONAL MATCH (feature)-[ref:GENO:0000408]-(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart:BFO:0000051!*]-(genotype3)-[hasP4:RO:0002200*]->(phenotype4:Phenotype)
-              OPTIONAL MATCH (feature)<-[hasPart2:BFO:0000051!*]-(genotype4)<-[hasGenotype:GENO:0000222]-(person)-[hasP5:RO:0002200*]->(phenotype5:Phenotype)
-              RETURN DISTINCT f, seqVar, feature, hasP1, phenotype, e, genotype, hasP2, phenotype2, ref, genotype2, hasP3, phenotype3,
-                              hasPart, genotype3, hasP4, phenotype4, hasPart2, genotype4, hasGenotype, person, hasP5, phenotype5
+              OPTIONAL MATCH (phenotype:Phenotype)-[type:type]-(phenotypeClass:Phenotype)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]->(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]->(source)
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, type, equiVariant, eq,
+                              phenotypeClass, evidence, source, hasEvidence, hasSource, equiv
+      operations:
+        - summary: Get G2P associations for a sequence feature
+          parameters:
+            - name: feature_id
+              description: The ID of the feature as a URI or Curie (ex COSMIC:476)
 
 
     ##################
@@ -422,7 +424,7 @@ cypherResources:
         - summary: Get G2P associations for a variant
           parameters:
             - name: variant_id
-              description: The ID of the chemical as a URI or Curie (ex COSMIC:476)
+              description: The ID of the variant as a URI or Curie (ex COSMIC:476)
 
 
     ## Genotype to Phenotype Associations given a drug relationship
