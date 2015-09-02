@@ -67,9 +67,9 @@ With JSON specified vocabulary queries are returned in the format (with synonyms
 ###Examples
 
 #####Get variant disease associations given a drug response
-http://neville.monarchinitiative.org:9000/scigraph/dynamic/relationships/RO:sensitivity/g2p.json
+http://neville.monarchinitiative.org:9000/scigraph/dynamic/relationships/CGD:sensitivity/g2p.json
 
-Available drug responses: RO:sensitivity, RO:response, RO:resistance, RO:reduced_sensitivity, RO:decreased_sensitivty
+Available drug responses: CGD:sensitivity, CGD:response, CGD:resistance, CGD:reduced_sensitivity, CGD:decreased_sensitivty, CGD:detrimental_effect
 Note: While we are using the Relation Ontology prefix, these relationships are not official RO classes.
 
 #####Get variant disease associations given a drug ID
