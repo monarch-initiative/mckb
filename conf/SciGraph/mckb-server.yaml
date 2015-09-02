@@ -200,17 +200,16 @@ cypherResources:
     ## Features from phenotype
     - path: /dynamic/phenotypes/{phenotype_id}/features
       query: |
-              START phenotype = node:node_auto_index(iri={phenotype_id})
-              MATCH path = (phenotype)-[:equivalentClass*0..]-(equivalence)<-[:subClassOf|equivalentClass*0..]-(actualPhenotype)<-[:RO:0002200|RO:0002610|RO:0002326!*]-(feature)
-              RETURN path
-              UNION
-              START phenotype = node:node_auto_index(iri={phenotype_id})
-              MATCH path = (phenotype)-[:equivalentClass*0..]-(equivalence)<-[:subClassOf|equivalentClass*0..]-(actualPhenotype)<-[:RO:0002200|RO:0002610|RO:0002326!*]-(genotype)-[:BFO:0000051!*]->(feature)-[:GENO:0000410!*0..1]->(gene:gene)
-              RETURN path
-              UNION
-              START phenotype = node:node_auto_index(iri={phenotype_id})
-              MATCH path = (phenotype)-[:equivalentClass*0..]-(equivalence)<-[:subClassOf|equivalentClass*0..]-(actualPhenotype)<-[:RO:0002200|RO:0002610|RO:0002326!*]-(person)-[:GENO:0000222]->(genotype)-[:BFO:0000051!*]->(feature)
-              RETURN path
+              START phenotype=node:node_auto_index(iri={phenotype_id})
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)<-[ref:GENO:0000408*0..1]-(equiv)-[eq:sameAs*0..]-(variant)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT drug, rel, assoc, variant, hasSubject, phenotype, hasP, feature, ref, type, eq,
+                              phenotypeInstance, evidence, source, hasEvidence, hasSource, equiv, equivOrSub, sub,
+                              quality, relationship
       operations:
         - summary: Get features for a phenotype
           parameters:
@@ -318,6 +317,25 @@ cypherResources:
             - name: homolog_id
               description: The homolog relationship # RO:HOM0000017
               paramType: query
+
+    ##################
+    ### FEATURES
+    ##################
+
+    ## Phenotypes from feature
+    - path: /dynamic/features/{feature_id}/phenotypes
+      query: |
+              START f=node:node_auto_index(iri={feature_id})
+              MATCH (f)<-[seqVar:GENO:0000408*0..1]-(feature)
+              OPTIONAL MATCH (feature)-[:sameAs*0..]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)<-[ref:GENO:0000408*0..1]-(equiVariant)-[eq:sameAs*0..]-(variant)-[:sameAs*0..]-(equiv)-[hasP:RO:0002200]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[hasP1:RO:0002200*]->(phenotype:Phenotype)
+              OPTIONAL MATCH (feature)-[e:sameAs]-(genotype)-[hasP2:RO:0002200*]->(phenotype2:Phenotype)
+              OPTIONAL MATCH (feature)-[ref:GENO:0000408]-(genotype2)-[hasP3:RO_0002200*]->(phenotype3:Phenotype)
+              OPTIONAL MATCH (feature)<-[hasPart:BFO:0000051!*]-(genotype3)-[hasP4:RO:0002200*]->(phenotype4:Phenotype)
+              OPTIONAL MATCH (feature)<-[hasPart2:BFO:0000051!*]-(genotype4)<-[hasGenotype:GENO:0000222]-(person)-[hasP5:RO:0002200*]->(phenotype5:Phenotype)
+              RETURN DISTINCT f, seqVar, feature, hasP1, phenotype, e, genotype, hasP2, phenotype2, ref, genotype2, hasP3, phenotype3,
+                              hasPart, genotype3, hasP4, phenotype4, hasPart2, genotype4, hasGenotype, person, hasP5, phenotype5
 
 
     ##################
