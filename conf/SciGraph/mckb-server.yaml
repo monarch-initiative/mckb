@@ -709,7 +709,7 @@ cypherResources:
               paramType: query
 
     ## Genotype to Phenotype Associations given a genomic position(s), gene, and drug
-    - path: /dynamic/position/gene
+    - path: /dynamic/position/gene/drug
       query: |
               PLANNER RULE
               START start_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${start}"),
