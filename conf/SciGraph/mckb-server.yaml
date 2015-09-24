@@ -673,7 +673,7 @@ cypherResources:
               paramType: query
 
      ## Genotype to Phenotype Associations given a genomic position(s), disease, drug
-    - path: /dynamic/position/extended
+    - path: /dynamic/position/disease/drug
       query: |
               PLANNER RULE
               START start_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${start}"),
@@ -699,6 +699,92 @@ cypherResources:
               paramType: query
             - name: drug_id
               description: The ID of the drug as a URI or Curie (ex DrugBank:DB01268)
+              paramType: query
+            - name: start
+              description: The starting genomic coordinate (ex 55152093)
+              paramType: query
+            - name: end
+              description: The ending genomic coordinate (ex 55152093)
+              paramType: query
+            - name: chromosome
+              description: The alphanumeric chromosomal ID (1-22,X,Y) (ex 4)
+              paramType: query
+            - name: genome_build
+              description: The genome build (ex hg19)
+              paramType: query
+
+    ## Genotype to Phenotype Associations given a genomic position(s), disease, gene
+    - path: /dynamic/position/disease/gene
+      query: |
+              PLANNER RULE
+              START start_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${end}"),
+                    phenotype=node:node_auto_index(iri={disease_id}),
+                    gene=node:node_auto_index(iri={gene_id})
+              MATCH (start_pos)<-[:faldo:begin]-(region)<-[:faldo:location]-(variant)
+              MATCH (end_pos)<-[:faldo:end]-(region)<-[:faldo:location]-(variant)
+              MATCH (variant)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              MATCH (gene)<-[ref:GENO:0000408*0..1]-(equiv)-[eq:sameAs*0..]-(variant)
+              OPTIONAL MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT start_pos, end_pos, variant, gene, ref, hasP, type, phenotypeInstance, phenotype, eq,
+                              drug, rel, assoc, hasSubject, hasEvidence, evidence, hasSource, source, equiv, equivOrSub, sub, quality, relationship
+      operations:
+        - summary: Get G2P associations given genomic coordinates and a disease
+          parameters:
+            - name: disease_id
+              description: The ID of the phenotype as a URI or Curie (ex OMIM:606764), will also return subclasses of disease
+              paramType: query
+            - name: gene_id
+              description: The ID of the gene as a URI or Curie (ex NCBIGene:5156)
+              paramType: query
+            - name: start
+              description: The starting genomic coordinate (ex 55152093)
+              paramType: query
+            - name: end
+              description: The ending genomic coordinate (ex 55152093)
+              paramType: query
+            - name: chromosome
+              description: The alphanumeric chromosomal ID (1-22,X,Y) (ex 4)
+              paramType: query
+            - name: genome_build
+              description: The genome build (ex hg19)
+              paramType: query
+
+    ## Genotype to Phenotype Associations given a genomic position(s), disease, gene, drug
+    - path: /dynamic/position/extended
+      query: |
+              PLANNER RULE
+              START start_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${start}"),
+                    end_pos=node:node_auto_index(iri="http://www.monarchinitiative.org/_${genome_build}chr${chromosome}-${end}"),
+                    phenotype=node:node_auto_index(iri={disease_id}),
+                    gene=node:node_auto_index(iri={gene_id}),
+                    drug=node:node_auto_index(iri={drug_id})
+              MATCH (start_pos)<-[:faldo:begin]-(region)<-[:faldo:location]-(variant)
+              MATCH (end_pos)<-[:faldo:end]-(region)<-[:faldo:location]-(variant)
+              MATCH (variant)-[hasP:RO:0002200]->(phenotypeInstance:Phenotype)
+              MATCH (phenotypeInstance:Phenotype)-[type:type]-(equivOrSub)-[:equivalentClass*0..]-(equivalence)-[sub:subClassOf|equivalentClass*0..]->(phenotype:Phenotype)
+              MATCH (gene)<-[ref:GENO:0000408*0..1]-(equiv)-[eq:sameAs*0..]-(variant)
+              MATCH (drug:drug)<-[rel]-(assoc)-[hasSubject:OBAN:association_has_subject]->(variant)
+              OPTIONAL MATCH (phenotypeInstance:Phenotype)-[quality:BFO:0000159]->(relationship)
+              OPTIONAL MATCH (assoc)-[hasEvidence:RO:0002558]-(evidence)
+              OPTIONAL MATCH (assoc)-[hasSource:dc:source]-(source)
+              RETURN DISTINCT start_pos, end_pos, variant, gene, ref, hasP, type, phenotypeInstance, phenotype, eq,
+                              drug, rel, assoc, hasSubject, hasEvidence, evidence, hasSource, source, equiv, equivOrSub, sub, quality, relationship
+      operations:
+        - summary: Get G2P associations given genomic coordinates and a disease
+          parameters:
+            - name: disease_id
+              description: The ID of the phenotype as a URI or Curie (ex OMIM:606764), will also return subclasses of disease
+              paramType: query
+            - name: gene_id
+              description: The ID of the gene as a URI or Curie (ex NCBIGene:5156)
+              paramType: query
+            - name: drug_id
+              description: The ID of the gene as a URI or Curie (ex DrugBank:DB01268)
               paramType: query
             - name: start
               description: The starting genomic coordinate (ex 55152093)
