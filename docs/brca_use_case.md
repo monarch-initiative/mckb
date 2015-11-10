@@ -1,5 +1,13 @@
 # BRCA Genotype-Phenotype Association and Evidence Modeling
 
+### Table of Contents
+1. [Background](#i-background)
+2. [Requirements Analysis for Modeling Evidence and Provenance](#ii-requirements-analysis-for-modeling-evidence-and-provenance)
+3. [Candidate Model for Describing Evidence and Provenance](#iii-candidate-model-for-describing-evidence-and-provenance)
+4. [Collaborators](#iv-collaborators)
+5. [References](#v-references)
+
+
 ## I. Background
 
 The scientific and medical communities have a tremendous and urgent need for a comprehensive data store of variation in the *BRCA1* and *2* genes.  Variation in these genes can indicate genetic predisposition to breast and ovarian cancer, leading causes of death that claim greater than fifty thousand lives in the United States annually [1].  There is enormous public interest in *BRCA* testing, both because of growing public interest in genetic testing and following Angelina Jolie’s double mastectomy and the ensuing "Angelina Effect".  Yet not all *BRCA* variants are pathogenic, and some cause diseases other than the commonly attributed breast cancer.  There is therefore a significant scientific need to catalog the *BRCA* variants and their pathogenicity, and an unprecedented opportunity to do so in the wake of the Supreme Court’s decision to strike down the Myriad Genetics patent.  However, partly due to the patent litigation history, there is currently no comprehensive data source on variation within the *BRCA* genes.  As a result clinicians are frequently working with incomplete knowledge when determining a patient’s risk.  In addition, datasets containing patient level phenotyping data, such as TCGA, do not leverage this pathogenicity information (figure 1).
