@@ -1,10 +1,10 @@
-# Use Cases for Semantics in BRCA Evidence and Provenance Modelling
+# BRCA Genotype-Phenotype Association and Evidence Modeling
 
 ## I. Background
 
 The scientific and medical communities have a tremendous and urgent need for a comprehensive data store of variation in the *BRCA1* and *2* genes.  Variation in these genes can indicate genetic predisposition to breast and ovarian cancer, leading causes of death that claim greater than fifty thousand lives in the United States annually [1].  There is enormous public interest in *BRCA* testing, both because of growing public interest in genetic testing and following Angelina Jolie’s double mastectomy and the ensuing "Angelina Effect".  Yet not all *BRCA* variants are pathogenic, and some cause diseases other than the commonly attributed breast cancer.  There is therefore a significant scientific need to catalog the *BRCA* variants and their pathogenicity, and an unprecedented opportunity to do so in the wake of the Supreme Court’s decision to strike down the Myriad Genetics patent.  However, partly due to the patent litigation history, there is currently no comprehensive data source on variation within the *BRCA* genes.  As a result clinicians are frequently working with incomplete knowledge when determining a patient’s risk.  In addition, datasets containing patient level phenotyping data, such as TCGA, do not leverage this pathogenicity information (figure 1).
 
-![image alt text](image_0.png)
+![Data Landscape](https://raw.githubusercontent.com/monarch-initiative/mckb/master/docs/image/data_landscape.png)
 
 **Figure 1**. Catalog of public and controlled use datasets containing information about the BRCA variant
 
@@ -14,7 +14,7 @@ While many labs and initiatives have defined their own protocols for variant cla
 
 ## II. Requirements Analysis for Modeling Evidence and Provenance
 
-A model for evidence and provenance around cancer variant classification should be capable of capturing the detail reflected in the complex classification protocols for cancer variant classification - including the distinct lines of evidence that support a pathogenicity call, and the techniques and agents involved in generating them. This is especially important in efforts to integrate pathogenicity evidence across systems, where diverse and conflicting evidence may exist. There are few existing standards and schema to draw from in describing provenance and evidence for scientific claims. Those that do exist are narrowly scoped and inconsistent in their treatment of provenance and evidence - often confusing and conflating these concepts.** **A critical first step towards defining a broadly applicable and rigorous community standard for describing the evidence and provenance of scientific claims is to clearly define and disentangle these concepts. 
+A model for evidence and provenance around cancer variant classification should be capable of capturing the detail reflected in the complex classification protocols for cancer variant classification - including the distinct lines of evidence that support a pathogenicity call, and the techniques and agents involved in generating them. This is especially important in efforts to integrate pathogenicity evidence across systems, where diverse and conflicting evidence may exist. There are few existing standards and schema to draw from in describing provenance and evidence for scientific claims. Those that do exist are narrowly scoped and inconsistent in their treatment of provenance and evidence - often confusing and conflating these concepts. A critical first step towards defining a broadly applicable and rigorous community standard for describing the evidence and provenance of scientific claims is to clearly define and disentangle these concepts. 
 
 ### A. Defining and Distinguishing ‘Provenance’ and ‘Evidence’
 
@@ -22,23 +22,23 @@ Below we present a coherent characterization of these evidence and provenance as
 
 **Evidence** is a collection of information that is used to support a scientific claim or association.  Evidence as ‘information’ can include primary data produced through experimentation or computational analyses, derived data such as statistical calculations and confidence scores that are about this primary data, summaries or reports based on such data, or even intrinsic knowledge or opinion shared by a domain expert.
 
-**Provenance** is commonly defined as a history (or a record of a history) of where an *‘object’ *came from and who has owned or modified it. The provenance of an object can be viewed as having two stages: 
+**Provenance** is commonly defined as a history (or a record of a history) of where an ‘object’ came from and who has owned or modified it. The provenance of an object can be viewed as having two stages: 
 
-1. A history leading to its creation - ** **going back in time from its point of creation to understand how it came to be (i.e. its **ancestral lineage**)
+1. A history leading to its creation - going back in time from its point of creation to understand how it came to be (i.e. its ancestral lineage)
 
-2. A history since its creation *- *going forward in time from its point of creation to understand where it has been and how it has evolved (i.e. its **_life story_**).  
+2. A history since its creation - going forward in time from its point of creation to understand where it has been and how it has evolved (i.e. its life story).  
 
-When the object in question is a scientific claim, the provenance we concern ourselves with is primarily the history leading to its creation. That is, we want to know what processes led to the claim being made, and what entities participated in these processes. Treating provenance as a history (a process), rather than a *record *of this history (an information artifact), helps us to distinguish it more clearly from evidence (an information artifact). *The provenance of a scientific claim then, is the set of processes leading to (i.e. producing evidence for) its assertion. *
+When the object in question is a scientific claim, the provenance we concern ourselves with is primarily the history leading to its creation. That is, we want to know what processes led to the claim being made, and what entities participated in these processes. Treating provenance as a history (a process), rather than a record of this history (an information artifact), helps us to distinguish it more clearly from evidence (an information artifact). The provenance of a scientific claim then, is the set of processes leading to (i.e. producing evidence for) its assertion.
 
 ## B. Use Cases and Competency Questions 
 
 With respect to the evidence and provenance for claims around BRCA variant data, we have defined the following use cases that will inform the scope and structure of our model.
 
-**1. Representation of all ****key types**** of evidence and provenance**** information described in BRCA variant datasets**
+**1. Representation of all key types of evidence and provenance information described in BRCA variant datasets**
 
 Review all BRCA variant datasets will reveal the diversity of evidence and provenance information each source provides. Examples we have encountered in our efforts to date include:
 
-**   ****Evidence (information that supports a claim, which is output from a line of provenance)**
+**Evidence (information that supports a claim, which is output from a line of provenance)**
 
 * raw data items (measured values, image data, sequence data, etc)
 
@@ -52,7 +52,7 @@ Review all BRCA variant datasets will reveal the diversity of evidence and prove
 
 * tacit knowledge of a domain expert
 
-**   Provenance (the process history leading to the claim and key participants)**
+**Provenance (the process history leading to the claim and key participants)**
 
 * the *types *of assay/technique/study that generated evidence (or actual *instances *of these types of processes)
 
@@ -130,7 +130,8 @@ We view each ACMG criteria as representing a different class of ‘evidence’ f
 
 To represent this state of affairs, the model we define organizes all of these evidence instances around a central evidence node that represents an ECO:'combinatorial evidence' (Figure 2). This combinatorial evidence has as parts each atomic piece of evidence corresponding to a pathogenicity criteria from the classification guidelines, which can be linked to any techniques or data items related to the production of this evidence.  Attribution can be made for entities at any level of this graph, including the individual evidences, the combinatorial evidence, and the association representing the pathogenicity call.
 
-Place holder for image
+![BRCA Model](https://raw.githubusercontent.com/monarch-initiative/mckb/master/docs/image/brca_evidence_model.jpg)
+![cmap key](https://raw.githubusercontent.com/monarch-initiative/mckb/master/docs/image/cmap_key.png)
 
 **Figure 2**. Model to describe evidence and provenance of pathogenicity classifications for cancer variants. Nodes in green represent evidence information.  Nodes in darker blue represent represent provenance-related    information, with nodes in lighter blue representing attribution components of provenance (agents responsible for a given process or evidence). The relations/properties used are not final specifications. The aim initially is to define the structure of the model.  The exact properties to be used will be defined once the structure of the model is settled.
 
@@ -165,3 +166,5 @@ The following collaborators have contributed to this use case document:
 3. http://www.evidenceontology.org/
 
 **Appendix I: Candidate Model for Monarch Evidence and Provenance**
+
+![Monarch Model](https://raw.githubusercontent.com/monarch-initiative/mckb/master/docs/image/cmap_key.jpg)
