@@ -167,4 +167,5 @@ The following collaborators have contributed to this use case document:
 
 **Appendix I: Candidate Model for Monarch Evidence and Provenance**
 
-![Monarch Model](https://raw.githubusercontent.com/monarch-initiative/mckb/master/docs/image/cmap_key.jpg)
+![Monarch Model](https://github.com/monarch-initiative/mckb/blob/master/docs/image/monarch_evidence_model.jpg)
+
