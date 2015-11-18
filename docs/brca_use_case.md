@@ -147,6 +147,12 @@ To represent this state of affairs, the model we define organizes all of these e
 
 The following collaborators have contributed to this use case document:
 
+**Matthew Brush, PhD**: Ontologist, OHSU
+
+**Melissa Haendel, PhD**: Director of the Ontology Development Group, OHSU
+
+**Kent Shefchek, MS**: Bioinformatics Software Engineer, OHSU
+
 **Mark Diekhans, PhD**: Technical Project Manager, UCSC
 
 **Mary Goldman, BS**: Design and Usability Engineer, UCSC
