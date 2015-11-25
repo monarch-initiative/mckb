@@ -46,8 +46,8 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         disease_quality = ("CGD:{0}".format(relationship)).replace(" ", "_")
         has_quality_property = "BFO:0000159"
         drug_id = self.cgd.make_cgd_id('drug{0}'.format(drug_key))
-        disease_instance_id = self.cgd.make_cgd_id('disease{0}{1}'.format(
-            diagnoses, variant_key))
+        disease_instance_id = self.cgd.make_cgd_id('phenotype{0}{1}{2}'.format(
+            diagnoses, variant_key, relationship))
 
         variant_disease_annot = self.cgd.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses))
 

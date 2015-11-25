@@ -437,7 +437,7 @@ class CGD(MySQLSource):
                                                      diagnoses_label, variant_key))
 
             phenotype_instance_id = self.make_cgd_id('phenotype{0}{1}{2}'.format(
-                                                     diagnoses_label, variant_key,relationship))
+                                                     diagnoses_label, variant_key, relationship))
 
             phenotype_instance_label = "{0} with {1} to therapy".format(diagnoses_label, relationship)
             if relationship == "detrimental effect":
