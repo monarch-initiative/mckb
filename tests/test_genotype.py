@@ -14,6 +14,10 @@ logger = logging.getLogger(__name__)
 class DiseaseDrugVariantTestCase(unittest.TestCase):
     """
     Test triples created from variant modelling functions
+
+    Here we define a series of functional tests where we import RDFLib,
+    create a test data set, run the data through a single function, and
+    test the in memory RDF graph with a sparql query
     """
 
     def setUp(self):

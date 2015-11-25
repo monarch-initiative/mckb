@@ -9,6 +9,10 @@ logger = logging.getLogger(__name__)
 class CGDTestCase(unittest.TestCase):
     """
     Test connection, loading, and querying of CGD snapshot
+
+    CGDTestCase is an integration test using the Travis CI
+    testing environment to test with a mysql database
+    The database is created and populated in the .travis.yml file
     """
 
     def setUp(self):

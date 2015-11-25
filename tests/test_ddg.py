@@ -12,8 +12,11 @@ logger = logging.getLogger(__name__)
 class DiseaseDrugVariantTestCase(unittest.TestCase):
     """
     Test triples created from add_disease_drug_variant_to_graph()
-    Sample data for testing should resemble output from
-    _get_disease_drug_variant_relationship()
+
+    Here we define a series of functional tests where we import RDFLib,
+    create a test data set, run the data through a single
+    function (add_disease_drug_variant_to_graph()), and
+    test the in memory RDF graph with a sparql query
     """
 
     def setUp(self):

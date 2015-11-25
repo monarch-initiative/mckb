@@ -4,6 +4,7 @@ from dipper.models.Dataset import Dataset
 from dipper.utils.GraphUtils import GraphUtils
 from dipper.models.Genotype import Genotype
 from dipper.models.assoc.G2PAssoc import G2PAssoc
+from dipper.models.assoc.Association import Assoc
 from dipper.models.Reference import Reference
 from dipper.models.GenomicFeature import Feature, makeChromID
 from dipper import curie_map
@@ -423,6 +424,7 @@ class CGD(MySQLSource):
             # Arbitrary IDs to be replaced by ontology mappings
             variant_id = self.make_cgd_id('variant{0}'.format(variant_key))
             disease_id = self._get_disease_id(diagnoses_key, diagnoses_label)
+            therapy_status_id = self.make_cgd_id('{0}'.format(therapy_status))
             relationship_id = "RO:has_environment"
             disease_quality = ("CGD:{0}".format(relationship)).replace(" ", "_")
             has_quality_property = "BFO:0000159"
@@ -432,12 +434,15 @@ class CGD(MySQLSource):
                              geno.genoparts['sequence_alteration'])
 
             disease_instance_id = self.make_cgd_id('disease{0}{1}'.format(
-                                                   diagnoses_label, variant_key))
+                                                     diagnoses_label, variant_key))
 
-            disease_instance_label = "{0} with {1} to therapy".format(diagnoses_label, relationship)
+            phenotype_instance_id = self.make_cgd_id('phenotype{0}{1}{2}'.format(
+                                                     diagnoses_label, variant_key,relationship))
+
+            phenotype_instance_label = "{0} with {1} to therapy".format(diagnoses_label, relationship)
             if relationship == "detrimental effect":
-                disease_instance_label = "{0} with therapeutic response {1} to health"\
-                                         .format(diagnoses_label, relationship)
+                phenotype_instance_label = "{0} with therapeutic response {1} to health"\
+                                           .format(diagnoses_label, relationship)
 
             # Reified association for disease caused_by genotype
             variant_disease_annot = self.make_cgd_id("assoc{0}{1}".format(variant_key, diagnoses_label))
@@ -446,7 +451,7 @@ class CGD(MySQLSource):
             gu.addClassToGraph(self.graph, disease_id, diagnoses_label, 'DOID:4')
 
             gu.addClassToGraph(self.graph, drug_id, drug_label, 'CHEBI:23888')
-            gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
+            gu.addIndividualToGraph(self.graph, phenotype_instance_id, phenotype_instance_label,
                                     disease_id)
             gu.loadObjectProperties(self.graph, {relationship: relationship_id})
 
@@ -462,7 +467,7 @@ class CGD(MySQLSource):
             rel_id = gu.object_properties['has_phenotype']
             variant_phenotype_assoc = G2PAssoc(self.name,
                                                variant_id,
-                                               disease_instance_id,
+                                               phenotype_instance_id,
                                                rel_id)
 
             variant_phenotype_assoc.set_association_id(variant_disease_annot)
@@ -474,9 +479,46 @@ class CGD(MySQLSource):
 
             variant_phenotype_assoc.add_association_to_graph(self.graph)
             gu.addTriple(self.graph, variant_disease_annot, relationship_id, drug_id)
-            gu.addTriple(self.graph, disease_instance_id, has_quality_property, disease_quality)
+            gu.addTriple(self.graph, phenotype_instance_id, has_quality_property, disease_quality)
+
+            # Add therapy-disease association and approval status
+            marker_relation = "RO:has_biomarker"
+
+            disease_instance_label = "{0} with biomarker {1}".format(diagnoses_label, variant_label)
+            gu.addIndividualToGraph(self.graph, disease_instance_id, disease_instance_label,
+                                    disease_id)
+            gu.addTriple(self.graph, disease_instance_id, marker_relation, variant_id)
+
+            gu.addClassToGraph(self.graph, therapy_status_id, therapy_status)
+            self._add_therapy_drug_association(drug_id, disease_instance_id, therapy_status_id)
 
         return
+
+    def _add_therapy_drug_association(self, drug_id, disease_id, therapy_status_id):
+        """
+        Create an association linking a drug and disease with
+        RO:0002606 (substance_that_treats) and any supporting information
+        such as FDA approval and source (not implemented)
+        :param drug_id: Id as curie of the drug
+        :param disease_id: Id as curie of the disease
+        :param therapy_status: (Optional) String label of therapy approval status
+        :return: None
+        """
+        gu = GraphUtils(curie_map.get())
+        # Placeholder relationship, note this does not exist in RO
+        relationship_id = "RO:has_approval_status"
+        gu.addTriple(self.graph, drug_id, gu.object_properties['substance_that_treats'], disease_id)
+        # Make association
+        drug_disease_annot = self.make_cgd_id("assoc{0}{1}".format(drug_id, disease_id))
+
+        therapy_disease_assoc = Assoc(self.name)
+        therapy_disease_assoc.set_subject(drug_id)
+        therapy_disease_assoc.set_relationship(gu.object_properties['substance_that_treats'])
+        therapy_disease_assoc.set_object(disease_id)
+        therapy_disease_assoc.set_association_id(drug_disease_annot)
+        therapy_disease_assoc.add_association_to_graph(self.graph)
+
+        gu.addTriple(self.graph, drug_disease_annot, relationship_id, therapy_status_id)
 
     @staticmethod
     def _make_transcript_curie(transcript_id):
