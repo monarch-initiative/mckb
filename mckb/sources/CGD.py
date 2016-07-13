@@ -247,7 +247,7 @@ class CGD(MySQLSource):
                          geno.properties['results_in_amino_acid_change'],
                          altered_amino_acid, is_literal)
 
-            aa_region_id = ":_{0}{1}{2}Region-{3}".format(position, position, aa_seq_id, variant_key)
+            aa_region_id = ":_{0}{1}{2}Region".format(position, position, aa_seq_id)
             self._add_feature_with_coords(variant_id, position,
                                           position, aa_seq_id, aa_region_id)
 
@@ -284,9 +284,11 @@ class CGD(MySQLSource):
         transcript_curie = self._make_transcript_curie(transcript_id)
 
         # Make region IDs
-        cdna_region_id = ":_{0}Region-{1}".format(transcript_curie, variant_key)
-        chrom_region_id = ":_{0}{1}Region-{2}".format(genome_build,
-                                                     chromosome, variant_key)
+        cdna_region_id = ":_{0}Region".format(transcript_curie)
+        chrom_region_id = ":_{0}{1}Region-{2}-{3}".format(genome_build,
+                                                          chromosome,
+                                                          genome_pos_start,
+                                                          genome_pos_end)
 
         # Add the genome build
         genome_label = "Human"

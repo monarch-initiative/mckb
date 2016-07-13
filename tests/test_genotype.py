@@ -105,7 +105,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
         transcript = "CCDS:413.1"
-        region_id = ":_{0}{1}{2}Region-{3}".format(position, position, uniprot_curie, variant_key)
+        region_id = ":_{0}{1}{2}Region".format(position, position, uniprot_curie)
         variant_uri = URIRef(cu.get_uri(variant_id))
         transcript_uri = URIRef(cu.get_uri(transcript))
         gene_uri = URIRef(cu.get_uri(gene_id))
@@ -200,10 +200,12 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         chromosome_curie = "hg19chr9"
 
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
-        aa_region_id = ":_{0}{1}{2}Region-{3}".format(position, position, uniprot_curie, variant_key)
-        cdna_region_id = ":_{0}Region-{1}".format(transcript_curie, variant_key)
-        chr_region_id = ":_{0}{1}Region-{2}".format(genome_build,
-                                                    chromosome, variant_key)
+        aa_region_id = ":_{0}{1}{2}Region".format(position, position, uniprot_curie)
+        cdna_region_id = ":_{0}Region".format(transcript_curie)
+        chr_region_id = ":_{0}{1}Region-{2}-{3}".format(genome_build,
+                                                        chromosome,
+                                                        genome_pos_start,
+                                                        genome_pos_end)
         aa_coord_id = ":_{0}-{1}".format(uniprot_id, position)
         cdna_coord_id = ":_{0}-{1}".format(ccds_id, bp_pos)
         # chr_coord_id = "CHR:{0}-{1}".format(chromosome_curie, genome_pos_start)
@@ -316,7 +318,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
 
         uniprot_curie = "UniProtKB:Q99062#Q99062-1"
         uniprot_id = "Q99062#Q99062-1"
-        region_id = ":_{0}{1}{2}Region-{3}".format(position, position, uniprot_curie, variant_key)
+        region_id = ":_{0}{1}{2}Region".format(position, position, uniprot_curie)
         both_strand_id = ":_{0}-{1}".format(uniprot_id, position)
 
         region_uri = URIRef(cu.get_uri(region_id))
@@ -380,7 +382,7 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         ccds_id = "35166.1"
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
-        region_id = ":_{0}Region-{1}".format(transcript_curie, variant_key)
+        region_id = ":_{0}Region".format(transcript_curie)
         both_strand_id = ":_{0}-{1}".format(ccds_id, bp_pos)
 
         region_uri = URIRef(cu.get_uri(region_id))
@@ -521,8 +523,10 @@ class DiseaseDrugVariantTestCase(unittest.TestCase):
         variant_id = self.cgd.make_cgd_id('variant{0}'.format(variant_key))
 
         chromosome_curie = ":MONARCH_hg19chr9"
-        region_id = ":_{0}{1}Region-{2}".format(genome_build,
-                                                chromosome, variant_key)
+        region_id = ":_{0}{1}Region-{2}-{3}".format(genome_build,
+                                                    chromosome,
+                                                    genome_pos_start,
+                                                    genome_pos_end)
         start_id = ":_hg19chr9-{0}".format(genome_pos_start)
         end_id = ":_hg19chr9-{0}".format(genome_pos_end)
 
